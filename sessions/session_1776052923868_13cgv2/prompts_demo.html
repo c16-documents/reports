@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C16 Process Intelligence Prompts - Demo Collection</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #C97B3A, #B5567A, #6B3FA0);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        .content {
+            padding: 40px;
+        }
+        .prompt-section {
+            margin-bottom: 50px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .prompt-header {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .prompt-header h2 {
+            margin: 0;
+            color: #6B3FA0;
+            font-size: 1.5em;
+        }
+        .prompt-header .meta {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .prompt-body {
+            padding: 25px;
+        }
+        .prompt-text {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            margin: 15px 0;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #6B3FA0;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8em;
+        }
+        .copy-btn:hover {
+            background: #5a2d8a;
+        }
+        .industry-tag {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            margin-right: 10px;
+        }
+        .variables {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        .variables h4 {
+            margin: 0 0 10px 0;
+            color: #856404;
+        }
+        .variables ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .toc {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .toc h3 {
+            margin: 0 0 15px 0;
+            color: #6B3FA0;
+        }
+        .toc ul {
+            list-style: none;
+            padding: 0;
+        }
+        .toc li {
+            padding: 5px 0;
+        }
+        .toc a {
+            color: #6B3FA0;
+            text-decoration: none;
+        }
+        .toc a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>C16 Process Intelligence Prompts</h1>
+            <p>Ready-to-use prompts for comprehensive SAP process analysis and AI opportunities</p>
+        </div>
+        
+        <div class="content">
+            <div class="toc">
+                <h3>📋 Table of Contents</h3>
+                <ul>
+                    <li><a href="#universal">1. Universal Process Intelligence Report</a></li>
+                    <li><a href="#automotive">2. Automotive Industry (Mahindra-style)</a></li>
+                    <li><a href="#manufacturing">3. Manufacturing/Industrial</a></li>
+                    <li><a href="#retail">4. Retail/Consumer Goods</a></li>
+                    <li><a href="#pharma">5. Pharmaceuticals/Life Sciences</a></li>
+                    <li><a href="#oilgas">6. Oil & Gas/Energy</a></li>
+                    <li><a href="#itservices">7. IT Services</a></li>
+                    <li><a href="#banking">8. Banking/Financial Services</a></li>
+                    <li><a href="#healthcare">9. Healthcare/Hospitals</a></li>
+                </ul>
+            </div>
+
+            <div class="prompt-section" id="universal">
+                <div class="prompt-header">
+                    <h2>🎯 Universal Process Intelligence & AI Opportunities Report</h2>
+                    <div class="meta">
+                        <span class="industry-tag">All Industries</span>
+                        <span class="industry-tag">Comprehensive</span>
+                        <span class="industry-tag">Live Data</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <p><strong>Use this prompt for any company to get a comprehensive process intelligence report similar to the Mahindra & Mahindra analysis.</strong></p>
+                    
+                    <div class="variables">
+                        <h4>🔧 Variables to Customize:</h4>
+                        <ul>
+                            <li><strong>[COMPANY NAME]</strong> - Target company name</li>
+                            <li><strong>[INDUSTRY]</strong> - Industry sector (Automotive, Manufacturing, Retail, etc.)</li>
+                            <li><strong>[SAP SYSTEM TYPE]</strong> - ECC 6.0, S/4HANA 2020, S/4HANA 2023, etc.</li>
+                        </ul>
+                    </div>
+
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the [INDUSTRY] sector. They are running [SAP SYSTEM TYPE - ECC/S/4HANA] and are interested in leveraging AI and automation to optimize their business processes.
+
+Please analyze their live SAP data across these key areas:
+1. **Procure-to-Pay (P2P) Process Mining** — Extract cycle times, bottlenecks, approval delays by category/buyer/plant
+2. **Order-to-Cash (O2C) Process Intelligence** — Sales order processing, delivery performance, billing efficiency, customer credit management
+3. **AI-Powered Master Data Quality** — Detect inconsistencies in vendor/customer/material master data, suggest corrections
+4. **Custom Code Rationalization** — Scan Z/Y objects, map to standard SAP functionality, provide upgrade advisory
+5. **Financial Close Process Optimization** — Month-end bottlenecks, manual journal entries, reconciliation gaps
+6. **Inventory & Warehouse Intelligence** — Stock anomalies, movement pattern analysis, slow-moving inventory detection
+
+Generate a professional HTML report that includes:
+- Executive summary positioning C16's capabilities against their process challenges
+- Live data extraction from their SAP system (actual numbers, not mock data)
+- AI/automation opportunities with implementation roadmap
+- ROI estimates and business case
+- Specific Fiori apps and SAP standard functionality recommendations
+- Custom development requirements where standard doesn't cover
+- 3-phase delivery model with timeline
+
+Focus on extracting REAL data from their connected SAP system to demonstrate C16's analytical power.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="automotive">
+                <div class="prompt-header">
+                    <h2>🚗 Automotive Industry Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Automotive</span>
+                        <span class="industry-tag">Manufacturing</span>
+                        <span class="industry-tag">Supplier Management</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <p><strong>Specialized for automotive companies like Mahindra, Tata Motors, Hero MotoCorp, etc.</strong></p>
+                    
+                    <div class="variables">
+                        <h4>🔧 Perfect for:</h4>
+                        <ul>
+                            <li>Automotive OEMs with complex supplier networks</li>
+                            <li>Companies with dealer/distributor networks</li>
+                            <li>JIT manufacturing environments</li>
+                        </ul>
+                    </div>
+
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the Automotive sector. They are running [SAP SYSTEM TYPE] and want to leverage AI and automation to optimize their automotive business processes.
+
+Please analyze their live SAP data across these key areas:
+1. **Procure-to-Pay (P2P) Process Mining** — Extract cycle times, bottlenecks, approval delays by category/buyer/plant
+2. **Supplier Performance Analytics** — Vendor scorecards, delivery performance, quality metrics, cost variance analysis
+3. **Production Planning Optimization** — PP module analysis, capacity utilization, material shortages, production order cycle times
+4. **Quality Management Intelligence** — QM data mining, defect patterns, supplier quality issues, warranty claim analysis
+5. **Dealer Network Performance** — Dealer credit management, sales performance, inventory turnover, payment cycles
+6. **Warranty Claim Processing** — Claim cycle times, fraud detection, supplier chargebacks, cost recovery optimization
+7. **Bill of Materials (BOM) Optimization** — Engineering change management, variant complexity, cost impact analysis
+8. **AI-Powered Master Data Quality** — Detect inconsistencies in vendor/customer/material master data
+
+Focus additionally on:
+- JIT manufacturing process optimization
+- Supplier collaboration and vendor-managed inventory
+- Dealer financing and credit approval bottlenecks
+- Production scheduling and capacity planning
+- Quality control and supplier audit processes
+- Aftermarket parts and service optimization
+
+Generate a professional HTML report with automotive-specific KPIs, live data extraction, and implementation roadmap tailored for automotive manufacturing.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="manufacturing">
+                <div class="prompt-header">
+                    <h2>🏭 Manufacturing/Industrial Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Manufacturing</span>
+                        <span class="industry-tag">Industrial</span>
+                        <span class="industry-tag">Production</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the Manufacturing/Industrial sector. They are running [SAP SYSTEM TYPE] and want to optimize their manufacturing operations through AI and automation.
+
+Please analyze their live SAP data across these key areas:
+1. **Production Order Cycle Time Analysis** — CO/PP modules, order processing efficiency, capacity utilization
+2. **Equipment Maintenance Optimization** — PM module intelligence, predictive maintenance opportunities, downtime analysis
+3. **Shop Floor Data Collection** — MES integration opportunities, real-time production monitoring
+4. **Capacity Planning & Resource Optimization** — Bottleneck identification, resource allocation efficiency
+5. **Cost Center Performance Analytics** — Manufacturing cost analysis, variance reporting, profitability by product line
+6. **Inter-company Transfer Pricing** — Automation opportunities for complex transfer pricing scenarios
+7. **Procure-to-Pay Process Mining** — Supplier performance, procurement cycle optimization
+8. **Inventory & Warehouse Intelligence** — Stock optimization, movement pattern analysis
+
+Focus additionally on:
+- Production planning and scheduling optimization
+- Quality control process automation
+- Energy consumption and sustainability metrics
+- Supply chain visibility and vendor collaboration
+- Maintenance planning and spare parts optimization
+- Manufacturing execution system (MES) integration
+
+Generate a professional HTML report with manufacturing-specific KPIs and implementation roadmap.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="retail">
+                <div class="prompt-header">
+                    <h2>🛒 Retail/Consumer Goods Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Retail</span>
+                        <span class="industry-tag">Consumer Goods</span>
+                        <span class="industry-tag">FMCG</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the Retail/Consumer Goods sector. They are running [SAP SYSTEM TYPE] and want to optimize their retail operations through AI and automation.
+
+Please analyze their live SAP data across these key areas:
+1. **Demand Forecasting & Inventory Optimization** — Sales pattern analysis, seasonal trends, stock optimization
+2. **Promotion Effectiveness Analysis** — Campaign performance, pricing intelligence, margin optimization
+3. **Customer Segmentation & Pricing Intelligence** — Customer behavior analysis, dynamic pricing opportunities
+4. **Supply Chain Visibility** — Vendor collaboration, logistics optimization, delivery performance
+5. **Store Performance Analytics** — Sales by location, inventory turnover, staff productivity
+6. **Returns & Refunds Process Optimization** — Return pattern analysis, fraud detection, process automation
+7. **Order-to-Cash Intelligence** — Customer credit management, payment processing, billing efficiency
+8. **Vendor Management** — Supplier performance, procurement optimization, contract compliance
+
+Focus additionally on:
+- Multi-channel inventory management
+- Customer loyalty program optimization
+- Seasonal demand planning
+- Private label product performance
+- Merchandising and category management
+- E-commerce integration and omnichannel analytics
+
+Generate a professional HTML report with retail-specific KPIs and implementation roadmap.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="pharma">
+                <div class="prompt-header">
+                    <h2>💊 Pharmaceuticals/Life Sciences Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Pharmaceuticals</span>
+                        <span class="industry-tag">Life Sciences</span>
+                        <span class="industry-tag">Compliance</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the Pharmaceuticals/Life Sciences sector. They are running [SAP SYSTEM TYPE] and need to optimize their pharmaceutical operations while maintaining regulatory compliance.
+
+Please analyze their live SAP data across these key areas:
+1. **Batch Genealogy & Traceability Intelligence** — Complete product traceability, batch record analysis
+2. **Regulatory Compliance Automation** — FDA/EMA requirements, audit trail optimization, deviation management
+3. **Clinical Trial Supply Chain Optimization** — Trial material management, distribution efficiency, expiry tracking
+4. **Serialization & Anti-counterfeiting** — Track and trace implementation, compliance monitoring
+5. **Quality Control Process Mining** — QC testing cycles, release process optimization, CAPA management
+6. **Adverse Event Reporting Automation** — Pharmacovigilance process optimization, regulatory reporting
+7. **Manufacturing Process Optimization** — Production planning, capacity utilization, yield optimization
+8. **Supplier Qualification & Management** — Vendor audit processes, supplier performance, risk management
+
+Focus additionally on:
+- Good Manufacturing Practice (GMP) compliance
+- Validation and qualification processes
+- Cold chain management and temperature monitoring
+- Regulatory submission and approval processes
+- Intellectual property and patent management
+- Clinical data management and analysis
+
+Generate a professional HTML report with pharmaceutical-specific KPIs and regulatory compliance focus.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="oilgas">
+                <div class="prompt-header">
+                    <h2>⛽ Oil & Gas/Energy Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Oil & Gas</span>
+                        <span class="industry-tag">Energy</span>
+                        <span class="industry-tag">Asset Management</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>I need a comprehensive Process Intelligence & AI Opportunities Report for [COMPANY NAME] in the Oil & Gas/Energy sector. They are running [SAP SYSTEM TYPE] and want to optimize their energy operations through AI and automation.
+
+Please analyze their live SAP data across these key areas:
+1. **Asset Integrity Management** — Predictive maintenance, equipment performance, failure analysis
+2. **Joint Venture Accounting** — Revenue sharing, cost allocation, partner settlement processes
+3. **Regulatory Reporting Automation** — Environmental compliance, safety reporting, government submissions
+4. **Project Cost Management** — Capital expenditure tracking, project profitability, budget variance analysis
+5. **Trading & Risk Management** — Commodity trading optimization, price risk analysis, hedging strategies
+6. **HSE Incident Analysis** — Health, Safety, Environment incident patterns, prevention strategies
+7. **Production Optimization** — Well performance, production planning, resource allocation
+8. **Supply Chain & Logistics** — Transportation optimization, inventory management, vendor performance
+
+Focus additionally on:
+- Upstream, midstream, downstream process optimization
+- Refinery operations and maintenance planning
+- Pipeline integrity and monitoring
+- Environmental impact assessment
+- Carbon footprint tracking and sustainability
+- Emergency response and crisis management
+
+Generate a professional HTML report with energy-specific KPIs and implementation roadmap.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="itservices">
+                <div class="prompt-header">
+                    <h2>💻 IT Services Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">IT Services</span>
+                        <span class="industry-tag">Technology</span>
+                        <span class="industry-tag">Project Management</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>Generate a Process Intelligence Report for [COMPANY NAME] in the IT Services sector focusing on:
+
+1. **Project Cost Management & Resource Utilization** — Project profitability analysis, resource allocation optimization, utilization tracking
+2. **Time Tracking & Billing Automation** — Timesheet accuracy, billing cycle optimization, revenue recognition
+3. **Vendor Management & Subcontractor Performance** — Partner performance analysis, cost optimization, contract compliance
+4. **Financial Close Acceleration** — Multi-entity consolidation, intercompany eliminations, month-end process optimization
+5. **Compliance Reporting** — SOX compliance, GDPR requirements, audit trail management
+6. **Client Delivery Excellence** — SLA monitoring, delivery quality metrics, client satisfaction analysis
+7. **Talent Management & Bench Optimization** — Skill gap analysis, bench utilization, training ROI
+8. **Procurement & Vendor Management** — IT asset management, software license optimization, vendor rationalization
+
+Focus additionally on:
+- Multi-geography operations and transfer pricing
+- Agile project management and DevOps metrics
+- Client onboarding and offboarding processes
+- Intellectual property and asset management
+- Quality assurance and testing optimization
+- Change management and service delivery
+
+Generate a professional HTML report with IT services-specific KPIs and implementation roadmap.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="banking">
+                <div class="prompt-header">
+                    <h2>🏦 Banking/Financial Services Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Banking</span>
+                        <span class="industry-tag">Financial Services</span>
+                        <span class="industry-tag">Risk Management</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>Generate a Process Intelligence Report for [COMPANY NAME] in the Banking/Financial Services sector focusing on:
+
+1. **Loan Processing Cycle Time Optimization** — Application to disbursement analysis, approval bottlenecks, documentation efficiency
+2. **Credit Risk Assessment Automation** — Risk scoring optimization, default prediction, portfolio analysis
+3. **Regulatory Reporting Intelligence** — RBI/SEBI compliance, automated report generation, audit trail management
+4. **Customer Onboarding Process Mining** — KYC process optimization, document verification, account opening efficiency
+5. **Anti-Money Laundering (AML) Transaction Monitoring** — Suspicious activity detection, false positive reduction, compliance automation
+6. **Trade Finance Process Optimization** — Letter of credit processing, documentary collections, guarantee management
+7. **Treasury & Investment Operations** — Portfolio management, settlement processes, reconciliation automation
+8. **Branch Operations Excellence** — Teller efficiency, cash management, customer service optimization
+
+Focus additionally on:
+- Digital banking transformation opportunities
+- Payment processing and settlement optimization
+- Fraud detection and prevention
+- Regulatory capital management
+- Customer relationship management
+- Interest rate risk management
+
+Generate a professional HTML report with banking-specific KPIs and regulatory compliance focus.
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-section" id="healthcare">
+                <div class="prompt-header">
+                    <h2>🏥 Healthcare/Hospitals Process Intelligence</h2>
+                    <div class="meta">
+                        <span class="industry-tag">Healthcare</span>
+                        <span class="industry-tag">Hospitals</span>
+                        <span class="industry-tag">Patient Care</span>
+                    </div>
+                </div>
+                <div class="prompt-body">
+                    <div class="prompt-text">
+                        <button class="copy-btn" onclick="copyToClipboard(this)">Copy</button>Generate a Process Intelligence Report for [COMPANY NAME] in the Healthcare/Hospital sector focusing on:
+
+1. **Patient Admission to Discharge Cycle Analysis** — Length of stay optimization, bed utilization, discharge planning efficiency
+2. **Medical Equipment Maintenance Optimization** — Preventive maintenance scheduling, equipment utilization, downtime reduction
+3. **Pharmaceutical Inventory Management** — Drug inventory optimization, expiry management, cost control
+4. **Insurance Claim Processing Automation** — Claim cycle time reduction, denial management, revenue cycle optimization
+5. **Clinical Workflow Optimization** — Care pathway analysis, staff productivity, patient flow management
+6. **Supply Chain & Procurement** — Medical supplies optimization, vendor management, cost reduction
+7. **Quality & Compliance Management** — Patient safety metrics, regulatory compliance, accreditation management
+8. **Financial Performance Analysis** — Department profitability, cost per patient, revenue optimization
+
+Focus additionally on:
+- Electronic health record (EHR) optimization
+- Clinical decision support systems
+- Patient satisfaction and experience management
+- Infection control and prevention
+- Emergency department efficiency
+- Surgical scheduling and OR utilization
+
+Generate a professional HTML report with healthcare-specific KPIs and patient care focus.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(button) {
+            const promptText = button.parentElement.textContent.replace('Copy', '').trim();
+            navigator.clipboard.writeText(promptText).then(function() {
+                button.textContent = 'Copied!';
+                button.style.background = '#27ae60';
+                setTimeout(function() {
+                    button.textContent = 'Copy';
+                    button.style.background = '#6B3FA0';
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
