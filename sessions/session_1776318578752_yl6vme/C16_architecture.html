@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C16 Architecture Overview</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(135deg, #C97B3A, #B5567A, #6B3FA0);
+            color: white;
+            margin: -20px -20px 40px -20px;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .value-props {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .value-prop {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #6B3FA0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .value-prop:hover {
+            transform: translateY(-5px);
+        }
+
+        .value-prop h3 {
+            color: #6B3FA0;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .value-prop .icon {
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .architecture-section {
+            margin: 40px 0;
+        }
+
+        .section-title {
+            font-size: 2.2em;
+            color: #6B3FA0;
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #B5567A;
+            padding-bottom: 10px;
+        }
+
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .capability-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .capability-card:hover {
+            border-color: #6B3FA0;
+            transform: translateY(-3px);
+        }
+
+        .capability-card .icon {
+            font-size: 2.5em;
+            color: #6B3FA0;
+            margin-bottom: 15px;
+        }
+
+        .capability-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .capability-card p {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .tech-stack {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .tech-stack h3 {
+            color: #6B3FA0;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        .tech-item strong {
+            color: #6B3FA0;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .mermaid {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .benefits {
+            background: linear-gradient(135deg, #e8f5e8, #f0f8f0);
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+        }
+
+        .benefits h3 {
+            color: #27ae60;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .benefit-item {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #27ae60;
+        }
+
+        .benefit-item h4 {
+            color: #27ae60;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            margin: 40px -20px -20px -20px;
+            border-radius: 20px 20px 0 0;
+            color: #666;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+            margin: 2px;
+        }
+
+        .badge-primary { background: #6B3FA0; color: white; }
+        .badge-success { background: #27ae60; color: white; }
+        .badge-info { background: #3498db; color: white; }
+        .badge-warning { background: #f39c12; color: white; }
+
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+            .value-prop:hover, .capability-card:hover { transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 C16</h1>
+            <div class="subtitle">AI-Powered SAP Development & Migration Platform</div>
+        </div>
+
+        <div class="value-props">
+            <div class="value-prop">
+                <h3><span class="icon">⚡</span>Accelerated Development</h3>
+                <p>Generate production-ready ABAP code, CDS views, and Fiori applications in minutes, not weeks. Automated Clean Core compliance ensures future-proof solutions.</p>
+            </div>
+            <div class="value-prop">
+                <h3><span class="icon">🎯</span>S/4HANA Migration</h3>
+                <p>Comprehensive migration assessment with dependency analysis, Clean Core scoring, and automated remediation roadmaps. Reduce migration risk by 80%.</p>
+            </div>
+            <div class="value-prop">
+                <h3><span class="icon">🔍</span>Intelligent Analysis</h3>
+                <p>Deep code analysis with performance optimization, security gap detection, and fit-to-standard recommendations. Turn legacy code into modern architecture.</p>
+            </div>
+            <div class="value-prop">
+                <h3><span class="icon">🛡️</span>Enterprise Ready</h3>
+                <p>Live SAP system integration with role-based security, transport management, and comprehensive testing. Production-grade deployment pipeline.</p>
+            </div>
+        </div>
+
+        <div class="architecture-section">
+            <h2 class="section-title">C16 Platform Architecture</h2>
+            
+            <div class="mermaid">
+graph TB
+    subgraph "User Interface Layer"
+        UI[🖥️ C16 Chat Interface]
+        DOC[📄 Document Generator]
+        CODE[💻 Code Panel]
+        PREVIEW[👁️ Live Preview]
+    end
+
+    subgraph "AI Engine Core"
+        LLM[🧠 Large Language Model]
+        SKILLS[📚 Skill Library<br/>47 Specialized Skills]
+        MEMORY[🧠 Context Memory]
+        ROUTER[🎯 Request Router]
+    end
+
+    subgraph "Analysis Engines"
+        CC[🔍 Clean Core Engine<br/>55 Analysis Rules]
+        PERF[⚡ Performance Analyzer]
+        FIT[📊 Fit-to-Standard Engine]
+        ARCH[🏗️ Architecture Analyzer]
+    end
+
+    subgraph "Code Generation"
+        ABAP[📝 ABAP Generator]
+        CDS[🗃️ CDS Generator]
+        RAP[🚀 RAP Generator]
+        FIORI[🎨 Fiori Generator]
+        CAP[☁️ CAP Generator]
+    end
+
+    subgraph "SAP Integration Layer"
+        ADT[🔗 ADT/Eclipse APIs]
+        RFC[📡 RFC/SOAP APIs]
+        ODATA[🌐 OData Services]
+        GATEWAY[🚪 SAP Gateway]
+    end
+
+    subgraph "Connected SAP Systems"
+        ECC[🏢 SAP ECC 7.40+]
+        S4[🌟 SAP S/4HANA]
+        BTP[☁️ SAP BTP]
+        HANA[💾 SAP HANA]
+    end
+
+    subgraph "Development Tools"
+        CONTAINER[📦 Dev Containers]
+        GIT[📋 abapGit Integration]
+        DEPLOY[🚀 Deployment Pipeline]
+        TEST[🧪 Testing Framework]
+    end
+
+    UI --> LLM
+    DOC --> LLM
+    CODE --> LLM
+    PREVIEW --> LLM
+
+    LLM --> SKILLS
+    LLM --> MEMORY
+    LLM --> ROUTER
+
+    ROUTER --> CC
+    ROUTER --> PERF
+    ROUTER --> FIT
+    ROUTER --> ARCH
+
+    LLM --> ABAP
+    LLM --> CDS
+    LLM --> RAP
+    LLM --> FIORI
+    LLM --> CAP
+
+    ABAP --> ADT
+    CDS --> ADT
+    RAP --> ADT
+    FIORI --> GATEWAY
+    CAP --> BTP
+
+    ADT --> ECC
+    ADT --> S4
+    RFC --> ECC
+    RFC --> S4
+    ODATA --> S4
+    GATEWAY --> ECC
+    GATEWAY --> S4
+
+    CONTAINER --> BTP
+    GIT --> ECC
+    GIT --> S4
+    DEPLOY --> ECC
+    DEPLOY --> S4
+    TEST --> ECC
+    TEST --> S4
+
+    S4 --> HANA
+</div>
+        </div>
+
+        <div class="capabilities-grid">
+            <div class="capability-card">
+                <div class="icon">🔍</div>
+                <h4>Code Analysis</h4>
+                <p>Deep ABAP analysis with Clean Core scoring, dependency mapping, and security assessment</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">⚡</div>
+                <h4>Performance Optimization</h4>
+                <p>Automated detection of N+1 patterns, pushdown opportunities, and HANA optimization</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">🎯</div>
+                <h4>Migration Assessment</h4>
+                <p>S/4HANA readiness with gap analysis, effort estimation, and remediation roadmaps</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">🚀</div>
+                <h4>RAP Development</h4>
+                <p>Complete RAP stack generation with CDS views, behavior definitions, and Fiori apps</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">☁️</div>
+                <h4>CAP Applications</h4>
+                <p>Full-stack CAP development with CDS models, services, and Fiori Elements</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">🎨</div>
+                <h4>Fiori Generation</h4>
+                <p>Modern UI development with Fiori Elements, freestyle SAPUI5, and responsive design</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">🔒</div>
+                <h4>Security & Compliance</h4>
+                <p>Authorization analysis, Clean Core compliance, and enterprise security patterns</p>
+            </div>
+            <div class="capability-card">
+                <div class="icon">📊</div>
+                <h4>Process Intelligence</h4>
+                <p>Business process mining, KPI analysis, and operational insights across SAP modules</p>
+            </div>
+        </div>
+
+        <div class="tech-stack">
+            <h3>Technology Stack & Integrations</h3>
+            <div class="tech-grid">
+                <div class="tech-item">
+                    <strong>SAP Platforms</strong>
+                    ECC 7.40+, S/4HANA, BTP, HANA
+                </div>
+                <div class="tech-item">
+                    <strong>Development</strong>
+                    ABAP, CDS, RAP, CAP, SAPUI5
+                </div>
+                <div class="tech-item">
+                    <strong>Integration APIs</strong>
+                    ADT, RFC, OData, REST, SOAP
+                </div>
+                <div class="tech-item">
+                    <strong>Deployment</strong>
+                    abapGit, Transport Management, CI/CD
+                </div>
+                <div class="tech-item">
+                    <strong>Analysis</strong>
+                    Clean Core, ATC, Performance, Security
+                </div>
+                <div class="tech-item">
+                    <strong>UI Frameworks</strong>
+                    Fiori Elements, Freestyle UI5, CAP
+                </div>
+            </div>
+        </div>
+
+        <div class="benefits">
+            <h3>🎯 Business Value & ROI</h3>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h4>⏱️ 10x Faster Development</h4>
+                    <p>Reduce development time from weeks to hours with AI-powered code generation and automated best practices.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>💰 80% Cost Reduction</h4>
+                    <p>Lower migration costs through automated analysis, risk assessment, and remediation planning.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>🛡️ Zero Technical Debt</h4>
+                    <p>All generated code follows Clean Core principles, ensuring future S/4HANA and cloud compatibility.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>📈 Improved Quality</h4>
+                    <p>Automated testing, security checks, and performance optimization built into every deliverable.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>🚀 Accelerated Innovation</h4>
+                    <p>Focus on business logic while C16 handles technical implementation and SAP best practices.</p>
+                </div>
+                <div class="benefit-item">
+                    <h4>🎓 Knowledge Transfer</h4>
+                    <p>Built-in documentation and explanations help teams learn modern SAP development patterns.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="architecture-section">
+            <h2 class="section-title">Deployment & Integration Patterns</h2>
+            
+            <div class="mermaid">
+graph LR
+    subgraph "Development Lifecycle"
+        A[📋 Requirements] --> B[🔍 Analysis]
+        B --> C[🏗️ Architecture]
+        C --> D[💻 Code Generation]
+        D --> E[🧪 Testing]
+        E --> F[🚀 Deployment]
+        F --> G[📊 Monitoring]
+    end
+
+    subgraph "Quality Gates"
+        Q1[🔍 Clean Core Check]
+        Q2[⚡ Performance Analysis]
+        Q3[🔒 Security Scan]
+        Q4[🧪 Unit Tests]
+        Q5[📊 Integration Tests]
+    end
+
+    subgraph "Deployment Targets"
+        DEV[🛠️ Development]
+        QAS[🧪 Quality Assurance]
+        PRD[🏭 Production]
+        CLOUD[☁️ SAP BTP]
+    end
+
+    D --> Q1
+    D --> Q2
+    D --> Q3
+    E --> Q4
+    E --> Q5
+
+    Q1 --> DEV
+    Q2 --> DEV
+    Q3 --> DEV
+    Q4 --> QAS
+    Q5 --> QAS
+
+    DEV --> QAS
+    QAS --> PRD
+    PRD --> CLOUD
+</div>
+        </div>
+
+        <div class="architecture-section">
+            <h2 class="section-title">Key Differentiators</h2>
+            
+            <div class="value-props">
+                <div class="value-prop">
+                    <h3><span class="icon">🎯</span>SAP-Native Intelligence</h3>
+                    <p>Deep understanding of SAP architecture, business processes, and technical constraints. Not a generic AI tool adapted for SAP.</p>
+                </div>
+                <div class="value-prop">
+                    <h3><span class="icon">🔄</span>Live System Integration</h3>
+                    <p>Direct connection to SAP systems for real-time analysis, validation, and deployment. No offline assumptions or guesswork.</p>
+                </div>
+                <div class="value-prop">
+                    <h3><span class="icon">📚</span>Comprehensive Skill Library</h3>
+                    <p>47 specialized skills covering every aspect of SAP development, from ABAP basics to advanced RAP patterns.</p>
+                </div>
+                <div class="value-prop">
+                    <h3><span class="icon">🛡️</span>Enterprise Security</h3>
+                    <p>Role-based access, audit trails, and compliance with enterprise security standards. Production-ready from day one.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p><strong>C16 Platform</strong> | AI-Powered SAP Development & Migration</p>
+            <p>Transforming SAP development with intelligent automation and Clean Core compliance</p>
+            <div style="margin-top: 15px;">
+                <span class="badge badge-primary">ABAP</span>
+                <span class="badge badge-success">Clean Core</span>
+                <span class="badge badge-info">S/4HANA</span>
+                <span class="badge badge-warning">Fiori</span>
+                <span class="badge badge-primary">RAP</span>
+                <span class="badge badge-success">CAP</span>
+                <span class="badge badge-info">BTP</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            }
+        });
+    </script>
+</body>
+</html>
