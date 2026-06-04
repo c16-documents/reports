@@ -1,0 +1,695 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C16 | AI-Powered SAP Modernization</title>
+  <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f8f9fc 0%, #e9ecef 100%);
+  min-height: 100vh;
+  padding: 40px;
+  color: #2c3e50;
+  }
+  
+  .page-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 80px rgba(107, 63, 160, 0.15);
+  overflow: hidden;
+  }
+  
+  /* Header */
+  .header {
+  background: linear-gradient(135deg, #6B3FA0 0%, #8B5CF6 50%, #B5567A 100%);
+  padding: 40px 50px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  }
+  
+  .header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+  }
+  
+  .header-content {
+  position: relative;
+  z-index: 1;
+  }
+  
+  .logo-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+  }
+  
+  .logo-row img {
+  height: 50px;
+  border-radius: 10px;
+  }
+  
+  .brand-name {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -1px;
+  }
+  
+  .tagline {
+  font-size: 1.4rem;
+  font-weight: 500;
+  opacity: 0.95;
+  margin-bottom: 8px;
+  }
+  
+  .sub-tagline {
+  font-size: 1rem;
+  opacity: 0.85;
+  max-width: 600px;
+  }
+  
+  /* Main Content */
+  .main-content {
+  padding: 40px 50px;
+  }
+  
+  /* Challenge Section */
+  .challenge-section {
+  background: linear-gradient(135deg, #fff5f5 0%, #fef3f3 100%);
+  border-left: 4px solid #e74c3c;
+  padding: 20px 25px;
+  border-radius: 0 12px 12px 0;
+  margin-bottom: 30px;
+  }
+  
+  .challenge-section h3 {
+  color: #c0392b;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  }
+  
+  .challenge-section p {
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  }
+  
+  /* Capabilities Grid */
+  .section-title {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #6B3FA0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  }
+  
+  .section-title::before {
+  content: '';
+  width: 4px;
+  height: 24px;
+  background: linear-gradient(180deg, #6B3FA0, #B5567A);
+  border-radius: 2px;
+  }
+  
+  .capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 35px;
+  }
+  
+  .capability-card {
+  background: linear-gradient(135deg, #f8f4ff 0%, #f0ebff 100%);
+  border-radius: 14px;
+  padding: 22px;
+  border: 1px solid rgba(107, 63, 160, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .capability-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(107, 63, 160, 0.12);
+  }
+  
+  .capability-icon {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  }
+  
+  .capability-card h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #6B3FA0;
+  margin-bottom: 8px;
+  }
+  
+  .capability-card p {
+  font-size: 0.85rem;
+  color: #555;
+  line-height: 1.5;
+  }
+  
+  /* Stats Row */
+  .stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  margin-bottom: 35px;
+  }
+  
+  .stat-box {
+  text-align: center;
+  padding: 20px 15px;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid #6B3FA0;
+  }
+  
+  .stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #6B3FA0, #B5567A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  }
+  
+  .stat-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 5px;
+  }
+  
+  /* Use Cases */
+  .use-cases {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 35px;
+  }
+  
+  .use-case {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: #f8f9fc;
+  border-radius: 10px;
+  }
+  
+  .use-case-check {
+  width: 22px;
+  height: 22px;
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  }
+  
+  .use-case-text {
+  font-size: 0.9rem;
+  color: #333;
+  line-height: 1.4;
+  }
+  
+  /* CTA Section */
+  .cta-section {
+  background: linear-gradient(135deg, #6B3FA0 0%, #8B5CF6 100%);
+  padding: 30px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  }
+  
+  .cta-text h3 {
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+  }
+  
+  .cta-text p {
+  color: rgba(255,255,255,0.9);
+  font-size: 0.95rem;
+  }
+  
+  .cta-button {
+  background: white;
+  color: #6B3FA0;
+  padding: 14px 32px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  }
+  
+  /* Footer */
+  .footer {
+  background: #f8f9fc;
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #e9ecef;
+  }
+  
+  .footer-left {
+  font-size: 0.85rem;
+  color: #666;
+  }
+  
+  .footer-right {
+  display: flex;
+  gap: 25px;
+  }
+  
+  .footer-link {
+  font-size: 0.85rem;
+  color: #6B3FA0;
+  text-decoration: none;
+  font-weight: 500;
+  }
+  
+  @media print {
+  body { padding: 0; background: white; }
+  .page-container { box-shadow: none; }
+  }
+  </style>
+<style>:root{--c16-purple-1:#003366;--c16-purple-2:#7FB3E0;--c16-primary:#003366;--c16-secondary:#7FB3E0;--c16-ink:#1f2937;--c16-sub:#4b5563;--c16-rule:#e5e7eb;--c16-accent:#faf5ff;}@page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1f2937;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1000px;
+    margin: 24px auto;
+    background: #ffffff;
+    
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7FB3E0;
+  }
+  .doc-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .doc-header h1 {
+    font-size: 20pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 10.5pt;
+    color: #7FB3E0;
+    font-weight: 400;
+  }
+  .doc-classification {
+    font-size: 8.5pt; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 3px 12px; border-radius: 2px;
+    border: 1px solid #7FB3E0;
+    background: transparent; color: #7FB3E0;
+  }
+
+  /* ── Meta strip ─────────────────────────────────────────── */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #faf5ff;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 9.5pt;
+    color: #4b5563;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; white-space: nowrap; width: 120px; }
+  .doc-meta .meta-value { color: #1f2937; }
+
+  /* ── Body ──────────────────────────────────────────────── */
+  .doc-body { padding: 24px 36px; }
+  .doc-body h2 {
+    font-size: 14pt;
+    font-weight: 600;
+    color: #003366;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 6px;
+    margin: 32px 0 16px 0;
+    page-break-after: avoid;
+  }
+  .doc-body h2:first-child { margin-top: 0; }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: #FFFFFF;
+    font-size: 10pt;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 3px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .doc-body h3 {
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #003366;
+    margin: 22px 0 10px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .doc-body h4 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 16px 0 8px 0;
+  }
+  .doc-body p {
+    color: #4b5563;
+    margin: 8px 0;
+  }
+
+  /* ── KPI table (4 columns of big numbers) ────────────────── */
+  .kpi-table {
+    width: 100%; border-collapse: collapse; margin: 16px 0 20px 0;
+    page-break-inside: avoid;
+  }
+  .kpi-table td {
+    width: 25%; text-align: center; padding: 14px 8px;
+    border: 1px solid #D0D4D8; background: #F7F8FA;
+    vertical-align: top;
+  }
+  .kpi-value {
+    font-size: 22pt; font-weight: 700; color: #003366;
+    display: block; line-height: 1.1;
+  }
+  .kpi-label {
+    font-size: 8.5pt; color: #4b5563;
+    text-transform: uppercase;
+    letter-spacing: 0.5px; display: block; margin-top: 4px;
+  }
+
+  /* ── Data tables ─────────────────────────────────────────── */
+  table.data-table {
+    width: 100%; border-collapse: collapse;
+    margin: 12px 0 20px 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  table.data-table thead th {
+    background: #003366; color: #FFFFFF;
+    font-weight: 600; font-size: 9pt;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    padding: 8px 10px; text-align: left;
+    border: 1px solid #003366;
+  }
+  table.data-table tbody td {
+    padding: 7px 10px;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  table.data-table tbody tr:nth-child(even) { background: #F7F8FA; }
+  table.data-table tbody tr:hover { background: #edf1f5; }
+
+  /* ── Severity / level classes ────────────────────────────── */
+  .sev-critical { color: #b91c1c; font-weight: 600; }
+  .sev-high     { color: #C2410C; font-weight: 600; }
+  .sev-medium   { color: #a16207;                              font-weight: 600; }
+  .sev-low      { color: #15803D; font-weight: 600; }
+  .level-a      { color: #15803D; font-weight: 600; }
+  .level-b      { color: #1d4ed8;                              font-weight: 600; }
+  .level-c      { color: #C2410C; font-weight: 600; }
+  .level-d      { color: #b91c1c; font-weight: 600; }
+
+  /* ── Callouts ────────────────────────────────────────────── */
+  .callout {
+    border-left: 4px solid #003366;
+    background: #F0F4F8;
+    padding: 12px 16px; margin: 14px 0; font-size: 10.5pt;
+  }
+  .callout.callout-warn    { border-left-color: #C2410C; background: #FEF3EE; }
+  .callout.callout-success { border-left-color: #15803D; background: #F0FDF4; }
+  .callout.callout-crit    { border-left-color: #b91c1c; background: #fdecea; }
+  .callout .callout-title  { font-weight: 700; color: #003366; margin-bottom: 4px; font-size: 10.5pt; }
+  .callout.callout-warn    .callout-title { color: #C2410C; }
+  .callout.callout-success .callout-title { color: #15803D; }
+  .callout.callout-crit    .callout-title { color: #b91c1c; }
+
+  /* ── Collapsibles ────────────────────────────────────────── */
+  details {
+    margin: 12px 0; border: 1px solid #e5e7eb;
+    border-radius: 3px; background: #ffffff;
+  }
+  details summary {
+    padding: 10px 14px; background: #faf5ff;
+    font-weight: 600; font-size: 10.5pt; color: #003366;
+    cursor: pointer; border-bottom: 1px solid #e5e7eb;
+    list-style: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "\25B6\00a0\00a0"; font-size: 8pt; color: #003366; }
+  details[open] summary::before { content: "\25BC\00a0\00a0"; }
+  details[open] summary { background: #e2e8f0; }
+  details > div, details > p { padding: 12px 14px; }
+
+  /* ── Code / pre ──────────────────────────────────────────── */
+  pre {
+    background: #f5f5f5;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #003366;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono',monospace;
+    font-size: 9pt;
+    overflow-x: auto;
+    margin: 10px 0;
+    line-height: 1.45;
+  }
+  code {
+    font-family: 'JetBrains Mono',monospace;
+    font-size: 9pt;
+    background: #f0f0f0;
+    padding: 1px 4px;
+    border-radius: 2px;
+  }
+
+  /* ── TOC ─────────────────────────────────────────────────── */
+  .toc {
+    background: #faf5ff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin: 24px 0;
+  }
+  .toc ul { list-style: none; padding-left: 0; margin: 8px 0 0; }
+  .toc a { color: #003366; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-num {
+    display: inline-block; width: 26px; height: 20px; line-height: 20px;
+    text-align: center; background: #003366; color: #fff;
+    border-radius: 3px; font-size: 8pt; margin-right: 8px;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .doc-footer {
+    background: #F7F8FA;
+    color: #666666;
+    border-top: 2px solid #003366;
+    padding: 14px 36px;
+    font-size: 8.5pt;
+  }
+  .footer-brand { font-weight: 700; color: #003366; }
+
+  /* ── Print refinements ────────────────────────────────────── */
+  @media print {
+    body { background: #fff; font-size: 10pt; }
+    .doc-wrapper { box-shadow: none; border: 0; margin: 0; max-width: 100%; }
+    .doc-header { border-radius: 0; }
+    .doc-body h2 { page-break-after: avoid; }
+    details summary { background: #eee; }
+    .toc { display: block; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+  <div class="page-container">
+  
+  <!-- Header -->
+  <div class="header">
+  <div class="header-content">
+  <div class="logo-row">
+  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAZAGQDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAQHBggBAgUJ/8QAKRAAAQMEAAYCAgMBAAAAAAAAAQIDBAAFBhEHCBITITEUQSJRCRVhMv/EABcBAQEBAQAAAAAAAAAAAAAAAAACAQP/xAAeEQADAQACAgMAAAAAAAAAAAAAAQIRAxIxYRNR4f/aAAwDAQACEQMRAD8A+ntKUoBUG/XdvH7Hcbo6xIlNQYzspbERouvOBCCopbQPKlHWgPs6qd6qtMv4ux5sfNcdwGXEyLiJYY6e7ZW9rVGccTtHd9JH47IHV5Oh7NXEO6Uoi6US6Zk3DXO4vE7ArHlcKBcLXEu0YSmod1Y7ElpJJGlo2dHxsedEEEe6yRSghJUohKQNkk6AH2TVM8OOLz+JYLiUXi2/GxHJ7tMFrt7ExJaM1ZOmUgDqCXCNbSSNePXVWJ/yKXq+WLlLzF2xrdZcecixJjrJIUiK48lLvkegdhJ/xR/ddb4XPL8fvPtfpEcivjV+t9livczXC2Ow/KczW2otrDyo7l2Id/r0up9o+X0dnq2NaC978e6sqNJamR2n2HEusuoS424k+FJI2CP8IINU1wYwzFsv5P8ADsWeZYexS6YjHjSGUFIQUORx3VfoKCytXV9KG/qqj5oc6y3h3n3L7a8XziSjEciv8KG5GhIaSX47XxwOqQj8nUOJcJI8JOx7GqlQqrrJXZpazbPIsltGIWeRdr7dIdmtccbemz30sstj62pRA8/Q9n6rjGslt2X2WPdrTIMq3yOrtPFpbXWASNhK0pOvHg60R5GxWm3FqTf+Kv8AIljODfLhRbTjFhVerWxdYq5UT5qmyflFgLR3VoKkhO1AJ7ZI87BtXk/5i8i45sZ5Z8vgQY+S4deDa5My1pWmLLG3EpWlKyopO2l7GyNFJ8eRW1xZPYK9eGw9KUrgdBSlKAUpSgFQIeP2u3XSfcotthxrjcOgzJjMdCHpPQNI7iwNr6R4GydVPpQEC64/a76uEu5WyHcFwX0yoqpcdDpjvJBCXG+oHpWNnSho+a7Xuy2/JLPNtV1hMXG2TWVR5MSSgLaebUNKSpJ9giptK3QUnjXKPhmJW1djt10ypvDVrUs4i5fXl2vSiSpvtn8y2STtvr6VbIIIJ36nE3lmw/i3kNjvN/kXz5NhdS/aGoF0XFZt7ienS2UIACTtCD9+v14q2KVXet3Seq8Fc5bwGxrMMixzJZDtzg5fYGFRoOSW+X2p/aUkpW24rpKXUq6lEhaSNkka3XpcKOD2K8Fcdes2KW4w2JMhcyXIfeU/JmSF/wDbzzqiVLUf2fA9ACs0pWdm1mm4vIpSlSaKUpQH/9k=" alt="C16" alt="C16">
+  <span class="brand-name">C16</span>
+  </div>
+  <div class="tagline">AI-Powered SAP Modernization</div>
+  <div class="sub-tagline">Transform your SAP landscape with intelligent automation — from code analysis to Code Quality in minutes, not months.</div>
+  </div>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+  
+  <!-- Challenge -->
+  <div class="challenge-section">
+  <h3>⚠️ The Challenge</h3>
+  <p>Organizations spend <strong>60-70% of IT budgets</strong> maintaining legacy SAP custom code. Manual code reviews take weeks. S/4HANA migrations stall due to unknown dependencies. Code Quality feels impossible with thousands of Z-programs.</p>
+  </div>
+  
+  <!-- Capabilities -->
+  <h2 class="section-title">What C16 Delivers</h2>
+  <div class="capabilities-grid">
+  <div class="capability-card">
+  <div class="capability-icon">🔍</div>
+  <h4>Code Quality</h4>
+  <p>Instant compliance scoring with - rule evaluation, dependency classification, and remediation roadmaps.</p>
+  </div>
+  <div class="capability-card">
+  <div class="capability-icon">⚡</div>
+  <h4>Code Generation</h4>
+  <p>Generate Code Quality ABAP, RAP, CDS views, and Fiori apps with one-click deployment to SAP.</p>
+  </div>
+  <div class="capability-card">
+  <div class="capability-icon">📊</div>
+  <h4>Process Intelligence</h4>
+  <p>Analyze P2P, O2C, and R2R cycles with live SAP data — identify bottlenecks and compliance gaps.</p>
+  </div>
+  <div class="capability-card">
+  <div class="capability-icon">🔄</div>
+  <h4>Migration Readiness</h4>
+  <p>SAP Simplification List mapping, Fit-to-Standard analysis, and BP migration assessment.</p>
+  </div>
+  <div class="capability-card">
+  <div class="capability-icon">🛡️</div>
+  <h4>Security & Auth</h4>
+  <p>Detect missing authority checks, recommend specific auth objects, and generate compliant code fixes.</p>
+  </div>
+  <div class="capability-card">
+  <div class="capability-icon">📄</div>
+  <h4>Documentation</h4>
+  <p>Auto-generate functional specs, technical specs, and analysis reports from live system data.</p>
+  </div>
+  </div>
+  
+  <!-- Stats -->
+  <div class="stats-row">
+  <div class="stat-box">
+  <div class="stat-number">90%</div>
+  <div class="stat-label">Faster Analysis</div>
+  </div>
+  <div class="stat-box">
+  <div class="stat-number">55</div>
+  <div class="stat-label">Code Quality Rules</div>
+  </div>
+  <div class="stat-box">
+  <div class="stat-number">78</div>
+  <div class="stat-label">Deliverables</div>
+  </div>
+  <div class="stat-box">
+  <div class="stat-number">24/7</div>
+  <div class="stat-label">AI Availability</div>
+  </div>
+  </div>
+  
+  <!-- Use Cases -->
+  <h2 class="section-title">Key Use Cases</h2>
+  <div class="use-cases">
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>S/4HANA Migration</strong> — Assess custom code impact, map simplification items, generate remediation plans</div>
+  </div>
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>Code Quality</strong> — Score programs against SAP's cloudification catalog, identify Level A/B/C objects</div>
+  </div>
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>Code Modernization</strong> — Convert legacy reports to OO ABAP, RAP, and Fiori Elements applications</div>
+  </div>
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>Process Optimization</strong> — Analyze procurement, sales, and finance processes with live transaction data</div>
+  </div>
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>Technical Debt Reduction</strong> — Identify duplication, performance issues, and obsolete patterns</div>
+  </div>
+  <div class="use-case">
+  <div class="use-case-check">✓</div>
+  <div class="use-case-text"><strong>Developer Productivity</strong> — Generate complete programs, classes, and tests with AI assistance</div>
+  </div>
+  </div>
+  
+  <!-- CTA -->
+  <div class="cta-section">
+  <div class="cta-text">
+  <h3>Ready to Modernize Your SAP Landscape?</h3>
+  <p>Connect C16 to your SAP system and see results in minutes.</p>
+  </div>
+  <a href="#" class="cta-button">Get Started →</a>
+  </div>
+  
+  </div>
+  
+  <!-- Footer -->
+  <div class="footer">
+  <div class="footer-left">© 2026 C16 — AI for SAP</div>
+  <div class="footer-right">
+  <a href="#" class="footer-link">Documentation</a>
+  <a href="#" class="footer-link">Contact Us</a>
+  </div>
+  </div>
+  
+  </div>
+
+<footer style="margin-top:40px;padding:20px 28px;background:linear-gradient(135deg, #003366, #7FB3E0);color:rgba(255,255,255,0.85);font-size:0.8em;border-radius:0 0 12px 12px;">
+  <strong style="color:#fff;">C16 — AI-Powered SAP Analysis</strong><br>
+  <em>Generated by C16. This document is AI-generated and should be validated by a qualified SAP consultant before implementation. All data sourced from the connected SAP system.</em>
+</footer>
+</body>
+</html>
