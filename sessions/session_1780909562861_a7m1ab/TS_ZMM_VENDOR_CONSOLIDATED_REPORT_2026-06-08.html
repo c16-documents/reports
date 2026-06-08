@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GDC Technical Specification - ZMM_VENDOR_CONSOLIDATED_REPORT</title>
+  <style>
+  :root {
+  --primary: #003366;
+  --accent: #7FB3E0;
+  --ink: #2c3e50;
+  --bg: #f8f9fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.6; }
+  .doc-wrapper { max-width: 900px; margin: 0 auto; background: #fff; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+  .header-banner {
+  background: linear-gradient(135deg, var(--primary), #004080);
+  color: #fff;
+  padding: 30px 40px;
+  text-align: center;
+  }
+  .header-banner h1 { font-size: 1.8em; margin-bottom: 8px; }
+  .header-banner .subtitle { font-size: 1.1em; opacity: 0.9; }
+  .content { padding: 40px; }
+  h2 {
+  color: var(--primary);
+  font-size: 1.3em;
+  margin: 30px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 3px solid var(--accent);
+  }
+  h2:first-of-type { margin-top: 0; }
+  p { margin-bottom: 12px; }
+  table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 15px 0;
+  font-size: 0.9em;
+  }
+  table th, table td {
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  text-align: left;
+  }
+  table th {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 600;
+  }
+  table tr:nth-child(even) { background: #f8fafc; }
+  table tr:hover { background: #edf2f7; }
+  .data-table th { width: 35%; background: #e8f4fc; color: var(--ink); font-weight: 600; }
+  .data-table td { width: 65%; }
+  .grid-table { margin: 15px 0; }
+  .grid-table td { padding: 8px 12px; border: 1px solid #ddd; }
+  .grid-table .label { background: #f0f4f8; font-weight: 500; width: 25%; }
+  .grid-table .value { width: 25%; }
+  .flow-diagram {
+  background: #f8f9fa;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 15px 0;
+  text-align: center;
+  }
+  .flow-box {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 6px;
+  margin: 5px 10px;
+  font-size: 0.85em;
+  }
+  .flow-arrow {
+  display: inline-block;
+  color: var(--accent);
+  font-size: 1.5em;
+  vertical-align: middle;
+  }
+  pre {
+  background: #f5f5f5;
+  border-left: 4px solid var(--accent);
+  padding: 15px;
+  overflow-x: auto;
+  font-family: 'Consolas', monospace;
+  font-size: 0.85em;
+  margin: 15px 0;
+  border-radius: 0 8px 8px 0;
+  }
+  ul, ol { margin: 15px 0 15px 25px; }
+  li { margin-bottom: 6px; }
+  .footer {
+  background: #f8f9fa;
+  padding: 20px 40px;
+  text-align: center;
+  font-size: 0.85em;
+  color: #666;
+  border-top: 1px solid #e2e8f0;
+  }
+  .badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  }
+  .badge-complex { background: #e74c3c; color: #fff; }
+  .badge-mm { background: var(--primary); color: #fff; }
+  @media print {
+  .doc-wrapper { box-shadow: none; }
+  h2 { page-break-after: avoid; }
+  table { page-break-inside: avoid; }
+  }
+  </style>
+<style>:root{--c16-purple-1:#003366;--c16-purple-2:#7FB3E0;--c16-primary:#003366;--c16-secondary:#7FB3E0;--c16-ink:#1f2937;--c16-sub:#4b5563;--c16-rule:#e5e7eb;--c16-accent:#faf5ff;}@page { size: A4; margin: 20mm 18mm 20mm 18mm; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1f2937;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1000px;
+    margin: 24px auto;
+    background: #ffffff;
+    
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────────────── */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7FB3E0;
+  }
+  .doc-header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+  .doc-header h1 {
+    font-size: 20pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+    color: #ffffff;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 10.5pt;
+    color: #7FB3E0;
+    font-weight: 400;
+  }
+  .doc-classification {
+    font-size: 8.5pt; letter-spacing: 1.2px; text-transform: uppercase;
+    padding: 3px 12px; border-radius: 2px;
+    border: 1px solid #7FB3E0;
+    background: transparent; color: #7FB3E0;
+  }
+
+  /* ── Meta strip ─────────────────────────────────────────── */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #faf5ff;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 9.5pt;
+    color: #4b5563;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; white-space: nowrap; width: 120px; }
+  .doc-meta .meta-value { color: #1f2937; }
+
+  /* ── Body ──────────────────────────────────────────────── */
+  .doc-body { padding: 24px 36px; }
+  .doc-body h2 {
+    font-size: 14pt;
+    font-weight: 600;
+    color: #003366;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 6px;
+    margin: 32px 0 16px 0;
+    page-break-after: avoid;
+  }
+  .doc-body h2:first-child { margin-top: 0; }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: #FFFFFF;
+    font-size: 10pt;
+    width: 26px;
+    height: 26px;
+    line-height: 26px;
+    text-align: center;
+    border-radius: 3px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  .doc-body h3 {
+    font-size: 11.5pt;
+    font-weight: 600;
+    color: #003366;
+    margin: 22px 0 10px 0;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .doc-body h4 {
+    font-size: 10.5pt;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 16px 0 8px 0;
+  }
+  .doc-body p {
+    color: #4b5563;
+    margin: 8px 0;
+  }
+
+  /* ── KPI table (4 columns of big numbers) ────────────────── */
+  .kpi-table {
+    width: 100%; border-collapse: collapse; margin: 16px 0 20px 0;
+    page-break-inside: avoid;
+  }
+  .kpi-table td {
+    width: 25%; text-align: center; padding: 14px 8px;
+    border: 1px solid #D0D4D8; background: #F7F8FA;
+    vertical-align: top;
+  }
+  .kpi-value {
+    font-size: 22pt; font-weight: 700; color: #003366;
+    display: block; line-height: 1.1;
+  }
+  .kpi-label {
+    font-size: 8.5pt; color: #4b5563;
+    text-transform: uppercase;
+    letter-spacing: 0.5px; display: block; margin-top: 4px;
+  }
+
+  /* ── Data tables ─────────────────────────────────────────── */
+  table.data-table {
+    width: 100%; border-collapse: collapse;
+    margin: 12px 0 20px 0;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  table.data-table thead th {
+    background: #003366; color: #FFFFFF;
+    font-weight: 600; font-size: 9pt;
+    text-transform: uppercase; letter-spacing: 0.3px;
+    padding: 8px 10px; text-align: left;
+    border: 1px solid #003366;
+  }
+  table.data-table tbody td {
+    padding: 7px 10px;
+    border: 1px solid #e5e7eb;
+    vertical-align: top;
+  }
+  table.data-table tbody tr:nth-child(even) { background: #F7F8FA; }
+  table.data-table tbody tr:hover { background: #edf1f5; }
+
+  /* ── Severity / level classes ────────────────────────────── */
+  .sev-critical { color: #b91c1c; font-weight: 600; }
+  .sev-high     { color: #C2410C; font-weight: 600; }
+  .sev-medium   { color: #a16207;                              font-weight: 600; }
+  .sev-low      { color: #15803D; font-weight: 600; }
+  .level-a      { color: #15803D; font-weight: 600; }
+  .level-b      { color: #1d4ed8;                              font-weight: 600; }
+  .level-c      { color: #C2410C; font-weight: 600; }
+  .level-d      { color: #b91c1c; font-weight: 600; }
+
+  /* ── Callouts ────────────────────────────────────────────── */
+  .callout {
+    border-left: 4px solid #003366;
+    background: #F0F4F8;
+    padding: 12px 16px; margin: 14px 0; font-size: 10.5pt;
+  }
+  .callout.callout-warn    { border-left-color: #C2410C; background: #FEF3EE; }
+  .callout.callout-success { border-left-color: #15803D; background: #F0FDF4; }
+  .callout.callout-crit    { border-left-color: #b91c1c; background: #fdecea; }
+  .callout .callout-title  { font-weight: 700; color: #003366; margin-bottom: 4px; font-size: 10.5pt; }
+  .callout.callout-warn    .callout-title { color: #C2410C; }
+  .callout.callout-success .callout-title { color: #15803D; }
+  .callout.callout-crit    .callout-title { color: #b91c1c; }
+
+  /* ── Collapsibles ────────────────────────────────────────── */
+  details {
+    margin: 12px 0; border: 1px solid #e5e7eb;
+    border-radius: 3px; background: #ffffff;
+  }
+  details summary {
+    padding: 10px 14px; background: #faf5ff;
+    font-weight: 600; font-size: 10.5pt; color: #003366;
+    cursor: pointer; border-bottom: 1px solid #e5e7eb;
+    list-style: none;
+  }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "\25B6\00a0\00a0"; font-size: 8pt; color: #003366; }
+  details[open] summary::before { content: "\25BC\00a0\00a0"; }
+  details[open] summary { background: #e2e8f0; }
+  details > div, details > p { padding: 12px 14px; }
+
+  /* ── Code / pre ──────────────────────────────────────────── */
+  pre {
+    background: #f5f5f5;
+    border: 1px solid #e5e7eb;
+    border-left: 3px solid #003366;
+    padding: 10px 14px;
+    font-family: 'JetBrains Mono',monospace;
+    font-size: 9pt;
+    overflow-x: auto;
+    margin: 10px 0;
+    line-height: 1.45;
+  }
+  code {
+    font-family: 'JetBrains Mono',monospace;
+    font-size: 9pt;
+    background: #f0f0f0;
+    padding: 1px 4px;
+    border-radius: 2px;
+  }
+
+  /* ── TOC ─────────────────────────────────────────────────── */
+  .toc {
+    background: #faf5ff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px 24px;
+    margin: 24px 0;
+  }
+  .toc ul { list-style: none; padding-left: 0; margin: 8px 0 0; }
+  .toc a { color: #003366; text-decoration: none; }
+  .toc a:hover { text-decoration: underline; }
+  .toc .toc-num {
+    display: inline-block; width: 26px; height: 20px; line-height: 20px;
+    text-align: center; background: #003366; color: #fff;
+    border-radius: 3px; font-size: 8pt; margin-right: 8px;
+  }
+
+  /* ── Footer ──────────────────────────────────────────────── */
+  .doc-footer {
+    background: #F7F8FA;
+    color: #666666;
+    border-top: 2px solid #003366;
+    padding: 14px 36px;
+    font-size: 8.5pt;
+  }
+  .footer-brand { font-weight: 700; color: #003366; }
+
+  /* ── Print refinements ────────────────────────────────────── */
+  @media print {
+    body { background: #fff; font-size: 10pt; }
+    .doc-wrapper { box-shadow: none; border: 0; margin: 0; max-width: 100%; }
+    .doc-header { border-radius: 0; }
+    .doc-body h2 { page-break-after: avoid; }
+    details summary { background: #eee; }
+    .toc { display: block; page-break-after: always; }
+  }
+</style>
+</head>
+<body>
+<div class="doc-wrapper">
+  <div class="header-banner"><div class="c16-brand-block" style="padding:14px 28px 12px;background:#ffffff;border-bottom:1px solid var(--c16-rule,#e5e7eb);"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAAZAGQDASIAAhEBAxEB/8QAHAABAAICAwEAAAAAAAAAAAAAAAQHBggBAgUJ/8QAKRAAAQMEAAYCAgMBAAAAAAAAAQIDBAAFBhEHCBITITEUQSJRCRVhMv/EABcBAQEBAQAAAAAAAAAAAAAAAAACAQP/xAAeEQADAQACAgMAAAAAAAAAAAAAAQIRAxIxYRNR4f/aAAwDAQACEQMRAD8A+ntKUoBUG/XdvH7Hcbo6xIlNQYzspbERouvOBCCopbQPKlHWgPs6qd6qtMv4ux5sfNcdwGXEyLiJYY6e7ZW9rVGccTtHd9JH47IHV5Oh7NXEO6Uoi6US6Zk3DXO4vE7ArHlcKBcLXEu0YSmod1Y7ElpJJGlo2dHxsedEEEe6yRSghJUohKQNkk6AH2TVM8OOLz+JYLiUXi2/GxHJ7tMFrt7ExJaM1ZOmUgDqCXCNbSSNePXVWJ/yKXq+WLlLzF2xrdZcecixJjrJIUiK48lLvkegdhJ/xR/ddb4XPL8fvPtfpEcivjV+t9livczXC2Ow/KczW2otrDyo7l2Id/r0up9o+X0dnq2NaC978e6sqNJamR2n2HEusuoS424k+FJI2CP8IINU1wYwzFsv5P8ADsWeZYexS6YjHjSGUFIQUORx3VfoKCytXV9KG/qqj5oc6y3h3n3L7a8XziSjEciv8KG5GhIaSX47XxwOqQj8nUOJcJI8JOx7GqlQqrrJXZpazbPIsltGIWeRdr7dIdmtccbemz30sstj62pRA8/Q9n6rjGslt2X2WPdrTIMq3yOrtPFpbXWASNhK0pOvHg60R5GxWm3FqTf+Kv8AIljODfLhRbTjFhVerWxdYq5UT5qmyflFgLR3VoKkhO1AJ7ZI87BtXk/5i8i45sZ5Z8vgQY+S4deDa5My1pWmLLG3EpWlKyopO2l7GyNFJ8eRW1xZPYK9eGw9KUrgdBSlKAUpSgFQIeP2u3XSfcotthxrjcOgzJjMdCHpPQNI7iwNr6R4GydVPpQEC64/a76uEu5WyHcFwX0yoqpcdDpjvJBCXG+oHpWNnSho+a7Xuy2/JLPNtV1hMXG2TWVR5MSSgLaebUNKSpJ9giptK3QUnjXKPhmJW1djt10ypvDVrUs4i5fXl2vSiSpvtn8y2STtvr6VbIIIJ36nE3lmw/i3kNjvN/kXz5NhdS/aGoF0XFZt7ienS2UIACTtCD9+v14q2KVXet3Seq8Fc5bwGxrMMixzJZDtzg5fYGFRoOSW+X2p/aUkpW24rpKXUq6lEhaSNkka3XpcKOD2K8Fcdes2KW4w2JMhcyXIfeU/JmSF/wDbzzqiVLUf2fA9ACs0pWdm1mm4vIpSlSaKUpQH/9k=" alt="C16" width="100" height="25" style="display:block;margin:0 0 4px 0;" onerror="this.style.display='none'"><div style="font-size:9.5px;font-weight:600;letter-spacing:1.6px;text-transform:uppercase;color:#4b5563;">Your Autonomous SAP Team</div></div>
+  <h1>GDC Technical Specification</h1>
+  <div class="subtitle">ZMM_VENDOR_CONSOLIDATED_REPORT — Vendor Consolidated Report</div>
+  <div style="margin-top: 10px;">
+  <span class="badge badge-mm">MM Module</span>
+  <span class="badge badge-complex">Complex</span>
+  </div>
+  </div>
+
+  <div class="content">
+
+  <h2>Purpose of the document</h2>
+  <p>The purpose of this document is to document the technical specification for the custom ABAP report <strong>ZMM_VENDOR_CONSOLIDATED_REPORT</strong>, a comprehensive vendor master data extraction and analysis tool. This program consolidates vendor information from multiple SAP tables including LFA1, LFB1, LFM1, ADRC, ADR6, ADRCT, and custom Z-tables (ZVENDOR_BLOCK, ZMM_VENDOR_MSME, ZMM_VENDOR_BEE) to provide a unified view of vendor data including contact details, payment terms, risk categorization, blacklist status, MSME certification, and BEE compliance levels.</p>
+  <p>This document, once approved by the appropriate authorities as mentioned in section "Document Control," forms the official documentation of the technical solution and is the basis for further maintenance.</p>
+
+  <h2>Revision History</h2>
+  <table>
+  <thead>
+  <tr><th>Version</th><th>Date</th><th>Author</th><th>Derivation/Comments</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>1.0</td><td>2024-04-02</td><td>Ragunath Loganathan (RA20350211)</td><td>Initial creation - Added MSME Certificate Number field</td></tr>
+  <tr><td>2.0</td><td>2024-05-21</td><td>Polabathina Bhavani (PO20312220)</td><td>Added Group Customer field functionality</td></tr>
+  <tr><td>3.0</td><td>2024-06-24</td><td>Polabathina Bhavani (PO20312220)</td><td>Removed unwanted code, error corrections</td></tr>
+  <tr><td>4.0</td><td>2024-07-03</td><td>Polabathina Bhavani (PO20312220)</td><td>Production issue fix - data not fetching</td></tr>
+  <tr><td>5.0</td><td>2024-10-11</td><td>Polabathina Bhavani (PO20312220)</td><td>Added secondary input fields, 24 vendor account groups filter, blacklisted vendor logic</td></tr>
+  <tr><td>6.0</td><td>2025-05-02</td><td>Jeevan Sagar (IN20546163)</td><td>Added BEE_Level field for BEE compliance tracking</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Review History</h2>
+  <table>
+  <thead>
+  <tr><th>Version</th><th>Date</th><th>Reviewer</th><th>Remarks</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>1.0</td><td>2024-04-02</td><td>Jasmin</td><td>Functional review completed</td></tr>
+  <tr><td>2.0</td><td>2024-05-21</td><td>Manoranjan</td><td>Group Customer requirement review</td></tr>
+  <tr><td>5.0</td><td>2024-10-11</td><td>Manoranjan</td><td>Secondary fields enhancement review</td></tr>
+  <tr><td>6.0</td><td>2025-05-02</td><td>Bijay</td><td>BEE Level field requirement review</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Approval History</h2>
+  <table>
+  <thead>
+  <tr><th>Version</th><th>Date</th><th>Approver</th><th>Remarks</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>1.0</td><td>2024-04-02</td><td>Jasmin</td><td>Initial approval - Charm No. 4000004597</td></tr>
+  <tr><td>2.0</td><td>2024-05-21</td><td>Manoranjan</td><td>Approved - Charm No. 4000005275</td></tr>
+  <tr><td>5.0</td><td>2024-10-11</td><td>Manoranjan</td><td>Approved - Charm No. 4000006028, 4000006474</td></tr>
+  <tr><td>6.0</td><td>2025-05-02</td><td>Bijay</td><td>Approved - Charm No. 4000008627</td></tr>
+  </tbody>
+  </table>
+
+  <h2>This document is effective from the Approval date</h2>
+  <p>This technical specification is effective from <strong>2025-05-02</strong> (Version 6.0 approval date). All development and maintenance activities shall be performed in accordance with this document.</p>
+
+  <h2>Object Overview</h2>
+  <table class="grid-table">
+  <tr>
+  <td class="label"><strong>Object ID</strong></td>
+  <td class="value">ZMM_VENDOR_CONSOLIDATED_REPORT</td>
+  <td class="label"><strong>Business Process</strong></td>
+  <td class="value">Vendor Master Data Management / Procurement Reporting</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Object Title</strong></td>
+  <td class="value" colspan="3">Vendor Consolidated Report</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Object Description</strong></td>
+  <td class="value" colspan="3">Comprehensive vendor master data extraction report that consolidates vendor information from multiple SAP tables including general data, addresses, contact details, payment terms, risk categorization, blacklist status, MSME certification, and BEE compliance levels. Provides flexible selection criteria with status filters and secondary input fields.</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>SAP Release</strong></td>
+  <td class="value">ECC 7.40</td>
+  <td class="label"><strong>SAP Module</strong></td>
+  <td class="value">MM (Materials Management)</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Cycle of Testing</strong></td>
+  <td class="value">C1 / C2 / C3 / C4</td>
+  <td class="label"><strong>Required Development Completion Date</strong></td>
+  <td class="value">2025-05-02</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Complexity of Object</strong></td>
+  <td class="value">Complex</td>
+  <td class="label"><strong>Transaction run</strong></td>
+  <td class="value">Real-time</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Type of Enhancement</strong></td>
+  <td class="value">Custom Report Program</td>
+  <td class="label"><strong>Priority</strong></td>
+  <td class="value">High</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Similar SAP Transaction</strong></td>
+  <td class="value">XK03, MK03</td>
+  <td class="label"><strong>Similar SAP Program</strong></td>
+  <td class="value">RFLVEND01</td>
+  </tr>
+  </table>
+
+  <h2>TS Control</h2>
+  <table class="grid-table">
+  <tr>
+  <td class="label"><strong>TS Author and Phone Number</strong></td>
+  <td class="value">Jeevan Sagar (IN20546163)</td>
+  <td class="label"><strong>Process Owner and Phone Number</strong></td>
+  <td class="value">Bijay</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>TS Approved By</strong></td>
+  <td class="value">Bijay</td>
+  <td class="label"><strong>TS Approval date</strong></td>
+  <td class="value">2025-05-02</td>
+  </tr>
+  <tr>
+  <td class="label"><strong>Other Contact and Phone Number</strong></td>
+  <td class="value">Polabathina Bhavani (PO20312220)</td>
+  <td class="label"><strong>Other Contact and Phone Number</strong></td>
+  <td class="value">Manoranjan</td>
+  </tr>
+  </table>
+
+  <h2>Program Attributes</h2>
+  
+  <p><strong>Enhancement Type Selection:</strong></p>
+  <table class="data-table">
+  <tbody>
+  <tr><th>Enhancement Object</th><td>Not applicable</td></tr>
+  <tr><th>Function Exit</th><td>Not applicable</td></tr>
+  <tr><th>Include</th><td>Not applicable</td></tr>
+  <tr><th>Screen Exit</th><td>Not applicable</td></tr>
+  <tr><th>Menu Exit</th><td>Not applicable</td></tr>
+  <tr><th>Badi</th><td>Not applicable</td></tr>
+  <tr><th>New Transaction</th><td>To be created via SE93</td></tr>
+  <tr><th>Search Help</th><td>Standard vendor search help (KRED)</td></tr>
+  <tr><th>Area Menu</th><td>Not applicable</td></tr>
+  <tr><th>Custom Dialog Screens</th><td>Selection Screen only</td></tr>
+  <tr><th>Index</th><td>Not applicable</td></tr>
+  </tbody>
+  </table>
+
+  <p><strong>Technical Identifiers:</strong></p>
+  <table class="data-table">
+  <tbody>
+  <tr><th>Transaction Code</th><td>To be assigned (recommended: ZMM_VCR)</td></tr>
+  <tr><th>Message Class</th><td>Standard messages / Inline messages</td></tr>
+  </tbody>
+  </table>
+
+  <p><strong>SAP Tables Read:</strong></p>
+  <table class="data-table">
+  <tbody>
+  <tr><th>SAP Tables Read</th><td>
+  <strong>LFA1</strong> - Vendor Master (General Data)<br>
+  <strong>LFB1</strong> - Vendor Master (Company Code Data)<br>
+  <strong>LFM1</strong> - Vendor Master (Purchasing Organization Data)<br>
+  <strong>ADRC</strong> - Address Data (Central Address)<br>
+  <strong>ADR6</strong> - Email Addresses<br>
+  <strong>ADRCT</strong> - Address Communication Remarks (SPOC)<br>
+  <strong>BUT000</strong> - Business Partner General Data<br>
+  <strong>BUT050</strong> - Business Partner Relationships (Group Vendor)<br>
+  <strong>CVI_VEND_LINK</strong> - Vendor to Business Partner Link<br>
+  <strong>TVARVC</strong> - Variant Configuration (ZMM_VEND_ACC_GROUP)
+  </td></tr>
+  <tr><th>Custom Tables</th><td>
+  <strong>ZVENDOR_BLOCK</strong> - Vendor Blacklist Status<br>
+  <strong>ZMM_VENDOR_MSME</strong> - MSME Certification Data<br>
+  <strong>ZMM_VENDOR_BEE</strong> - BEE Compliance Level Data
+  </td></tr>
+  </tbody>
+  </table>
+
+  <h2>Technical Flow Diagram</h2>
+  <div class="flow-diagram">
+  <div class="flow-box">Selection Screen Input</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">Input Validation</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">TVARVC Lookup (Account Groups)</div>
+  <br><br>
+  <span class="flow-arrow">↓</span>
+  <br><br>
+  <div class="flow-box">LFA1 Data Fetch</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">CVI_VEND_LINK / BUT000 / BUT050</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">ADRC / ADR6 / ADRCT</div>
+  <br><br>
+  <span class="flow-arrow">↓</span>
+  <br><br>
+  <div class="flow-box">LFB1 / LFM1</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">Z-Tables (Block/MSME/BEE)</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">Build Final Table</div>
+  <br><br>
+  <span class="flow-arrow">↓</span>
+  <br><br>
+  <div class="flow-box">Apply Filters (Status/Blacklist)</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">Build Field Catalog</div>
+  <span class="flow-arrow">→</span>
+  <div class="flow-box">REUSE_ALV_GRID_DISPLAY</div>
+  </div>
+
+  <h2>Processing Logic</h2>
+  
+  <p><strong>1. AT SELECTION-SCREEN OUTPUT Event:</strong></p>
+  <ul>
+  <li>Initialize dropdown list boxes for secondary filter parameters using VRM_SET_VALUES function module</li>
+  <li>Populate P_STATUS with ACTIVE/INACTIVE options</li>
+  <li>Populate P_BLACK, P_BEGRU, P_BEGRU1, P_BRSCH with YES/NO options</li>
+  </ul>
+
+  <p><strong>2. START-OF-SELECTION Event - Input Validation:</strong></p>
+  <ul>
+  <li>Validate that only one secondary filter (P_STATUS, P_BLACK, P_BEGRU, P_BEGRU1, P_BRSCH) is selected at a time</li>
+  <li>Display error message if multiple secondary filters are selected simultaneously</li>
+  <li>Convert selection values from key codes to descriptive text (1→ACTIVE, 2→INACTIVE, etc.)</li>
+  </ul>
+
+  <p><strong>3. Data Selection Logic:</strong></p>
+  <pre>
+* If no primary selection criteria provided, load vendor account groups from TVARVC
+IF s_ktokk IS INITIAL AND s_erdat IS INITIAL AND s_gvend IS INITIAL 
+  AND s_lifnr IS INITIAL AND all secondary filters are initial.
+  SELECT low FROM tvarvc INTO s_ktokk WHERE name = 'ZMM_VEND_ACC_GROUP'.
+ENDIF.
+
+* Primary data fetch from LFA1 based on criteria
+SELECT lifnr, adrnr, name1, ort01, ktokk, erdat, ernam...
+  FROM lfa1 INTO lt_lfa1
+  WHERE criteria matches selection screen inputs.
+
+* Fetch related data using FOR ALL ENTRIES pattern
+- CVI_VEND_LINK: Get Partner GUID for vendors
+- BUT000: Get Business Partner numbers
+- BUT050: Get Group Vendor relationships
+- ADRC: Get address details (street, city, postal code, region)
+- LFB1: Get payment terms (ZTERM)
+- LFM1: Get currency (WAERS)
+- ADR6: Get email addresses (SMTP_ADDR)
+- ADRCT: Get Wipro SPOC remarks
+- ZVENDOR_BLOCK: Get blacklist status (VFLAG)
+- ZMM_VENDOR_MSME: Get MSME certificate numbers
+- ZMM_VENDOR_BEE: Get BEE compliance levels
+  </pre>
+
+  <p><strong>4. Data Processing - Build Final Internal Table:</strong></p>
+  <ul>
+  <li>Loop through LFA1 data and populate LS_FINAL structure</li>
+  <li>Read related tables using binary search (tables are pre-sorted by key)</li>
+  <li>Determine vendor status (ACTIVE/INACTIVE) based on blocking flags (SPERR, SPERM, SPERQ)</li>
+  <li>Determine blacklist status from ZVENDOR_BLOCK table</li>
+  <li>Append to final table LT_FINAL</li>
+  </ul>
+
+  <p><strong>5. Secondary Filter Application:</strong></p>
+  <ul>
+  <li>If P_STATUS is provided: Delete records not matching status (ACTIVE/INACTIVE)</li>
+  <li>If P_BLACK is provided: Delete records not matching blacklist status</li>
+  <li>If P_BEGRU is provided: Filter based on authorization group field</li>
+  <li>If P_BEGRU1 is provided: Filter based on secondary authorization group</li>
+  <li>If P_BRSCH is provided: Filter based on industry sector</li>
+  </ul>
+
+  <p><strong>6. Output Display:</strong></p>
+  <ul>
+  <li>Build field catalog dynamically using LAYOUT_BUILD subroutine</li>
+  <li>Display output using REUSE_ALV_GRID_DISPLAY function module</li>
+  </ul>
+
+  <h2>Reusable Code</h2>
+  <p>The following function modules are used that can be reused across similar reports:</p>
+  <table>
+  <thead>
+  <tr><th>Function Module</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>VRM_SET_VALUES</td><td>Set values for dropdown list boxes on selection screen</td></tr>
+  <tr><td>REUSE_ALV_FIELDCATALOG_MERGE</td><td>Merge field catalog for ALV display</td></tr>
+  <tr><td>REUSE_ALV_GRID_DISPLAY</td><td>Display ALV grid output</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Internal Tables</h2>
+  <table>
+  <thead>
+  <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>LT_FINAL</td><td>Final output table containing consolidated vendor data (TYPE TABLE OF TY_FINAL)</td></tr>
+  <tr><td>LT_LFA1</td><td>Vendor master general data from LFA1</td></tr>
+  <tr><td>LT_PARTNER_GUID</td><td>Vendor to Business Partner link from CVI_VEND_LINK</td></tr>
+  <tr><td>LT_PARTNER</td><td>Business Partner data from BUT000</td></tr>
+  <tr><td>LT_GROUP_VENDOR</td><td>Group vendor relationships from BUT050</td></tr>
+  <tr><td>LT_ADRC</td><td>Address central data from ADRC</td></tr>
+  <tr><td>LT_ZTERM</td><td>Payment terms from LFB1</td></tr>
+  <tr><td>LT_WAERS</td><td>Currency from LFM1</td></tr>
+  <tr><td>LT_ADR6</td><td>Email addresses from ADR6</td></tr>
+  <tr><td>LT_ADRCT</td><td>SPOC remarks from ADRCT</td></tr>
+  <tr><td>LT_ZVENDOR_BLOCK1</td><td>Blacklist status from ZVENDOR_BLOCK</td></tr>
+  <tr><td>LT_ZMM_VENDOR_MSME</td><td>MSME certificate numbers from ZMM_VENDOR_MSME</td></tr>
+  <tr><td>LT_ZMM_VENDOR_BEE</td><td>BEE compliance levels from ZMM_VENDOR_BEE</td></tr>
+  <tr><td>LT_FCAT</td><td>Field catalog for ALV display (TYPE SLIS_T_FIELDCAT_ALV)</td></tr>
+  <tr><td>LIST</td><td>Dropdown values for VRM listboxes (TYPE VRM_VALUES)</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Messages</h2>
+  <table>
+  <thead>
+  <tr><th>Message Class</th><th>Message ID</th><th>Message Text</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>Inline</td><td>E</td><td>Please select only one input from last 5 secondary fields</td></tr>
+  <tr><td>Inline</td><td>E</td><td>No data available in ZMM_VEND_ACC_GROUP variant</td></tr>
+  <tr><td>Inline</td><td>S</td><td>No data found for the given selection criteria</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Text Elements</h2>
+  <table>
+  <thead>
+  <tr><th>Name</th><th>Text Description</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>TEXT-000</td><td>Selection Parameters (Selection screen block title)</td></tr>
+  <tr><td>S_KTOKK</td><td>Vendor Account Group</td></tr>
+  <tr><td>S_ERDAT</td><td>Creation Date</td></tr>
+  <tr><td>S_GVEND</td><td>Group Vendor</td></tr>
+  <tr><td>S_LIFNR</td><td>Vendor Number</td></tr>
+  <tr><td>P_STATUS</td><td>Status (Active/Inactive)</td></tr>
+  <tr><td>P_BLACK</td><td>Blacklisted</td></tr>
+  <tr><td>P_BEGRU</td><td>Authorization Group 1</td></tr>
+  <tr><td>P_BEGRU1</td><td>Authorization Group 2</td></tr>
+  <tr><td>P_BRSCH</td><td>Industry Sector</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Subroutines</h2>
+  <table>
+  <thead>
+  <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+  <tr><td>LAYOUT_BUILD</td><td>Builds the ALV field catalog dynamically. Sets field positions, column headers, and display properties for all output fields including vendor number, name, address, contact details, payment terms, risk codes, MSME certificate, BEE level, and status flags.</td></tr>
+  </tbody>
+  </table>
+
+  <h2>Security</h2>
+  <p><strong>Authorization Requirements:</strong></p>
+  <ul>
+  <li><strong>F_LFA1_BEK</strong> - Authorization object for vendor master display (Activity 03)</li>
+  <li><strong>F_LFA1_GRP</strong> - Authorization object for vendor account groups</li>
+  <li><strong>S_TCODE</strong> - Transaction code authorization (if transaction code assigned)</li>
+  </ul>
+  <p><strong>Note:</strong> The report currently does not implement explicit AUTHORITY-CHECK statements. It is recommended to add authorization checks for:</p>
+  <ul>
+  <li>Vendor account group access (KTOKK)</li>
+  <li>Company code access for LFB1 data</li>
+  <li>Authorization group field (BEGRU) restrictions</li>
+  </ul>
+
+  <h2>Upgrade</h2>
+  <p><strong>S/4HANA Migration Considerations:</strong></p>
+  <ul>
+  <li><strong>TABLES Declaration:</strong> The program uses TABLES declarations for LFA1, ADRC, ADR6, ADRCT, LFB1, LFM1, BUT050. These should be replaced with explicit type declarations for S/4HANA compatibility.</li>
+  <li><strong>TYPE-POOLS: VRM</strong> - Deprecated in newer releases. Consider using class-based dropdown handling.</li>
+  <li><strong>Business Partner Migration:</strong> In S/4HANA, vendor data is primarily managed via Business Partner (BP). The CVI_VEND_LINK and BUT000/BUT050 tables remain compatible.</li>
+  <li><strong>Custom Z-Tables:</strong> ZVENDOR_BLOCK, ZMM_VENDOR_MSME, ZMM_VENDOR_BEE need to be migrated with the report. Consider creating CDS views for these tables.</li>
+  <li><strong>REUSE_ALV_GRID_DISPLAY:</strong> Level B compatibility (works in S/4HANA on-premise). For ABAP Cloud/BTP, migrate to CL_SALV_TABLE or RAP-based Fiori app.</li>
+  </ul>
+
+  <h2>Future Enhancements</h2>
+  <ul>
+  <li><strong>Modernization to CL_SALV_TABLE:</strong> Replace REUSE_ALV_GRID_DISPLAY with object-oriented ALV (CL_SALV_TABLE) for better maintainability</li>
+  <li><strong>CDS View Layer:</strong> Create CDS views to consolidate vendor data at database level, reducing ABAP processing</li>
+  <li><strong>Fiori App Migration:</strong> Develop a Fiori List Report app with filter bar and export capabilities</li>
+  <li><strong>Performance Optimization:</strong> Implement parallel processing for large vendor volumes</li>
+  <li><strong>Additional Fields:</strong> Consider adding vendor banking details, tax exemption status, and supplier evaluation scores</li>
+  <li><strong>Excel Export:</strong> Add native Excel download functionality using CL_SALV_TABLE export methods</li>
+  </ul>
+
+  <h2>Assumptions in Technical Design</h2>
+  <ul>
+  <li>The TVARVC variant ZMM_VEND_ACC_GROUP contains the list of valid vendor account groups to be included in the report when no explicit selection is made</li>
+  <li>Vendor status (ACTIVE/INACTIVE) is determined by the combination of blocking flags: SPERR (central), SPERM (purchasing), SPERQ (quality)</li>
+  <li>Blacklist status is maintained in custom table ZVENDOR_BLOCK with field VFLAG</li>
+  <li>MSME certificate numbers are maintained in custom table ZMM_VENDOR_MSME</li>
+  <li>BEE compliance levels are maintained in custom table ZMM_VENDOR_BEE</li>
+  <li>Only one secondary filter can be applied at a time to ensure consistent result sets</li>
+  <li>Group vendor relationships are maintained in BUT050 table via Business Partner framework</li>
+  </ul>
+
+  <h2>Open Issues in Technical Design</h2>
+  <ul>
+  <li><strong>Authorization Checks:</strong> No explicit AUTHORITY-CHECK statements implemented - security risk for sensitive vendor data</li>
+  <li><strong>Error Handling:</strong> Empty error handling blocks after VRM_SET_VALUES calls - should log errors</li>
+  <li><strong>Code Duplication:</strong> Similar SELECT patterns repeated multiple times with slight variations - should be refactored into reusable methods</li>
+  <li><strong>Performance:</strong> Multiple FOR ALL ENTRIES SELECT statements executed sequentially - consider optimizing with JOINs or parallel execution</li>
+  <li><strong>Hardcoded Values:</strong> Selection screen validation logic contains hardcoded parameter names - should use constants</li>
+  </ul>
+
+  <h2>Unit Test Plan</h2>
+  <table>
+  <thead>
+  <tr><th>Scenario #</th><th>Input Selection Criteria</th><th>Expected Result</th></tr>
+  </thead>
+  <tbody>
+  <tr>
+  <td>1</td>
+  <td>No selection criteria provided (all fields blank)</td>
+  <td>Report loads vendor account groups from TVARVC (ZMM_VEND_ACC_GROUP) and displays all vendors matching those groups</td>
+  </tr>
+  <tr>
+  <td>2</td>
+  <td>S_KTOKK = 'ZDOM' (single account group)</td>
+  <td>Only vendors with account group ZDOM are displayed</td>
+  </tr>
+  <tr>
+  <td>3</td>
+  <td>S_ERDAT = 01.01.2024 to 31.12.2024</td>
+  <td>Only vendors created within the date range are displayed</td>
+  </tr>
+  <tr>
+  <td>4</td>
+  <td>P_STATUS = 'ACTIVE'</td>
+  <td>Only active vendors (no blocking flags set) are displayed</td>
+  </tr>
+  <tr>
+  <td>5</td>
+  <td>P_STATUS = 'INACTIVE'</td>
+  <td>Only inactive vendors (at least one blocking flag set) are displayed</td>
+  </tr>
+  <tr>
+  <td>6</td>
+  <td>P_BLACK = 'YES'</td>
+  <td>Only blacklisted vendors (VFLAG = 'X' in ZVENDOR_BLOCK) are displayed</td>
+  </tr>
+  <tr>
+  <td>7</td>
+  <td>P_STATUS = 'ACTIVE' AND P_BLACK = 'YES' (multiple secondary filters)</td>
+  <td>Error message: "Please select only one input from last 5 secondary fields"</td>
+  </tr>
+  <tr>
+  <td>8</td>
+  <td>S_LIFNR = '0000001000' (specific vendor)</td>
+  <td>Only the specified vendor is displayed with all consolidated data including MSME cert, BEE level</td>
+  </tr>
+  <tr>
+  <td>9</td>
+  <td>S_GVEND = '1234567890' (group vendor filter)</td>
+  <td>Only vendors belonging to the specified group vendor are displayed</td>
+  </tr>
+  <tr>
+  <td>10</td>
+  <td>S_KTOKK = 'XXXX' (invalid/non-existent account group)</td>
+  <td>No data found message displayed, ALV grid empty</td>
+  </tr>
+  </tbody>
+  </table>
+
+  <h2>Related Documentation (attach OSS notes, emails, download of existing report, etc)</h2>
+  <ul>
+  <li><strong>Charm No. 4000004597</strong> - Initial MSME Certificate Number field requirement (Transport: WS1K997027)</li>
+  <li><strong>Charm No. 4000005275</strong> - Group Customer field addition (Transport: WS1K9A014E)</li>
+  <li><strong>Charm No. 4000005596</strong> - Code cleanup and error removal (Transport: WS1K9A02YZ)</li>
+  <li><strong>Charm No. 4000005680</strong> - Production data fetch issue fix (Transports: WS1K9A03GW, WS1K9A04RP)</li>
+  <li><strong>Charm No. 4000006028, 4000006474</strong> - Secondary input fields and account group filter (Transports: WS1K9A05EB, WS1K9A06LT, WS1K9A07DO, WS1K9A08IU, WS1K9A09D0)</li>
+  <li><strong>Charm No. 4000008627</strong> - BEE Level field addition (Transport: WS1K9A0HO1)</li>
+  </ul>
+
+  </div>
+
+  <div class="footer">
+  <p><strong>Document Control</strong></p>
+  <p>Generated by C16 — Your Autonomous SAP Team</p>
+  <p>Document Date: 2026-06-08 | System: ECC 7.40 | Client: 800</p>
+  </div>
+</div>
+</body>
+</html>
