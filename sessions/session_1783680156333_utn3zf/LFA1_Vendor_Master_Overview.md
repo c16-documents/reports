@@ -1,83 +1,40 @@
-## 1 What is LFA1?
+## 1 LFA1 — Vendor Master (General Data)
 
-**LFA1** is SAP's central **Vendor Master General Data** table. It stores client-level information about vendors that applies across all company codes — the "one source of truth" for vendor identity, address, and control data.
+**LFA1** is the central SAP table storing _general vendor master data_ — information that applies across all company codes. This includes vendor identification, name, address, communication details, and control data. Every vendor in SAP has exactly one LFA1 record, making it the foundation of the vendor master hierarchy.
 
-Key Insight
-
-LFA1 holds data valid for the _entire client_, while company code-specific data (payment terms, reconciliation accounts) lives in LFB1, and transaction figures are stored in LFC1.
-
-## 2 Top 3 Fields
+## 2 Top 3 Key Fields
 
 Field
 
 Description
 
-Example
+Type
 
 **LIFNR**
 
-Vendor Account Number (Primary Key)
+Vendor Account Number — Primary key identifying the vendor
 
-0000001000
+CHAR(10)
 
 **NAME1**
 
-Vendor Name (Line 1)
+Vendor Name — Primary business name
 
-Acme Supplies Ltd
+CHAR(35)
 
 **LAND1**
 
-Country Key
+Country Key — Vendor's country of registration
 
-US, DE, IN
+CHAR(3)
 
-## 3 Vendor Master Hierarchy
+## 3 Vendor Master Table Hierarchy
 
-The vendor master follows a three-tier structure — from general data down to transaction figures:
+The vendor master is structured in three levels — general data (client-wide), company code data (accounting), and transaction figures (statistical):
 
-graph TD subgraph Client Level LFA1\[**LFA1**  
-General Data  
-Name, Address, Control\] end subgraph Company Code Level LFB1\[**LFB1**  
-Company Code Data  
-Payment Terms, Recon Account\] end subgraph Transaction Level LFC1\[**LFC1**  
-Transaction Figures  
-Balances, Turnover\] end LFA1 -->|1 : N| LFB1 LFB1 -->|1 : N| LFC1 style LFA1 fill:#7FB3E0,stroke:#1f2937,color:#fff style LFB1 fill:#5a9bd4,stroke:#1f2937,color:#fff style LFC1 fill:#3d7fb8,stroke:#1f2937,color:#fff
+erDiagram LFA1 ||--o{ LFB1 : "has company codes" LFB1 ||--o{ LFC1 : "has transaction figures" LFA1 { char LIFNR PK "Vendor Number" char NAME1 "Vendor Name" char LAND1 "Country" char ORT01 "City" char STRAS "Street" } LFB1 { char LIFNR PK "Vendor Number" char BUKRS PK "Company Code" char AKONT "Recon Account" char ZTERM "Payment Terms" char ZWELS "Payment Methods" } LFC1 { char LIFNR PK "Vendor Number" char BUKRS PK "Company Code" char GJAHR PK "Fiscal Year" curr UMSAV "Sales/Purchases" curr BABZG "Discount Taken" }
 
-## 4 Table Summary
+Relationship Summary
 
-Table
-
-Level
-
-Purpose
-
-Key Fields
-
-**LFA1**
-
-Client
-
-General vendor identity & address
-
-LIFNR, NAME1, LAND1, ORT01, STRAS
-
-**LFB1**
-
-Company Code
-
-Accounting & payment configuration
-
-LIFNR, BUKRS, AKONT, ZTERM
-
-**LFC1**
-
-Transaction
-
-Period-based transaction totals
-
-LIFNR, BUKRS, GJAHR, UMSAV
-
-Code Quality Note
-
-For new S/4HANA development, use the released CDS views **I\_Supplier** and **I\_SupplierCompany** instead of direct LFA1/LFB1 access. This ensures upgrade safety and cloud readiness.
+**LFA1** (1) → **LFB1** (many): One vendor can be extended to multiple company codes.  
+**LFB1** (1) → **LFC1** (many): Each company code assignment tracks transaction figures by fiscal year.
