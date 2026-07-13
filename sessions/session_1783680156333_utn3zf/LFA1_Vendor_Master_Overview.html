@@ -1,0 +1,56 @@
+
+<h2><span class="sec-num">1</span>LFA1 — Vendor Master (General Data)</h2>
+
+<p><strong>LFA1</strong> is the central SAP table storing <strong>general vendor master data</strong> — the client-level information that applies across all company codes and purchasing organizations. Every vendor in your SAP system has exactly one record in LFA1, identified by the vendor number (<code>LIFNR</code>).</p>
+
+<div class="callout">
+  <div class="callout-title">Key Concept</div>
+  <p>LFA1 holds data that is <em>independent</em> of organizational units — name, address, tax numbers, industry classification. Company-code-specific data (payment terms, reconciliation accounts) lives in <strong>LFB1</strong>.</p>
+</div>
+
+<h2><span class="sec-num">2</span>Top 3 Fields</h2>
+
+<table class="data-table">
+  <thead>
+  <tr><th>Field</th><th>Description</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+  <tr><td><strong>LIFNR</strong></td><td>Vendor Number (Primary Key)</td><td><code>0000001000</code></td></tr>
+  <tr><td><strong>NAME1</strong></td><td>Vendor Name (Line 1)</td><td><code>Acme Corporation</code></td></tr>
+  <tr><td><strong>LAND1</strong></td><td>Country Key</td><td><code>US</code>, <code>DE</code>, <code>IN</code></td></tr>
+  </tbody>
+</table>
+
+<h2><span class="sec-num">3</span>Vendor Master Table Hierarchy</h2>
+
+<p>The vendor master is split across three levels to support SAP's organizational structure:</p>
+
+<div class="mermaid">
+graph TD
+  LFA1["<strong>LFA1</strong><br/>General Data<br/>(Client Level)"]
+  LFB1["<strong>LFB1</strong><br/>Company Code Data<br/>(Payment Terms, Recon Account)"]
+  LFC1["<strong>LFC1</strong><br/>Transaction Figures<br/>(Balances, Turnover)"]
+  
+  LFA1 -->|"1 : N"| LFB1
+  LFB1 -->|"1 : N"| LFC1
+  
+  style LFA1 fill:#7FB3E0,color:#fff
+  style LFB1 fill:#7FB3E0,color:#fff
+  style LFC1 fill:#7FB3E0,color:#fff
+</div>
+
+<table class="data-table">
+  <thead>
+  <tr><th>Table</th><th>Level</th><th>Key Fields</th><th>Purpose</th></tr>
+  </thead>
+  <tbody>
+  <tr><td><strong>LFA1</strong></td><td>Client</td><td>LIFNR</td><td>Name, address, tax IDs, industry</td></tr>
+  <tr><td><strong>LFB1</strong></td><td>Company Code</td><td>LIFNR + BUKRS</td><td>Payment terms, recon account, payment methods</td></tr>
+  <tr><td><strong>LFC1</strong></td><td>Company Code + Year</td><td>LIFNR + BUKRS + GJAHR</td><td>Cumulative transaction figures (debit/credit totals)</td></tr>
+  </tbody>
+</table>
+
+<div class="callout callout-success">
+  <div class="callout-title">Code Quality Note</div>
+  <p>For new developments, use CDS views <strong>I_Supplier</strong> and <strong>I_SupplierCompany</strong> instead of direct LFA1/LFB1 access. These are Released APIs (Level A) compatible with S/4HANA and ABAP Cloud.</p>
+</div>
