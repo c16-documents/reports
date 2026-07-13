@@ -30,13 +30,11 @@ Version
 
 ## 1 What is LFA1?
 
-**LFA1** is the SAP Vendor Master General Data table. It stores organization-independent vendor information that applies across all company codes and purchasing organizations. Every vendor in SAP has exactly one record in LFA1, identified by the vendor number (LIFNR).
+**LFA1** is the SAP _Vendor Master – General Data_ table. It stores organization-independent vendor information that applies across all company codes and purchasing organizations. Every vendor in SAP has exactly one record in LFA1, identified by the vendor number (`LIFNR`).
 
-LFA1General Data
+Key Point
 
-LFB1Company Code
-
-LFC1Transaction Figures
+LFA1 is the "header" of the vendor master — it holds data that doesn't change by company code (name, address, country, tax numbers).
 
 ## 2 Top 3 Fields
 
@@ -66,13 +64,39 @@ CHAR 3
 
 ## 3 Table Relationships
 
-The vendor master is split across three levels: general data (LFA1), company-code-specific accounting data (LFB1), and historical transaction figures (LFC1).
+The vendor master is split across three levels — general, company code, and transaction figures:
 
-erDiagram LFA1 ||--o{ LFB1 : "company code data" LFB1 ||--o{ LFC1 : "transaction figures" LFA1 { char LIFNR PK char NAME1 char LAND1 char ORT01 } LFB1 { char LIFNR PK char BUKRS PK char AKONT char ZTERM } LFC1 { char LIFNR PK char BUKRS PK char GJAHR PK curr UM01S }
+erDiagram LFA1 ||--o{ LFB1 : "has company code data" LFB1 ||--o{ LFC1 : "has transaction figures" LFA1 { CHAR LIFNR PK "Vendor Number" CHAR NAME1 "Name" CHAR LAND1 "Country" } LFB1 { CHAR LIFNR PK "Vendor Number" CHAR BUKRS PK "Company Code" CHAR AKONT "Recon Account" CHAR ZTERM "Payment Terms" } LFC1 { CHAR LIFNR PK "Vendor Number" CHAR BUKRS PK "Company Code" CHAR GJAHR PK "Fiscal Year" }
+
+## 4 Quick Reference
+
+Table
+
+Purpose
+
+Primary Key
+
+**LFA1**
+
+General vendor data (name, address, country)
+
+LIFNR
+
+**LFB1**
+
+Company-code-specific (payment terms, recon account)
+
+LIFNR + BUKRS
+
+**LFC1**
+
+Transaction figures (period totals by fiscal year)
+
+LIFNR + BUKRS + GJAHR
 
 Key Insight
 
-LIFNR links all three tables. LFB1 adds company-code-specific payment and accounting settings, while LFC1 stores periodic transaction totals for reporting.
+`LIFNR` links all three tables. LFB1 extends LFA1 with company-code-specific payment and accounting settings, while LFC1 stores periodic transaction totals for financial reporting.
 
 if (typeof mermaid !== 'undefined') { mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' }); }
 
