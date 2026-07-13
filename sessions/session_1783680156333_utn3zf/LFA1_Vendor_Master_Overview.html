@@ -1,81 +1,57 @@
 
-<h2><span class="sec-num">1</span> What is LFA1?</h2>
+<h2><span class="sec-num">1</span> LFA1 — Vendor Master (General Data)</h2>
 
-<p><strong>LFA1</strong> is SAP's central <strong>Vendor Master General Data</strong> table. It stores client-level information about vendors that applies across all company codes — the "one source of truth" for vendor identity, address, and control data.</p>
+<p><strong>LFA1</strong> is the central SAP table storing <em>general vendor master data</em> — information that applies across all company codes. This includes vendor identification, name, address, communication details, and control data. Every vendor in SAP has exactly one LFA1 record, making it the foundation of the vendor master hierarchy.</p>
 
-<div class="callout">
-  <div class="callout-title">Key Insight</div>
-  <p>LFA1 holds data valid for the <em>entire client</em>, while company code-specific data (payment terms, reconciliation accounts) lives in LFB1, and transaction figures are stored in LFC1.</p>
-</div>
-
-<h2><span class="sec-num">2</span> Top 3 Fields</h2>
+<h2><span class="sec-num">2</span> Top 3 Key Fields</h2>
 
 <table class="data-table">
   <thead>
-  <tr><th>Field</th><th>Description</th><th>Example</th></tr>
+  <tr><th>Field</th><th>Description</th><th>Type</th></tr>
   </thead>
   <tbody>
-  <tr><td><strong>LIFNR</strong></td><td>Vendor Account Number (Primary Key)</td><td>0000001000</td></tr>
-  <tr><td><strong>NAME1</strong></td><td>Vendor Name (Line 1)</td><td>Acme Supplies Ltd</td></tr>
-  <tr><td><strong>LAND1</strong></td><td>Country Key</td><td>US, DE, IN</td></tr>
+  <tr><td><strong>LIFNR</strong></td><td>Vendor Account Number — Primary key identifying the vendor</td><td>CHAR(10)</td></tr>
+  <tr><td><strong>NAME1</strong></td><td>Vendor Name — Primary business name</td><td>CHAR(35)</td></tr>
+  <tr><td><strong>LAND1</strong></td><td>Country Key — Vendor's country of registration</td><td>CHAR(3)</td></tr>
   </tbody>
 </table>
 
-<h2><span class="sec-num">3</span> Vendor Master Hierarchy</h2>
+<h2><span class="sec-num">3</span> Vendor Master Table Hierarchy</h2>
 
-<p>The vendor master follows a three-tier structure — from general data down to transaction figures:</p>
+<p>The vendor master is structured in three levels — general data (client-wide), company code data (accounting), and transaction figures (statistical):</p>
 
 <div class="mermaid">
-graph TD
-  subgraph Client Level
-  LFA1[<strong>LFA1</strong><br/>General Data<br/>Name, Address, Control]
-  end
+erDiagram
+  LFA1 ||--o{ LFB1 : "has company codes"
+  LFB1 ||--o{ LFC1 : "has transaction figures"
   
-  subgraph Company Code Level
-  LFB1[<strong>LFB1</strong><br/>Company Code Data<br/>Payment Terms, Recon Account]
-  end
+  LFA1 {
+  char LIFNR PK "Vendor Number"
+  char NAME1 "Vendor Name"
+  char LAND1 "Country"
+  char ORT01 "City"
+  char STRAS "Street"
+  }
   
-  subgraph Transaction Level
-  LFC1[<strong>LFC1</strong><br/>Transaction Figures<br/>Balances, Turnover]
-  end
+  LFB1 {
+  char LIFNR PK "Vendor Number"
+  char BUKRS PK "Company Code"
+  char AKONT "Recon Account"
+  char ZTERM "Payment Terms"
+  char ZWELS "Payment Methods"
+  }
   
-  LFA1 -->|1 : N| LFB1
-  LFB1 -->|1 : N| LFC1
-  
-  style LFA1 fill:#7FB3E0,stroke:#1f2937,color:#fff
-  style LFB1 fill:#5a9bd4,stroke:#1f2937,color:#fff
-  style LFC1 fill:#3d7fb8,stroke:#1f2937,color:#fff
+  LFC1 {
+  char LIFNR PK "Vendor Number"
+  char BUKRS PK "Company Code"
+  char GJAHR PK "Fiscal Year"
+  curr UMSAV "Sales/Purchases"
+  curr BABZG "Discount Taken"
+  }
 </div>
 
-<h2><span class="sec-num">4</span> Table Summary</h2>
-
-<table class="data-table">
-  <thead>
-  <tr><th>Table</th><th>Level</th><th>Purpose</th><th>Key Fields</th></tr>
-  </thead>
-  <tbody>
-  <tr>
-  <td><strong>LFA1</strong></td>
-  <td>Client</td>
-  <td>General vendor identity &amp; address</td>
-  <td>LIFNR, NAME1, LAND1, ORT01, STRAS</td>
-  </tr>
-  <tr>
-  <td><strong>LFB1</strong></td>
-  <td>Company Code</td>
-  <td>Accounting &amp; payment configuration</td>
-  <td>LIFNR, BUKRS, AKONT, ZTERM</td>
-  </tr>
-  <tr>
-  <td><strong>LFC1</strong></td>
-  <td>Transaction</td>
-  <td>Period-based transaction totals</td>
-  <td>LIFNR, BUKRS, GJAHR, UMSAV</td>
-  </tr>
-  </tbody>
-</table>
-
-<div class="callout callout-warn">
-  <div class="callout-title">Code Quality Note</div>
-  <p>For new S/4HANA development, use the released CDS views <strong>I_Supplier</strong> and <strong>I_SupplierCompany</strong> instead of direct LFA1/LFB1 access. This ensures upgrade safety and cloud readiness.</p>
+<div class="callout">
+  <div class="callout-title">Relationship Summary</div>
+  <p><strong>LFA1</strong> (1) → <strong>LFB1</strong> (many): One vendor can be extended to multiple company codes.<br>
+  <strong>LFB1</strong> (1) → <strong>LFC1</strong> (many): Each company code assignment tracks transaction figures by fiscal year.</p>
 </div>
