@@ -68,7 +68,7 @@ CHAR 3
 
 The vendor master is split across three levels: general data (LFA1), company-code-specific accounting data (LFB1), and historical transaction figures (LFC1).
 
-erDiagram LFA1 ||--o{ LFB1 : "has company code data" LFB1 ||--o{ LFC1 : "has transaction figures" LFA1 { char LIFNR PK "Vendor Number" char NAME1 "Vendor Name" char LAND1 "Country" char ORT01 "City" } LFB1 { char LIFNR PK "Vendor Number" char BUKRS PK "Company Code" char AKONT "Recon Account" char ZTERM "Payment Terms" } LFC1 { char LIFNR PK "Vendor Number" char BUKRS PK "Company Code" char GJAHR PK "Fiscal Year" curr UM01S "Sales Period 1" }
+erDiagram LFA1 ||--o{ LFB1 : "has company code data" LFB1 ||--o{ LFC1 : "has transaction figures" LFA1 { char LIFNR PK char NAME1 char LAND1 char ORT01 } LFB1 { char LIFNR PK char BUKRS PK char AKONT char ZTERM } LFC1 { char LIFNR PK char BUKRS PK char GJAHR PK curr UM01S }
 
 Key Insight
 
