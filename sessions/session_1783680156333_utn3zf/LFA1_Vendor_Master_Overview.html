@@ -287,28 +287,27 @@
 
   <!-- BODY -->
   <div class="doc-body">
-
 <h2><span class="sec-num">1</span> What is LFA1?</h2>
 <p><strong>LFA1</strong> is the SAP <em>Vendor Master – General Data</em> table. It stores organization-independent vendor information that applies across all company codes and purchasing organizations. Every vendor in SAP has exactly one record in LFA1, identified by the vendor number (<code>LIFNR</code>).</p>
 
 <table class="kpi-table">
-  <tr>
-  <td><span class="kpi-value">LFA1</span><span class="kpi-label">General Data</span></td>
-  <td><span class="kpi-value">LFB1</span><span class="kpi-label">Company Code</span></td>
-  <td><span class="kpi-value">LFC1</span><span class="kpi-label">Transaction Figures</span></td>
-  </tr>
+<tr>
+<td><span class="kpi-value">LFA1</span><span class="kpi-label">General Data</span></td>
+<td><span class="kpi-value">LFB1</span><span class="kpi-label">Company Code</span></td>
+<td><span class="kpi-value">LFC1</span><span class="kpi-label">Transaction Figures</span></td>
+</tr>
 </table>
 
 <h2><span class="sec-num">2</span> Top 3 Fields</h2>
 <table class="data-table">
-  <thead>
-  <tr><th>Field</th><th>Description</th><th>Type</th></tr>
-  </thead>
-  <tbody>
-  <tr><td><strong>LIFNR</strong></td><td>Vendor Account Number (Primary Key)</td><td>CHAR 10</td></tr>
-  <tr><td><strong>NAME1</strong></td><td>Vendor Name (Line 1)</td><td>CHAR 35</td></tr>
-  <tr><td><strong>LAND1</strong></td><td>Country Key</td><td>CHAR 3</td></tr>
-  </tbody>
+<thead>
+<tr><th>Field</th><th>Description</th><th>Type</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>LIFNR</strong></td><td>Vendor Account Number (Primary Key)</td><td>CHAR 10</td></tr>
+<tr><td><strong>NAME1</strong></td><td>Vendor Name (Line 1)</td><td>CHAR 35</td></tr>
+<tr><td><strong>LAND1</strong></td><td>Country Key</td><td>CHAR 3</td></tr>
+</tbody>
 </table>
 
 <h2><span class="sec-num">3</span> Table Relationships</h2>
@@ -318,34 +317,30 @@
 erDiagram
   LFA1 ||--o{ LFB1 : "has company code data"
   LFB1 ||--o{ LFC1 : "has transaction figures"
-
   LFA1 {
-  char LIFNR PK "Vendor Number"
-  char NAME1 "Vendor Name"
-  char LAND1 "Country"
-  char ORT01 "City"
+  char LIFNR PK
+  char NAME1
+  char LAND1
+  char ORT01
   }
-
   LFB1 {
-  char LIFNR PK "Vendor Number"
-  char BUKRS PK "Company Code"
-  char AKONT "Recon Account"
-  char ZTERM "Payment Terms"
+  char LIFNR PK
+  char BUKRS PK
+  char AKONT
+  char ZTERM
   }
-
   LFC1 {
-  char LIFNR PK "Vendor Number"
-  char BUKRS PK "Company Code"
-  char GJAHR PK "Fiscal Year"
-  curr UM01S "Sales Period 1"
+  char LIFNR PK
+  char BUKRS PK
+  char GJAHR PK
+  curr UM01S
   }
 </div>
 
 <div class="callout">
-  <div class="callout-title">Key Insight</div>
-  <p><strong>LIFNR</strong> links all three tables. LFB1 adds company-code-specific payment and accounting settings, while LFC1 stores periodic transaction totals for reporting.</p>
+<div class="callout-title">Key Insight</div>
+<p><strong>LIFNR</strong> links all three tables. LFB1 adds company-code-specific payment and accounting settings, while LFC1 stores periodic transaction totals for reporting.</p>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <script>if (typeof mermaid !== 'undefined') { mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' }); }</script>
