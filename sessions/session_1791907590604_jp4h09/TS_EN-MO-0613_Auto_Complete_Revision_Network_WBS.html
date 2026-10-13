@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS EN MO 0613 Auto Complete Revision Network WBS</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>TS EN MO 0613 Auto Complete Revision Network WBS</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>TS EN MO 0613 Auto Complete Revision Network WBS</td>
+        <td class="meta-label">Date</td>
+        <td>13 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+<h2><span class="sec-num">1</span> Document Organization</h2>
+
+<h3>1.1 Document Log</h3>
+<table class="data">
+<thead><tr><th>Version</th><th>Status</th><th>Date</th><th>Created By</th><th>Role</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>0.1</td><td>Draft</td><td>2026-10-13</td><td>C16 (Auto-generated)</td><td>Author</td><td>Initial Technical Specification — derived from FSD_EN-MO-0613 v0.1 (Muralikrishna K, 10 Sep 2026). FS reviewed by Shigeo Yamaguchi 22 Sep 2026.</td></tr>
+</tbody>
+</table>
+
+<h3>1.2 Integration, Document Reference</h3>
+<table class="data">
+<thead><tr><th>S. No.</th><th>Referred Document Name</th><th>Version</th><th>URL / Location</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>FSD_EN-MO-0613 Auto Complete Revision, Network and WBS</td><td>0.1</td><td>Project Polaris Lodestar Phase 2A document repository</td></tr>
+<tr><td>2</td><td>MO-0595 Email Template</td><td>Current</td><td>Referenced for WBS TECO email notification to EC FI</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">2</span> Code Quality</h2>
+
+<table class="data">
+<thead><tr><th>Final Solution</th><th>Category</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>Custom ABAP Executable Report with Level B BAPIs</td><td><strong>Tier 3 — Legacy Development</strong></td><td>Uses custom BAPI /AXONEBX/GET_REV_CLOSE (not released), standard Level B BAPIs (BAPI_BUS2002_SET_STATUS in FG CNIF_STATUS_2002, BAPI_BUS2054_SET_STATUS in FG CNIF_STATUS_2054), and direct SAP transparent table reads (T352R, JEST, AUFK, QMEL, DIWPS_RV_CR). Email via SO_NEW_DOCUMENT_ATT_SEND_API1 (FG SOI1). All Level B — fully functional on S/4HANA on-premise per the classic ABAP language version contract.</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">3</span> Program Attributes</h2>
+
+<table class="data">
+<tbody>
+<tr><td><strong>Program Title</strong></td><td>Auto Complete Revision, Network and WBS</td></tr>
+<tr><td><strong>Program Name</strong></td><td>ZPM_AUTO_COMP_REV_NW_WBS</td></tr>
+<tr><td><strong>Program Type</strong></td><td>Executable (Type 1)</td></tr>
+<tr><td><strong>Package</strong></td><td>ZPM_REVISION (to be created per project standards)</td></tr>
+<tr><td><strong>Authorization Group</strong></td><td>As per BU decision</td></tr>
+</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table class="data">
+<tbody>
+<tr><td><strong>Transaction Code</strong></td><td>N/A — Runs as background batch job only (SM36/SM37)</td></tr>
+<tr><td><strong>Include Programs</strong></td><td>N/A</td></tr>
+<tr><td><strong>Function Modules</strong></td><td>/AXONEBX/GET_REV_CLOSE, BAPI_BUS2002_SET_STATUS (FG: CNIF_STATUS_2002), BAPI_BUS2054_SET_STATUS (FG: CNIF_STATUS_2054), BAPI_TRANSACTION_COMMIT (FG: BAPT), SO_NEW_DOCUMENT_ATT_SEND_API1 (FG: SOI1)</td></tr>
+<tr><td><strong>Message Class</strong></td><td>ZPM_REVCOMP (to be created)</td></tr>
+</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<table class="data">
+<tbody>
+<tr><td><strong>SAP Tables Read</strong></td><td>T352R (Revision Master), JEST (Object Status), DIWPS_RV_CR (Revision Work Packages), QMEL (Notification Master), AUFK (Order Master), T325R (Revision–Network Assignment), TJ02T (Status Texts)</td></tr>
+<tr><td><strong>Custom Tables</strong></td><td>N/A — No custom tables required</td></tr>
+<tr><td><strong>Custom Indexes</strong></td><td>N/A</td></tr>
+<tr><td><strong>CDS Views</strong></td><td>N/A — Classic ABAP executable program</td></tr>
+<tr><td><strong>OData Service</strong></td><td>N/A — Background batch job</td></tr>
+<tr><td><strong>Business Object</strong></td><td>N/A</td></tr>
+<tr><td><strong>Fiori App Name</strong></td><td>Fiori Tile planned as separate deliverable per SIA Code Quality Strategy</td></tr>
+<tr><td><strong>Group Name</strong></td><td>TBD during Fiori Tile development</td></tr>
+<tr><td><strong>Catalog Name</strong></td><td>TBD during Fiori Tile development</td></tr>
+</tbody>
+</table>
+
+<h3>3.1 Selection Screen</h3>
+<p>Block Name: <strong>Revision Selection Criteria</strong></p>
+<table class="data">
+<thead><tr><th>P / S</th><th>Type / Field Name</th><th>Mandatory</th><th>Default</th><th>Parameter ID</th><th>Search Help</th><th>Selection Screen Text</th></tr></thead>
+<tbody>
+<tr><td>S</td><td>T352R-REVNR (TYPE REVNI, CHAR 8)</td><td>No</td><td>—</td><td>S_REVNR</td><td>Standard</td><td>Revision Number</td></tr>
+<tr><td>S</td><td>T352R-REVTY (TYPE DIWPS_REVTY_CORE, CHAR 2)</td><td>No</td><td>—</td><td>S_REVTY</td><td>Standard</td><td>Revision Type</td></tr>
+<tr><td>S</td><td>T352R-REVBD (TYPE REVBD, DATS 8)</td><td>No</td><td>—</td><td>S_REVBD</td><td>Standard</td><td>Revision Start Date</td></tr>
+<tr><td>S</td><td>T352R-REVED (TYPE REVED, DATS 8)</td><td>No</td><td>—</td><td>S_REVED</td><td>Standard</td><td>Revision End Date</td></tr>
+<tr><td>S</td><td>T352R-IWERK (TYPE IWERK, CHAR 4)</td><td>No</td><td>—</td><td>S_IWERK</td><td>Standard</td><td>Planning Plant</td></tr>
+<tr><td>S</td><td>T352R-VAPLZ (TYPE GEWRK, CHAR 8)</td><td>No</td><td>—</td><td>S_VAPLZ</td><td>Standard</td><td>Main Workcenter</td></tr>
+<tr><td>S</td><td>T352R-VAWRK (TYPE WERGW, CHAR 4)</td><td>No</td><td>—</td><td>S_VAWRK</td><td>Standard</td><td>Main Workcenter Plant</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_START (DATS 8)</td><td>No</td><td>—</td><td>S_ESLOTS</td><td>Standard</td><td>eSLOT Start Date</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_END (DATS 8)</td><td>No</td><td>—</td><td>S_ESLOTE</td><td>Standard</td><td>eSLOT End Date</td></tr>
+<tr><td>P</td><td>TYPE i (integer, default 60)</td><td>No</td><td>60</td><td>P_DAYS</td><td>N/A</td><td>Days after Revision End Date</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Validation of Selection Criteria</h3>
+<p>1. At least one selection criterion must be provided. If all selection fields are empty → display error message ZPM_REVCOMP 009 "No revisions found matching selection criteria" (Type E) and stop processing.</p>
+<p>2. <strong>P_DAYS</strong>: validated as a positive integer &gt; 0. Default value = 60. Non-numeric or negative values raise an error.</p>
+<p>3. <strong>Date range</strong>: If both S_REVBD (start) and S_REVED (end) are provided, start must be &lt;= end date.</p>
+<p>4. All selection parameters are optional — allows flexible batch variant configuration.</p>
+
+<h3>3.3 CDS Views / AMDP / Table Function</h3>
+<p>Not applicable for this object. This is a classic ABAP executable program that reads directly from SAP transparent tables. No CDS views, AMDP classes, or table functions are created.</p>
+
+<h3>3.3.1 Selection Condition</h3>
+<p>Not applicable — no CDS views are used.</p>
+
+<h3>3.3.2 Join Condition</h3>
+<p>Table joins performed in ABAP:</p>
+<table class="data">
+<thead><tr><th>Source Table → Field</th><th>Target Table → Field</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>T352R.OBJNR</td><td>JEST.OBJNR</td><td>Revision status check (REL)</td></tr>
+<tr><td>T352R.REVNR</td><td>DIWPS_RV_CR.WPID</td><td>Get linked Notifications and Orders</td></tr>
+<tr><td>DIWPS_RV_CR.NOTIFID</td><td>QMEL.QMNUM → QMEL.OBJNR → JEST.OBJNR</td><td>Notification status (NOCO)</td></tr>
+<tr><td>DIWPS_RV_CR.ORDER_NO</td><td>AUFK.AUFNR → AUFK.OBJNR → JEST.OBJNR</td><td>Order status (CLSD)</td></tr>
+<tr><td>T325R.REVNR</td><td>T325R.AUFNR</td><td>Revision to Network assignment</td></tr>
+<tr><td>AUFK.AUFNR</td><td>AUFK.PSPEL</td><td>Network to WBS Element</td></tr>
+</tbody>
+</table>
+
+<h3>3.3.3 Fields</h3>
+<p>Key fields read per table (verified via DD03L batch_field_lookup):</p>
+<table class="data">
+<thead><tr><th>Table</th><th>Fields</th></tr></thead>
+<tbody>
+<tr><td><strong>T352R</strong></td><td>REVNR (CHAR 8, DE: REVNI), REVTY (CHAR 2, DE: DIWPS_REVTY_CORE), REVBD (DATS, DE: REVBD), REVED (DATS, DE: REVED), IWERK (CHAR 4, DE: IWERK), VAPLZ (CHAR 8, DE: GEWRK), VAWRK (CHAR 4, DE: WERGW), AUFNR (CHAR 12, DE: NW_AUFNR), OBJNR (CHAR 22, DE: J_OBJNR), PSPEL (NUMC 8, DE: PS_PSP_ELE), ZZ_ESLOT_START, ZZ_ESLOT_END</td></tr>
+<tr><td><strong>JEST</strong></td><td>OBJNR (CHAR 22, DE: J_OBJNR), STAT (CHAR 5, DE: J_STATUS), INACT (CHAR 1, DE: J_INACT)</td></tr>
+<tr><td><strong>DIWPS_RV_CR</strong></td><td>WPID (CHAR 8, DE: REVNI), NOTIFID (CHAR 12, DE: QMNUM), ORDER_NO (CHAR 12, DE: AUFNR)</td></tr>
+<tr><td><strong>QMEL</strong></td><td>QMNUM (CHAR 12, DE: QMNUM), OBJNR (CHAR 22, DE: QMOBJNR)</td></tr>
+<tr><td><strong>AUFK</strong></td><td>AUFNR (CHAR 12, DE: AUFNR), OBJNR (CHAR 22, DE: J_OBJNR), PSPEL (NUMC 8, DE: PS_PSP_ELE)</td></tr>
+</tbody>
+</table>
+
+<h3>3.3.4 Additional Details</h3>
+<p><strong>Verified Status Codes</strong> (confirmed from TJ02T on the live SAP system):</p>
+<table class="data">
+<thead><tr><th>ISTAT</th><th>Short Text</th><th>Description</th><th>Used For</th></tr></thead>
+<tbody>
+<tr><td>I0002</td><td>REL</td><td>Released</td><td>Revision eligibility check</td></tr>
+<tr><td>I0045</td><td>TECO</td><td>Technically completed</td><td>Network and WBS completion target</td></tr>
+<tr><td>I0046</td><td>CLSD</td><td>Closed</td><td>Order status check / Revision close target</td></tr>
+<tr><td>I0072</td><td>NOCO</td><td>Notification completed</td><td>Notification status check</td></tr>
+</tbody>
+</table>
+
+<h3>3.3.5 GIT Repository Details</h3>
+<p>Not applicable — backend ABAP executable deployed via transport request. The separate Fiori Tile development will have its own GIT repository documented in a corresponding TS.</p>
+
+<h3>3.4 Authorization Requirements</h3>
+<p>Authorization is managed at the batch job scheduling level as per Business Unit (BU) decision. The program does not implement explicit AUTHORITY-CHECK statements. Access control is enforced by:</p>
+<p>1. SM36/SM37 job scheduling authorization (S_BTCH_JOB, S_BTCH_ADM)<br/>
+2. Plant-level PM authorization objects (I_IWERK, I_BEGRP) already assigned to the batch user profile<br/>
+3. The batch job user must have authorization for the BAPIs: BAPI_BUS2002_SET_STATUS, BAPI_BUS2054_SET_STATUS, and /AXONEBX/GET_REV_CLOSE</p>
+
+<h3>3.4.1 Definition</h3>
+<p>Standard authorization objects S_BTCH_JOB and S_BTCH_ADM control batch job scheduling. Plant-level PM authorization objects (I_IWERK for planning plant, I_BEGRP for planner group) control access to maintenance revision data. No custom authorization object is created.</p>
+
+<h3>3.4.2 Defined Fields</h3>
+<table class="data">
+<thead><tr><th>Auth Object</th><th>Field</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>S_BTCH_JOB</td><td>JOBGROUP</td><td>* (all job groups)</td></tr>
+<tr><td>S_BTCH_JOB</td><td>JOBACTION</td><td>RELE (release jobs)</td></tr>
+<tr><td>I_IWERK</td><td>IWERK</td><td>ECE2 and others per variant</td></tr>
+<tr><td>B_USERSTAT</td><td>ACTVT</td><td>02 (change) — for status changes</td></tr>
+</tbody>
+</table>
+
+<h3>3.4.3 Procedure</h3>
+<p>The batch job user profile must include the above authorization objects. The security administrator assigns these via SU01/PFCG based on the agreed batch user role. The batch variant is configured with required selection parameters and scheduled via SM36 as a daily job during off-peak hours.</p>
+
+<h3>3.4.4 DCL Details</h3>
+<p>Not applicable — no CDS views or data control language objects are required.</p>
+
+<h3>3.4.5 BTP Details</h3>
+<table class="data">
+<tbody>
+<tr><td><strong>xs-security Configuration</strong></td><td>N/A — runs on S/4HANA on-premise, not on BTP</td></tr>
+<tr><td><strong>IDP Setup</strong></td><td>N/A</td></tr>
+<tr><td><strong>BTP Role Collections</strong></td><td>N/A</td></tr>
+</tbody>
+</table>
+
+<h3>3.5 Technical Flow Diagram</h3>
+
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1791908260783" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 2412 512" style="max-width:100%;height:auto;" role="graphics-document document" aria-roledescription="error"><style>#mermaid-1791908260783{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1791908260783 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1791908260783 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1791908260783 .error-icon{fill:#552222;}#mermaid-1791908260783 .error-text{fill:#552222;stroke:#552222;}#mermaid-1791908260783 .edge-thickness-normal{stroke-width:1px;}#mermaid-1791908260783 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1791908260783 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1791908260783 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1791908260783 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1791908260783 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1791908260783 .marker{fill:#666;stroke:#666;}#mermaid-1791908260783 .marker.cross{stroke:#666;}#mermaid-1791908260783 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1791908260783 p{margin:0;}#mermaid-1791908260783 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g></g><g><path class="error-icon" d="m411.313,123.313c6.25-6.25 6.25-16.375 0-22.625s-16.375-6.25-22.625,0l-32,32-9.375,9.375-20.688-20.688c-12.484-12.5-32.766-12.5-45.25,0l-16,16c-1.261,1.261-2.304,2.648-3.31,4.051-21.739-8.561-45.324-13.426-70.065-13.426-105.867,0-192,86.133-192,192s86.133,192 192,192 192-86.133 192-192c0-24.741-4.864-48.327-13.426-70.065 1.402-1.007 2.79-2.049 4.051-3.31l16-16c12.5-12.492 12.5-32.758 0-45.25l-20.688-20.688 9.375-9.375 32.001-31.999zm-219.313,100.687c-52.938,0-96,43.063-96,96 0,8.836-7.164,16-16,16s-16-7.164-16-16c0-70.578 57.422-128 128-128 8.836,0 16,7.164 16,16s-7.164,16-16,16z"></path><path class="error-icon" d="m459.02,148.98c-6.25-6.25-16.375-6.25-22.625,0s-6.25,16.375 0,22.625l16,16c3.125,3.125 7.219,4.688 11.313,4.688 4.094,0 8.188-1.563 11.313-4.688 6.25-6.25 6.25-16.375 0-22.625l-16.001-16z"></path><path class="error-icon" d="m340.395,75.605c3.125,3.125 7.219,4.688 11.313,4.688 4.094,0 8.188-1.563 11.313-4.688 6.25-6.25 6.25-16.375 0-22.625l-16-16c-6.25-6.25-16.375-6.25-22.625,0s-6.25,16.375 0,22.625l15.999,16z"></path><path class="error-icon" d="m400,64c8.844,0 16-7.164 16-16v-32c0-8.836-7.156-16-16-16-8.844,0-16,7.164-16,16v32c0,8.836 7.156,16 16,16z"></path><path class="error-icon" d="m496,96.586h-32c-8.844,0-16,7.164-16,16 0,8.836 7.156,16 16,16h32c8.844,0 16-7.164 16-16 0-8.836-7.156-16-16-16z"></path><path class="error-icon" d="m436.98,75.605c3.125,3.125 7.219,4.688 11.313,4.688 4.094,0 8.188-1.563 11.313-4.688l32-32c6.25-6.25 6.25-16.375 0-22.625s-16.375-6.25-22.625,0l-32,32c-6.251,6.25-6.251,16.375-0.001,22.625z"></path><text class="error-text" x="1440" y="250" font-size="150px" style="text-anchor: middle;">Syntax error in text</text><text class="error-text" x="1250" y="400" font-size="100px" style="text-anchor: middle;">mermaid version 11.13.0</text></g></svg></figure>
+
+<h3>3.6 UI Details</h3>
+<p>Not applicable — this program runs as a background batch job with no interactive UI. A separate Fiori Tile is planned as a separate deliverable per SIA Code Quality Strategy.</p>
+
+<h3>3.6.1 UI Mock Screens</h3>
+<table class="data">
+<tbody>
+<tr><td><strong>Application Name</strong></td><td>N/A — background batch program</td></tr>
+<tr><td><strong>Site</strong></td><td>N/A</td></tr>
+<tr><td><strong>URL</strong></td><td>N/A</td></tr>
+<tr><td><strong>Mockup</strong></td><td>N/A — no interactive screens</td></tr>
+</tbody>
+</table>
+
+<h3>3.6.2 Navigations</h3>
+<p>Not applicable.</p>
+
+<h3>3.6.3 Actions</h3>
+<p>Not applicable.</p>
+
+<h3>3.6.4 Validations</h3>
+<p>Server-side only — see sections 3.2 (Validation of Selection Criteria) and 3.7 (Processing Logic).</p>
+
+<h3>3.6.5 Other Details</h3>
+<p>Not applicable.</p>
+
+<h3>3.7 Processing Logic</h3>
+
+<div class="callout">
+<strong>Commit/Rollback Strategy:</strong> Each BAPI call is followed by BAPI_TRANSACTION_COMMIT(WAIT='X') on success or BAPI_TRANSACTION_ROLLBACK on error. Each revision + network + WBS chain is committed independently — a failure on one revision does not roll back or affect processing of others.
+</div>
+
+<p><strong>STEP 1 — Fetch Eligible Revisions:</strong></p>
+<p><code>SELECT REVNR REVTY REVBD REVED IWERK VAPLZ VAWRK AUFNR OBJNR PSPEL FROM T352R INTO TABLE lt_revisions WHERE REVNR IN s_revnr AND REVTY IN s_revty AND REVBD IN s_revbd AND REVED IN s_reved AND IWERK IN s_iwerk AND VAPLZ IN s_vaplz AND VAWRK IN s_vawrk AND ZZ_ESLOT_START IN s_eslots AND ZZ_ESLOT_END IN s_eslote.</code></p>
+<p>If lt_revisions is empty → message ZPM_REVCOMP 009, EXIT.</p>
+
+<p><strong>STEP 2 — Filter by Status (REL) and Age:</strong></p>
+<p>For each revision: read JEST WHERE OBJNR = T352R-OBJNR AND INACT &lt;&gt; 'X' AND STAT = 'I0002' (REL — confirmed from TJ02T). Also check: REVED &lt;= SY-DATUM – P_DAYS (default 60). Remove revisions not meeting both conditions.</p>
+
+<p><strong>STEP 3 — Check Linked Notifications and Orders:</strong></p>
+<p>For each remaining revision:</p>
+<p>• Read DIWPS_RV_CR WHERE WPID = REVNR → collect NOTIFID (TYPE QMNUM, CHAR 12) and ORDER_NO (TYPE AUFNR, CHAR 12).<br/>
+• For each NOTIFID: Read QMEL-OBJNR (TYPE QMOBJNR, CHAR 22) WHERE QMNUM = NOTIFID. Read JEST WHERE OBJNR = QMEL-OBJNR AND INACT &lt;&gt; 'X'. Check STAT = 'I0072' (NOCO).<br/>
+• For each ORDER_NO: Read AUFK-OBJNR (TYPE J_OBJNR, CHAR 22) WHERE AUFNR = ORDER_NO. Read JEST WHERE OBJNR = AUFK-OBJNR AND INACT &lt;&gt; 'X'. Check STAT = 'I0046' (CLSD).<br/>
+• If ANY notification is NOT NOCO or ANY order is NOT CLSD → skip revision, log ZPM_REVCOMP 002.</p>
+
+<p><strong>STEP 4 — Close Revision:</strong></p>
+<p>Call <code>/AXONEBX/GET_REV_CLOSE</code> with I_REVNR = revision REVNR (TYPE REVNI, CHAR 8), I_WERKS = revision IWERK (TYPE IWERK, CHAR 4). Check return for errors. Success → log ZPM_REVCOMP 001. Error → log ZPM_REVCOMP 010 with BAPI message text.</p>
+
+<p><strong>STEP 5 — Process Networks:</strong></p>
+<p>Read T325R WHERE REVNR = closed revision REVNR → get network AUFNR. For each network:</p>
+<p>• Read T325R WHERE AUFNR = network AUFNR AND REVNR &lt;&gt; current revision → get other linked revisions.<br/>
+• For each other revision: check CLSD via JEST (STAT = 'I0046').<br/>
+• If ALL other revisions CLSD → Call <code>BAPI_BUS2002_SET_STATUS</code>:</p>
+<table class="data">
+<thead><tr><th>Parameter</th><th>Direction</th><th>Type</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>NUMBER</td><td>IMPORTING</td><td>BAPI_NETWORK_LIST-NETWORK (NW_AUFNR, CHAR 12)</td><td>Network AUFNR</td></tr>
+<tr><td>SET_SYSTEM_STATUS</td><td>IMPORTING</td><td>BAPI_SYSTEM_STATUS-SYSTEM_STATUS (CHAR 4)</td><td>'TECO'</td></tr>
+<tr><td>RETURN</td><td>EXPORTING</td><td>BAPIRETURN1</td><td>Check TYPE for E/A</td></tr>
+</tbody>
+</table>
+<p>Then call BAPI_TRANSACTION_COMMIT(WAIT='X'). Log ZPM_REVCOMP 003.<br/>
+• If ANY revision NOT CLSD → skip, log ZPM_REVCOMP 004.<br/>
+• If revision has no linked network → log ZPM_REVCOMP 005.</p>
+
+<p><strong>STEP 6 — Process WBS Elements:</strong></p>
+<p>For each TECO'd network: Read AUFK WHERE AUFNR = network AUFNR → get PSPEL (TYPE PS_PSP_ELE, NUMC 8). Read AUFK WHERE PSPEL = same PSPEL AND AUFNR &lt;&gt; current network → get other linked networks. Check each TECO via JEST (STAT = 'I0045').</p>
+<p>If ALL TECO → Call <code>BAPI_BUS2054_SET_STATUS</code>:</p>
+<table class="data">
+<thead><tr><th>Parameter</th><th>Direction</th><th>Type</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td>I_WBS_SYSTEM_STATUS</td><td>TABLES</td><td>BAPI_WBS_MNT_SYSTEM_STATUS</td><td>WBS_ELEMENT = PSPEL (PS_POSID, CHAR 24), SET_SYSTEM_STATUS = 'TECO'</td></tr>
+<tr><td>RETURN</td><td>EXPORTING</td><td>BAPIRETURN1</td><td>Check TYPE for E/A</td></tr>
+</tbody>
+</table>
+<p>Then call BAPI_TRANSACTION_COMMIT(WAIT='X'). Log ZPM_REVCOMP 006.<br/>
+If ANY network NOT TECO → skip, log ZPM_REVCOMP 007.</p>
+
+<p><strong>STEP 7 — Email Notification (Plant ECE2 only):</strong></p>
+<p>If revision IWERK = 'ECE2' AND WBS was TECO'd:</p>
+<p>• Read SO15 distribution list for EC FI recipients.<br/>
+• Compose email per MO-0595 template.<br/>
+• Call <code>SO_NEW_DOCUMENT_ATT_SEND_API1</code>:</p>
+<table class="data">
+<thead><tr><th>Parameter</th><th>Direction</th><th>Type</th></tr></thead>
+<tbody>
+<tr><td>DOCUMENT_DATA</td><td>IMPORTING</td><td>SODOCCHGI1 (subject, doc_size, obj_descr)</td></tr>
+<tr><td>PACKING_LIST</td><td>TABLES</td><td>SOPCKLSTI1</td></tr>
+<tr><td>CONTENTS_TXT</td><td>TABLES</td><td>SOLISTI1 (email body per MO-0595)</td></tr>
+<tr><td>RECEIVERS</td><td>TABLES</td><td>SOMLRECI1 (from SO15 dist list)</td></tr>
+</tbody>
+</table>
+<p>Handle exceptions: TOO_MANY_RECEIVERS, DOCUMENT_NOT_SENT, DOCUMENT_TYPE_NOT_EXIST, OPERATION_NO_AUTHORIZATION, PARAMETER_ERROR, X_ERROR, ENQUEUE_ERROR — all caught and logged as warnings. Does not affect status changes.</p>
+
+<p><strong>STEP 8 — Display Log:</strong></p>
+<p>Collect all messages in lt_log. Foreground: CL_SALV_TABLE ALV with color coding. Background: WRITE to spool for SM37 review.</p>
+
+<h3>3.8 Reusable Code</h3>
+<p>The following should be implemented as reusable local class methods:</p>
+<table class="data">
+<thead><tr><th>Method</th><th>Description</th><th>Parameters</th></tr></thead>
+<tbody>
+<tr><td>CHECK_STATUS</td><td>Generic JEST status check for any object</td><td>IV_OBJNR (TYPE J_OBJNR), IV_STAT (TYPE J_STATUS) → RV_ACTIVE (TYPE ABAP_BOOL)</td></tr>
+<tr><td>COLLECT_MESSAGE</td><td>Append message to log table</td><td>IV_TYPE, IV_ID, IV_NUMBER, IV_V1–V4, IV_REVNR, IV_AUFNR, IV_PSPEL, IV_STEP</td></tr>
+<tr><td>SEND_EMAIL</td><td>SO_NEW_DOCUMENT_ATT_SEND_API1 wrapper with SO15 lookup</td><td>IV_WBS_ELEMENT, IV_PLANT, IV_DIST_LIST</td></tr>
+<tr><td>BAPI_COMMIT</td><td>BAPI_TRANSACTION_COMMIT(WAIT='X') with BAPIRET2 error logging</td><td>RV_SUCCESS (TYPE ABAP_BOOL)</td></tr>
+</tbody>
+</table>
+
+<h3>3.9 Messages</h3>
+<table class="data">
+<thead><tr><th>Message Class</th><th>ID</th><th>Type</th><th>Message Text</th></tr></thead>
+<tbody>
+<tr><td>ZPM_REVCOMP</td><td>001</td><td>S</td><td>Revision &amp;1 closed (CLSD) successfully</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>002</td><td>E</td><td>Notification &amp;1 / Order &amp;2 still open — cannot close Revision &amp;3</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>003</td><td>S</td><td>Network &amp;1 completed (TECO) successfully</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>004</td><td>I</td><td>Revision &amp;1 still open — cannot complete Network &amp;2</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>005</td><td>I</td><td>Revision &amp;1 closed without linked network</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>006</td><td>S</td><td>WBS &amp;1 completed (TECO) successfully</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>007</td><td>I</td><td>Network &amp;1 not yet completed — cannot complete WBS &amp;2</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>008</td><td>S</td><td>Email sent to EC FI distribution list for WBS &amp;1 TECO (Plant ECE2)</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>009</td><td>I</td><td>No revisions found matching selection criteria</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>010</td><td>E</td><td>Error closing Revision &amp;1: &amp;2</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>011</td><td>E</td><td>Error completing Network &amp;1: &amp;2</td></tr>
+<tr><td>ZPM_REVCOMP</td><td>012</td><td>E</td><td>Error completing WBS &amp;1: &amp;2</td></tr>
+</tbody>
+</table>
+
+<h3>3.10 Subroutines / Methods</h3>
+<table class="data">
+<thead><tr><th>Name</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>GET_REVISIONS</td><td>Reads T352R matching selection criteria; filters by REL status (I0002) and age (REVED &lt;= SY-DATUM – P_DAYS)</td></tr>
+<tr><td>CHECK_STATUS</td><td>Generic: reads JEST for OBJNR, checks STAT value and INACT &lt;&gt; 'X'. Used for REL/NOCO/CLSD/TECO</td></tr>
+<tr><td>GET_LINKED_ITEMS</td><td>Reads DIWPS_RV_CR (WPID = REVNR); returns NOTIFID and ORDER_NO lists</td></tr>
+<tr><td>CLOSE_REVISION</td><td>Calls /AXONEBX/GET_REV_CLOSE (I_REVNR, I_WERKS); logs BAPIRETURN1 messages</td></tr>
+<tr><td>GET_NETWORKS</td><td>Reads T325R for REVNR→AUFNR; checks multi-revision linkage</td></tr>
+<tr><td>COMPLETE_NETWORK</td><td>BAPI_BUS2002_SET_STATUS (NUMBER=AUFNR, SET_SYSTEM_STATUS='TECO') + BAPI_TRANSACTION_COMMIT(WAIT='X')</td></tr>
+<tr><td>GET_WBS_ELEMENTS</td><td>Reads AUFK (AUFNR→PSPEL); checks multi-network linkage</td></tr>
+<tr><td>COMPLETE_WBS</td><td>BAPI_BUS2054_SET_STATUS (I_WBS_SYSTEM_STATUS: WBS_ELEMENT=PSPEL, SET_SYSTEM_STATUS='TECO') + BAPI_TRANSACTION_COMMIT(WAIT='X')</td></tr>
+<tr><td>SEND_EMAIL</td><td>Plant ECE2 only: SO_NEW_DOCUMENT_ATT_SEND_API1 with SO15 dist list and MO-0595 template</td></tr>
+<tr><td>DISPLAY_LOG</td><td>CL_SALV_TABLE (foreground) or WRITE to spool (background)</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">4</span> Report Output</h2>
+
+<h3>4.1 Output Method</h3>
+<p><strong>Background mode:</strong> Output written to spool for review via SM37 / SP02.<br/>
+<strong>Foreground mode (testing):</strong> ALV grid display using CL_SALV_TABLE.</p>
+
+<h3>4.2 Main Heading</h3>
+<p>Auto Complete Revision, Network and WBS — Processing Log</p>
+
+<h3>4.3 Sub Heading</h3>
+<p>Execution Date: SY-DATUM | Time: SY-UZEIT | User: SY-UNAME | Days Parameter: P_DAYS</p>
+
+<h3>4.4 Layout / UI Design</h3>
+<table class="data">
+<thead><tr><th>Col #</th><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>REVNR</td><td>CHAR 8</td><td>Revision Number</td></tr>
+<tr><td>2</td><td>AUFNR</td><td>CHAR 12</td><td>Network Number</td></tr>
+<tr><td>3</td><td>PSPEL</td><td>NUMC 8</td><td>WBS Element</td></tr>
+<tr><td>4</td><td>STEP</td><td>CHAR 20</td><td>Processing Step (Revision / Network / WBS / Email)</td></tr>
+<tr><td>5</td><td>MSGTY</td><td>CHAR 1</td><td>Message Type (S=Success, E=Error, I=Info, W=Warning)</td></tr>
+<tr><td>6</td><td>MSGTX</td><td>CHAR 220</td><td>Message Text (full BAPI return message)</td></tr>
+<tr><td>7</td><td>TIMESTAMP</td><td>CHAR 14</td><td>Date/Time of Processing</td></tr>
+</tbody>
+</table>
+<p>Color coding: COL_POSITIVE (green) = success, COL_NEGATIVE (red) = error, COL_TOTAL (yellow) = info/warning.</p>
+
+<h3>4.5 Totaling</h3>
+<p>Summary row: Total Revisions Processed | Total Revisions Closed | Total Networks TECO'd | Total WBS TECO'd | Total Errors | Total Emails Sent.</p>
+
+<h3>4.6 Sorting</h3>
+<p>Default: REVNR ascending, then STEP order (Revision → Network → WBS → Email).</p>
+
+<h3>4.7 Page Break</h3>
+<p>Not applicable — ALV grid handles pagination automatically.</p>
+
+<h3>4.8 Error Handling</h3>
+<p>1. <strong>BAPI errors</strong> (RETURN-TYPE = 'E' or 'A'): Logged with full BAPIRETURN1-MESSAGE text (CHAR 220). BAPI_TRANSACTION_ROLLBACK called. Processing continues to next item.<br/>
+2. <strong>Unexpected exceptions:</strong> TRY/CATCH cx_root. Exception text logged. Processing continues.<br/>
+3. <strong>Email exceptions:</strong> All 7 exceptions from SO_NEW_DOCUMENT_ATT_SEND_API1 caught and logged as warnings. Does not affect status changes.<br/>
+4. <strong>No data:</strong> ZPM_REVCOMP 009 + EXIT.<br/>
+5. <strong>Independent chains:</strong> Error on one revision does not roll back or affect others.</p>
+
+<h3>4.9 Report Header &amp; Footer</h3>
+<p>Standard Project Polaris header and footer. No deviation required.</p>
+
+<h2><span class="sec-num">5</span> Assumptions in Technical Design</h2>
+<p>1. The custom BAPI /AXONEBX/GET_REV_CLOSE is deployed and active on the target S/4HANA system with parameters I_REVNR (TYPE REVNI, CHAR 8) and I_WERKS (TYPE IWERK, CHAR 4).<br/>
+2. T325R contains the revision-to-network assignment (REVNR → AUFNR mapping). Table returned empty fields in the connected ECC system — to be verified on the target S/4HANA system.<br/>
+3. DIWPS_RV_CR verified: contains WPID (TYPE REVNI, CHAR 8), NOTIFID (TYPE QMNUM, CHAR 12), ORDER_NO (TYPE AUFNR, CHAR 12).<br/>
+4. JEST status values confirmed via TJ02T: I0002=REL, I0045=TECO, I0046=CLSD, I0072=NOCO.<br/>
+5. SO15 distribution list for EC FI is maintained and current.<br/>
+6. MO-0595 email template is available and defines subject/body format.<br/>
+7. All service orders are closed within P_DAYS (default 60) from revision end date.<br/>
+8. Batch job user has sufficient authorization for all BAPI calls and table reads.<br/>
+9. BAPI_BUS2002_SET_STATUS: NUMBER typed NW_AUFNR (CHAR 12), SET_SYSTEM_STATUS (CHAR 4). Verified.<br/>
+10. BAPI_BUS2054_SET_STATUS: I_WBS_SYSTEM_STATUS table with WBS_ELEMENT (TYPE PS_POSID, CHAR 24) and SET_SYSTEM_STATUS (CHAR 4). Verified.</p>
+
+<h2><span class="sec-num">6</span> Open Issues in Technical Design</h2>
+<table class="data">
+<thead><tr><th>#</th><th>Issue</th><th>Status</th><th>Owner</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Confirm /AXONEBX/GET_REV_CLOSE exact interface and return structure — custom/partner BAPI not available in connected ECC system for live verification</td><td>OPEN</td><td>Functional / Vendor</td></tr>
+<tr><td>2</td><td>Confirm T325R table structure on target S/4HANA — returned empty fields in ECC test system (may be S/4HANA PM-specific)</td><td>OPEN</td><td>Technical</td></tr>
+<tr><td>3</td><td>Clarify FS reference to DIWPA_RV_CR vs DIWPS_RV_CR — DIWPS_RV_CR verified (WPID, NOTIFID, ORDER_NO); DIWPA_RV_CR returned no fields in DD03L</td><td>OPEN</td><td>Functional</td></tr>
+<tr><td>4</td><td>Confirm Fiori Tile development is a separate TS deliverable</td><td>OPEN</td><td>Project Lead</td></tr>
+<tr><td>5</td><td>Confirm the SO15 distribution list name for EC FI email recipients</td><td>OPEN</td><td>Business</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">7</span> Unit Test Results</h2>
+<table class="data">
+<thead><tr><th>Scenario #</th><th>Input / Selection Criteria</th><th>Expected Result</th><th>Pass/Fail</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Revision with linked Notifications and Service Orders not yet completed</td><td>System ignores revision for auto-close; logs info message per open item</td><td>Pending</td></tr>
+<tr><td>2</td><td>Revision with all Notifications NOCO and all Orders CLSD</td><td>System closes revision (CLSD) with success message</td><td>Pending</td></tr>
+<tr><td>3</td><td>Revision with network linked to multiple revisions — all other revisions CLSD</td><td>System TECOs the network with success message</td><td>Pending</td></tr>
+<tr><td>4</td><td>Network linked to multiple revisions — one revision NOT CLSD</td><td>System skips network TECO; logs info about open revision</td><td>Pending</td></tr>
+<tr><td>5</td><td>WBS linked to multiple networks — all networks TECO</td><td>System TECOs the WBS with success message</td><td>Pending</td></tr>
+<tr><td>6</td><td>WBS linked to multiple networks — one network NOT TECO</td><td>System skips WBS TECO; logs info about open network</td><td>Pending</td></tr>
+<tr><td>7</td><td>Revision without any linked network</td><td>System closes revision and logs "Revision XXXXX closed without network"</td><td>Pending</td></tr>
+<tr><td>8</td><td>WBS TECO for planning plant ECE2</td><td>Email sent to EC FI distribution list (SO15) using MO-0595 template</td><td>Pending</td></tr>
+<tr><td>9</td><td>WBS TECO for plant other than ECE2</td><td>No email sent; only log message for WBS TECO</td><td>Pending</td></tr>
+<tr><td>10</td><td>BAPI returns error during revision close</td><td>Error message logged; revision remains unchanged; processing continues to next revision</td><td>Pending</td></tr>
+<tr><td>11</td><td>No revisions match selection criteria</td><td>Program ends with info message ZPM_REVCOMP 009</td><td>Pending</td></tr>
+<tr><td>12</td><td>Background execution (SM36/SM37)</td><td>All messages stored in spool; log available for review via SM37</td><td>Pending</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">8</span> Related Documentation</h2>
+<p>1. <strong>Functional Specification:</strong> FSD_EN-MO-0613 Auto Complete Revision, Network and WBS (v0.1, Muralikrishna K, 10 Sep 2026)<br/>
+2. <strong>Email Template:</strong> MO-0595 (WBS TECO email notification to EC FI)<br/>
+3. <strong>Project:</strong> Polaris Lodestar Phase 2A<br/>
+4. <strong>Verified BAPIs:</strong> BAPI_BUS2002_SET_STATUS (FG: CNIF_STATUS_2002), BAPI_BUS2054_SET_STATUS (FG: CNIF_STATUS_2054), BAPI_TRANSACTION_COMMIT (FG: BAPT), SO_NEW_DOCUMENT_ATT_SEND_API1 (FG: SOI1)<br/>
+5. <strong>Verified Status Codes</strong> (TJ02T): I0002=REL (Released), I0045=TECO (Technically completed), I0046=CLSD (Closed), I0072=NOCO (Notification completed)</p>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 13 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
