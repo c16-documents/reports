@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS EN MO 0613 Auto Complete Revision Network WBS</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>TS EN MO 0613 Auto Complete Revision Network WBS</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>TS EN MO 0613 Auto Complete Revision Network WBS</td>
+        <td class="meta-label">Date</td>
+        <td>14 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<h2><span class="sec-num">1</span> Document Organization</h2>
+
+<h3>1.1 Document Log</h3>
+<table class="data">
+<thead><tr><th>Version</th><th>Status</th><th>Date</th><th>Created By</th><th>Role</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>0.1</td><td>Draft</td><td>2026-10-14</td><td>C16 Auto-Generated</td><td>Author</td><td>Initial TS draft based on FSD EN-MO-0613 v0.1 (Muralikrishna K, 10-Sep-2026)</td></tr>
+</tbody>
+</table>
+
+<h3>1.2 Integration, Document Reference</h3>
+<table class="data">
+<thead><tr><th>S. No.</th><th>Referred Document Name</th><th>Version</th><th>URL</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>FSD_EN-MO-0613 Auto Complete Network, WBS and Revision</td><td>0.1</td><td>Project Polaris Lodestar Phase 2A repository</td></tr>
+<tr><td>2</td><td>Email Template MO-0595</td><td>—</td><td>Referenced for WBS TECO email notification</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">2</span> Code Quality</h2>
+<table class="data">
+<thead><tr><th>Final Solution</th><th>Category</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>Custom batch program using standard BAPIs (BAPI_BUS2002_SET_STATUS, BAPI_BUS2054_SET_STATUS) and partner BAPI (/AXONEBX/GET_REV_CLOSE)</td><td><strong>Tier 3 — Legacy Development</strong></td><td>Classic ABAP executable with standard BAPIs for status changes. Level B compliance (classic APIs). Compatible with S/4HANA on-premise. A Fiori Tile for monitoring is planned separately per SIA Code Quality Strategy. No direct DML on standard tables — all updates via BAPIs.</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">3</span> Program Attributes</h2>
+
+<table class="data">
+<thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td><strong>Program Title</strong></td><td>Auto Complete Revision, Network and WBS</td></tr>
+<tr><td><strong>Program Name</strong></td><td>ZEN_MO_0613_AUTO_COMPLETE</td></tr>
+<tr><td><strong>Program Type</strong></td><td>Executable (REPORT type — background batch job)</td></tr>
+<tr><td><strong>Package</strong></td><td>ZPM_POLARIS_P2A</td></tr>
+<tr><td><strong>Authorization Group</strong></td><td>As per BU decision</td></tr>
+<tr><td><strong>RICEFWA ID</strong></td><td>EN-MO-0613</td></tr>
+<tr><td><strong>Project</strong></td><td>Polaris Lodestar Phase 2A</td></tr>
+<tr><td><strong>Application System</strong></td><td>S/4HANA</td></tr>
+</tbody>
+</table>
+
+<table class="data">
+<thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td><strong>Transaction Code</strong></td><td>N/A — Background batch job (SM36/SM37)</td></tr>
+<tr><td><strong>Include Programs</strong></td><td>N/A</td></tr>
+<tr><td><strong>Function Modules</strong></td><td>/AXONEBX/GET_REV_CLOSE, BAPI_BUS2002_SET_STATUS, BAPI_BUS2054_SET_STATUS, BAPI_TRANSACTION_COMMIT</td></tr>
+<tr><td><strong>Message Class</strong></td><td>ZPM_AUTOCOMPLETE (custom) + BAPI return messages (BAPIRETURN1)</td></tr>
+</tbody>
+</table>
+
+<table class="data">
+<thead><tr><th>Attribute</th><th>Value</th></tr></thead>
+<tbody>
+<tr><td><strong>SAP Tables Read</strong></td><td>T352R (Revisions), JEST (Object Status), DIWPS_RV_CR (Revision Check Records), QMEL (Notifications), AUFK (Orders/WBS), T325R (Revision-Network link)</td></tr>
+<tr><td><strong>Custom Tables</strong></td><td>N/A — No custom tables required</td></tr>
+<tr><td><strong>Custom Indexes</strong></td><td>N/A</td></tr>
+<tr><td><strong>CDS Views</strong></td><td>N/A — Not applicable for this batch program</td></tr>
+<tr><td><strong>OData Service</strong></td><td>N/A — Background batch job</td></tr>
+<tr><td><strong>Business Object</strong></td><td>BUS2002 (Network), BUS2054 (WBS Element)</td></tr>
+<tr><td><strong>Fiori App Name</strong></td><td>To be developed as per SIA Code Quality Strategy (Fiori Tile for job monitoring)</td></tr>
+</tbody>
+</table>
+
+<h3>3.1 Selection Screen</h3>
+<p><strong>Block: Revision Selection Criteria</strong></p>
+<table class="data">
+<thead><tr><th>P/S</th><th>Type / Field Name</th><th>Mandatory</th><th>Default</th><th>Parameter ID</th><th>Search Help</th><th>Screen Text</th></tr></thead>
+<tbody>
+<tr><td>S</td><td>T352R-REVNR</td><td>No</td><td>—</td><td>S_REVNR</td><td>Standard (REVNI)</td><td>Revision Number</td></tr>
+<tr><td>S</td><td>T352R-REVTY</td><td>No</td><td>—</td><td>S_REVTY</td><td>Standard (DIWPS_REVTY_CORE)</td><td>Revision Type</td></tr>
+<tr><td>S</td><td>T352R-REVBD</td><td>No</td><td>—</td><td>S_REVBD</td><td>Standard (Date)</td><td>Revision Start Date</td></tr>
+<tr><td>S</td><td>T352R-REVED</td><td>No</td><td>—</td><td>S_REVED</td><td>Standard (Date)</td><td>Revision End Date</td></tr>
+<tr><td>S</td><td>T352R-IWERK</td><td>No</td><td>—</td><td>S_IWERK</td><td>Standard (IWERK)</td><td>Planning Plant of Revision</td></tr>
+<tr><td>S</td><td>T352R-VAPLZ</td><td>No</td><td>—</td><td>S_VAPLZ</td><td>Standard (GEWRK)</td><td>Main Workcenter for Revision</td></tr>
+<tr><td>S</td><td>T352R-VAWRK</td><td>No</td><td>—</td><td>S_VAWRK</td><td>Standard (WERGW)</td><td>Main Workcenter Plant</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_START</td><td>No</td><td>—</td><td>S_ESLOTS</td><td>Standard (Date)</td><td>eSLOT Start Date</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_END</td><td>No</td><td>—</td><td>S_ESLOTE</td><td>Standard (Date)</td><td>eSLOT End Date</td></tr>
+<tr><td>P</td><td>TYPE I (Integer)</td><td>No</td><td>60</td><td>P_DAYS</td><td>N/A</td><td>XX Days Threshold (Days from current date)</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Validation of Selection Criteria</h3>
+<p>1. At least one selection criterion must be provided — error message ZPM_AUTOCOMPLETE 010 if all fields are blank.</p>
+<p>2. P_DAYS must be a positive integer > 0. Default value = 60.</p>
+<p>3. Date ranges: S_REVBD low ≤ high; S_ESLOTS low ≤ S_ESLOTE high.</p>
+<p>4. Planning Plant (S_IWERK) validated against T001W for existence.</p>
+
+<h3>3.3 CDS Views / AMDP / Table Function</h3>
+<p>Not applicable for this object. This is a background batch program using classic ABAP with standard BAPIs.</p>
+
+<h3>3.4 Authorization Requirements</h3>
+<p><strong>Definition:</strong> Standard SAP authorization objects used. BAPIs enforce internal authorization.</p>
+<table class="data">
+<thead><tr><th>Auth Object</th><th>Field</th><th>Value</th><th>Activity</th></tr></thead>
+<tbody>
+<tr><td>S_TCODE</td><td>TCD</td><td>ZEN_MO_0613</td><td>16 (Execute)</td></tr>
+<tr><td>I_IWERK</td><td>IWERK</td><td>Plant values from selection screen</td><td>02 (Change)</td></tr>
+</tbody>
+</table>
+<p><strong>DCL Details:</strong> Not applicable — classic ABAP batch program.</p>
+<p><strong>BTP Details:</strong> Not applicable — S/4HANA on-premise program.</p>
+
+<h3>3.5 Technical Flow Diagram</h3>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1791953878348" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 1990.5469970703125 3130.3125" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1791953878348{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1791953878348 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1791953878348 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1791953878348 .error-icon{fill:#552222;}#mermaid-1791953878348 .error-text{fill:#552222;stroke:#552222;}#mermaid-1791953878348 .edge-thickness-normal{stroke-width:1px;}#mermaid-1791953878348 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1791953878348 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1791953878348 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1791953878348 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1791953878348 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1791953878348 .marker{fill:#666;stroke:#666;}#mermaid-1791953878348 .marker.cross{stroke:#666;}#mermaid-1791953878348 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1791953878348 p{margin:0;}#mermaid-1791953878348 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1791953878348 .cluster-label text{fill:#333;}#mermaid-1791953878348 .cluster-label span{color:#333;}#mermaid-1791953878348 .cluster-label span p{background-color:transparent;}#mermaid-1791953878348 .label text,#mermaid-1791953878348 span{fill:#000000;color:#000000;}#mermaid-1791953878348 .node rect,#mermaid-1791953878348 .node circle,#mermaid-1791953878348 .node ellipse,#mermaid-1791953878348 .node polygon,#mermaid-1791953878348 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1791953878348 .rough-node .label text,#mermaid-1791953878348 .node .label text,#mermaid-1791953878348 .image-shape .label,#mermaid-1791953878348 .icon-shape .label{text-anchor:middle;}#mermaid-1791953878348 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1791953878348 .rough-node .label,#mermaid-1791953878348 .node .label,#mermaid-1791953878348 .image-shape .label,#mermaid-1791953878348 .icon-shape .label{text-align:center;}#mermaid-1791953878348 .node.clickable{cursor:pointer;}#mermaid-1791953878348 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1791953878348 .arrowheadPath{fill:#333333;}#mermaid-1791953878348 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1791953878348 .flowchart-link{stroke:#666;fill:none;}#mermaid-1791953878348 .edgeLabel{background-color:white;text-align:center;}#mermaid-1791953878348 .edgeLabel p{background-color:white;}#mermaid-1791953878348 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1791953878348 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1791953878348 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1791953878348 .cluster text{fill:#333;}#mermaid-1791953878348 .cluster span{color:#333;}#mermaid-1791953878348 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1791953878348 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1791953878348 rect.text{fill:none;stroke-width:0;}#mermaid-1791953878348 .icon-shape,#mermaid-1791953878348 .image-shape{background-color:white;text-align:center;}#mermaid-1791953878348 .icon-shape p,#mermaid-1791953878348 .image-shape p{background-color:white;padding:2px;}#mermaid-1791953878348 .icon-shape .label rect,#mermaid-1791953878348 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1791953878348 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1791953878348 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1791953878348 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1791953878348_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791953878348_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791953878348_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1791953878348_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1791953878348_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791953878348_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M839.789,86L839.789,90.167C839.789,94.333,839.789,102.667,839.789,110.333C839.789,118,839.789,125,839.789,128.5L839.789,132" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6ODM5Ljc4OTA2MjUsInkiOjg2fSx7IngiOjgzOS43ODkwNjI1LCJ5IjoxMTF9LHsieCI6ODM5Ljc4OTA2MjUsInkiOjEzNn1d" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M839.789,214L839.789,218.167C839.789,222.333,839.789,230.667,839.789,238.333C839.789,246,839.789,253,839.789,256.5L839.789,260" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6ODM5Ljc4OTA2MjUsInkiOjIxNH0seyJ4Ijo4MzkuNzg5MDYyNSwieSI6MjM5fSx7IngiOjgzOS43ODkwNjI1LCJ5IjoyNjR9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M764.094,366.945L659.745,385.728C555.396,404.51,346.698,442.076,242.349,468.358C138,494.641,138,509.641,138,517.141L138,524.641" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6NzY0LjA5MzcyNTMwOTA4NiwieSI6MzY2Ljk0NTI4NzgwOTA4NjA0fSx7IngiOjEzOCwieSI6NDc5LjY0MDYyNX0seyJ4IjoxMzgsInkiOjUyOC42NDA2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M138,606.641L138,612.807C138,618.974,138,631.307,138,640.974C138,650.641,138,657.641,138,661.141L138,664.641" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MTM4LCJ5Ijo2MDYuNjQwNjI1fSx7IngiOjEzOCwieSI6NjQzLjY0MDYyNX0seyJ4IjoxMzgsInkiOjY2OC42NDA2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M138,746.641L138,750.807C138,754.974,138,763.307,138,770.974C138,778.641,138,785.641,138,789.141L138,792.641" id="L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MTM4LCJ5Ijo3NDYuNjQwNjI1fSx7IngiOjEzOCwieSI6NzcxLjY0MDYyNX0seyJ4IjoxMzgsInkiOjc5Ni42NDA2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M138,874.641L138,878.807C138,882.974,138,891.307,138,898.974C138,906.641,138,913.641,138,917.141L138,920.641" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6MTM4LCJ5Ijo4NzQuNjQwNjI1fSx7IngiOjEzOCwieSI6ODk5LjY0MDYyNX0seyJ4IjoxMzgsInkiOjkyNC42NDA2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M107.177,1086.74L101.869,1098.043C96.561,1109.347,85.944,1131.955,80.636,1162.916C75.328,1193.878,75.328,1233.193,75.328,1272.508C75.328,1311.823,75.328,1351.138,90.51,1378.656C105.692,1406.173,136.056,1421.894,151.238,1429.754L166.42,1437.614" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6MTA3LjE3NzA3MDY3ODE1MTc2LCJ5IjoxMDg2LjczOTU3MDY3ODE1MTd9LHsieCI6NzUuMzI4MTI1LCJ5IjoxMTU0LjU2MjV9LHsieCI6NzUuMzI4MTI1LCJ5IjoxMjcyLjUwNzgxMjV9LHsieCI6NzUuMzI4MTI1LCJ5IjoxMzkwLjQ1MzEyNX0seyJ4IjoxNjkuOTcxOTkwNDExOTMxOCwieSI6MTQzOS40NTMxMjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M180.99,1074.573L191.708,1087.904C202.427,1101.236,223.864,1127.899,234.582,1146.731C245.301,1165.563,245.301,1176.563,245.301,1182.063L245.301,1187.563" id="L_G_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_I_0" data-points="W3sieCI6MTgwLjk4OTk0ODc2NTkyMDMzLCJ5IjoxMDc0LjU3MjU1MTIzNDA3OTZ9LHsieCI6MjQ1LjMwMDc4MTI1LCJ5IjoxMTU0LjU2MjV9LHsieCI6MjQ1LjMwMDc4MTI1LCJ5IjoxMTkxLjU2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M245.301,1353.453L245.301,1359.62C245.301,1365.786,245.301,1378.12,245.301,1391.786C245.301,1405.453,245.301,1420.453,245.301,1427.953L245.301,1435.453" id="L_I_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_H_0" data-points="W3sieCI6MjQ1LjMwMDc4MTI1LCJ5IjoxMzUzLjQ1MzEyNX0seyJ4IjoyNDUuMzAwNzgxMjUsInkiOjEzOTAuNDUzMTI1fSx7IngiOjI0NS4zMDA3ODEyNSwieSI6MTQzOS40NTMxMjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M307.759,1290.995L363.763,1307.571C419.767,1324.148,531.774,1357.3,587.778,1379.377C643.781,1401.453,643.781,1412.453,643.781,1417.953L643.781,1423.453" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6MzA3Ljc1OTE3NzQ3ODg2OCwieSI6MTI5MC45OTQ3Mjg3NzExMzJ9LHsieCI6NjQzLjc4MTI1LCJ5IjoxMzkwLjQ1MzEyNX0seyJ4Ijo2NDMuNzgxMjUsInkiOjE0MjcuNDUzMTI1fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M643.781,1529.453L643.781,1533.62C643.781,1537.786,643.781,1546.12,643.781,1553.786C643.781,1561.453,643.781,1568.453,643.781,1571.953L643.781,1575.453" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6NjQzLjc4MTI1LCJ5IjoxNTI5LjQ1MzEyNX0seyJ4Ijo2NDMuNzgxMjUsInkiOjE1NTQuNDUzMTI1fSx7IngiOjY0My43ODEyNSwieSI6MTU3OS40NTMxMjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M643.781,1747.953L643.781,1754.12C643.781,1760.286,643.781,1772.62,653.537,1795.215C663.292,1817.809,682.803,1850.665,692.559,1867.094L702.314,1883.522" id="L_K_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_L_0" data-points="W3sieCI6NjQzLjc4MTI1LCJ5IjoxNzQ3Ljk1MzEyNX0seyJ4Ijo2NDMuNzgxMjUsInkiOjE3ODQuOTUzMTI1fSx7IngiOjcwNC4zNTYzMzYzOTY3NTMyLCJ5IjoxODg2Ljk2MDkzNzV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M705.865,1685.869L752.12,1702.383C798.374,1718.897,890.882,1751.925,937.136,1773.939C983.391,1795.953,983.391,1806.953,983.391,1812.453L983.391,1817.953" id="L_K_M_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_M_0" data-points="W3sieCI6NzA1Ljg2NTQ1OTE4Nzk5OCwieSI6MTY4NS44Njg5MTU4MTIwMDIxfSx7IngiOjk4My4zOTA2MjUsInkiOjE3ODQuOTUzMTI1fSx7IngiOjk4My4zOTA2MjUsInkiOjE4MjEuOTUzMTI1fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M983.391,2029.969L983.391,2036.135C983.391,2042.302,983.391,2054.635,989.428,2068.446C995.465,2082.256,1007.538,2097.543,1013.575,2105.186L1019.612,2112.83" id="L_M_N_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_N_0" data-points="W3sieCI6OTgzLjM5MDYyNSwieSI6MjAyOS45Njg3NX0seyJ4Ijo5ODMuMzkwNjI1LCJ5IjoyMDY2Ljk2ODc1fSx7IngiOjEwMjIuMDkxNjYzNzA3Mzg2NCwieSI6MjExNS45Njg3NX1d" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1058.501,1954.859L1107.066,1973.544C1155.632,1992.229,1252.763,2029.599,1301.329,2053.784C1349.895,2077.969,1349.895,2088.969,1349.895,2094.469L1349.895,2099.969" id="L_M_O_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_O_0" data-points="W3sieCI6MTA1OC41MDA3NTE4Mjc1MjQ3LCJ5IjoxOTU0Ljg1ODYyMzE3MjQ3NTN9LHsieCI6MTM0OS44OTQ1MzEyNSwieSI6MjA2Ni45Njg3NX0seyJ4IjoxMzQ5Ljg5NDUzMTI1LCJ5IjoyMTAzLjk2ODc1fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1349.895,2205.969L1349.895,2210.135C1349.895,2214.302,1349.895,2222.635,1349.895,2230.302C1349.895,2237.969,1349.895,2244.969,1349.895,2248.469L1349.895,2251.969" id="L_O_P_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_O_P_0" data-points="W3sieCI6MTM0OS44OTQ1MzEyNSwieSI6MjIwNS45Njg3NX0seyJ4IjoxMzQ5Ljg5NDUzMTI1LCJ5IjoyMjMwLjk2ODc1fSx7IngiOjEzNDkuODk0NTMxMjUsInkiOjIyNTUuOTY4NzV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1349.895,2466.172L1349.895,2472.339C1349.895,2478.505,1349.895,2490.839,1357.095,2504.686C1364.295,2518.532,1378.696,2533.893,1385.896,2541.573L1393.096,2549.254" id="L_P_Q_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_P_Q_0" data-points="W3sieCI6MTM0OS44OTQ1MzEyNSwieSI6MjQ2Ni4xNzE4NzV9LHsieCI6MTM0OS44OTQ1MzEyNSwieSI6MjUwMy4xNzE4NzV9LHsieCI6MTM5NS44MzIwMzEyNSwieSI6MjU1Mi4xNzE4NzV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1426.415,2389.651L1477.071,2408.571C1527.726,2427.491,1629.037,2465.332,1679.692,2489.752C1730.348,2514.172,1730.348,2525.172,1730.348,2530.672L1730.348,2536.172" id="L_P_R_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_P_R_0" data-points="W3sieCI6MTQyNi40MTUxNjg5MDE5MzU0LCJ5IjoyMzg5LjY1MTIzNzM0ODA2NDZ9LHsieCI6MTczMC4zNDc2NTYyNSwieSI6MjUwMy4xNzE4NzV9LHsieCI6MTczMC4zNDc2NTYyNSwieSI6MjU0MC4xNzE4NzV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1730.348,2642.172L1730.348,2646.339C1730.348,2650.505,1730.348,2658.839,1730.348,2666.505C1730.348,2674.172,1730.348,2681.172,1730.348,2684.672L1730.348,2688.172" id="L_R_S_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_R_S_0" data-points="W3sieCI6MTczMC4zNDc2NTYyNSwieSI6MjY0Mi4xNzE4NzV9LHsieCI6MTczMC4zNDc2NTYyNSwieSI6MjY2Ny4xNzE4NzV9LHsieCI6MTczMC4zNDc2NTYyNSwieSI6MjY5Mi4xNzE4NzV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1763.198,2809.462L1772.256,2821.104C1781.314,2832.746,1799.431,2856.029,1808.489,2873.171C1817.547,2890.313,1817.547,2901.313,1817.547,2906.813L1817.547,2912.313" id="L_S_T_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_S_T_0" data-points="W3sieCI6MTc2My4xOTgwMDAwMDQyODgxLCJ5IjoyODA5LjQ2MjE1NjI0NTcxMn0seyJ4IjoxODE3LjU0Njg3NSwieSI6Mjg3OS4zMTI1fSx7IngiOjE4MTcuNTQ2ODc1LCJ5IjoyOTE2LjMxMjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1697.497,2809.462L1688.439,2821.104C1679.381,2832.746,1661.265,2856.029,1652.207,2882.337C1643.148,2908.646,1643.148,2937.979,1643.148,2965.313C1643.148,2992.646,1643.148,3017.979,1656.822,3034.723C1670.496,3051.467,1697.843,3059.621,1711.517,3063.698L1725.19,3067.775" id="L_S_U_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_S_U_0" data-points="W3sieCI6MTY5Ny40OTczMTI0OTU3MTE5LCJ5IjoyODA5LjQ2MjE1NjI0NTcxMn0seyJ4IjoxNjQzLjE0ODQzNzUsInkiOjI4NzkuMzEyNX0seyJ4IjoxNjQzLjE0ODQzNzUsInkiOjI5NjcuMzEyNX0seyJ4IjoxNjQzLjE0ODQzNzUsInkiOjMwNDMuMzEyNX0seyJ4IjoxNzI5LjAyMzQzNzUsInkiOjMwNjguOTE3NjYwNTk2Njk0fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1817.547,3018.313L1817.547,3022.479C1817.547,3026.646,1817.547,3034.979,1817.547,3042.646C1817.547,3050.313,1817.547,3057.313,1817.547,3060.813L1817.547,3064.313" id="L_T_U_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_T_U_0" data-points="W3sieCI6MTgxNy41NDY4NzUsInkiOjMwMTguMzEyNX0seyJ4IjoxODE3LjU0Njg3NSwieSI6MzA0My4zMTI1fSx7IngiOjE4MTcuNTQ2ODc1LCJ5IjozMDY4LjMxMjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1903.22,3068.313L1916.441,3064.146C1929.662,3059.979,1956.105,3051.646,1969.326,3034.813C1982.547,3017.979,1982.547,2992.646,1982.547,2965.313C1982.547,2937.979,1982.547,2908.646,1982.547,2875.301C1982.547,2841.956,1982.547,2804.599,1982.547,2769.242C1982.547,2733.885,1982.547,2700.529,1982.547,2671.184C1982.547,2641.839,1982.547,2616.505,1982.547,2589.172C1982.547,2561.839,1982.547,2532.505,1982.547,2494.155C1982.547,2455.805,1982.547,2408.438,1982.547,2363.07C1982.547,2317.703,1982.547,2274.336,1982.547,2239.986C1982.547,2205.635,1982.547,2180.302,1982.547,2152.969C1982.547,2125.635,1982.547,2096.302,1982.547,2058.134C1982.547,2019.966,1982.547,1972.964,1982.547,1925.961C1982.547,1878.958,1982.547,1831.956,1982.547,1788.246C1982.547,1744.536,1982.547,1704.12,1982.547,1665.703C1982.547,1627.286,1982.547,1590.87,1982.547,1559.995C1982.547,1529.12,1982.547,1503.786,1982.547,1476.453C1982.547,1449.12,1982.547,1419.786,1982.547,1385.462C1982.547,1351.138,1982.547,1311.823,1982.547,1272.508C1982.547,1233.193,1982.547,1193.878,1982.547,1151.977C1982.547,1110.076,1982.547,1065.589,1982.547,1023.102C1982.547,980.615,1982.547,940.128,1982.547,909.217C1982.547,878.307,1982.547,856.974,1982.547,835.641C1982.547,814.307,1982.547,792.974,1982.547,771.641C1982.547,750.307,1982.547,728.974,1982.547,707.641C1982.547,686.307,1982.547,664.974,1982.547,641.641C1982.547,618.307,1982.547,592.974,1982.547,565.641C1982.547,538.307,1982.547,508.974,1806.155,474.809C1629.763,440.644,1276.979,401.647,1100.587,382.149L924.194,362.65" id="L_U_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_U_C_0" data-points="W3sieCI6MTkwMy4yMTk5NTE5MjMwNzcsInkiOjMwNjguMzEyNX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6MzA0My4zMTI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5IjoyOTY3LjMxMjV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjI4NzkuMzEyNX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6Mjc2Ny4yNDIxODc1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5IjoyNjY3LjE3MTg3NX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6MjU5MS4xNzE4NzV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjI1MDMuMTcxODc1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5IjoyMzYxLjA3MDMxMjV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjIyMzAuOTY4NzV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjIxNTQuOTY4NzV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjIwNjYuOTY4NzV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjE5MjUuOTYwOTM3NX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6MTc4NC45NTMxMjV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjE2NjMuNzAzMTI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5IjoxNTU0LjQ1MzEyNX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6MTQ3OC40NTMxMjV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjEzOTAuNDUzMTI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5IjoxMjcyLjUwNzgxMjV9LHsieCI6MTk4Mi41NDY4NzUsInkiOjExNTQuNTYyNX0seyJ4IjoxOTgyLjU0Njg3NSwieSI6MTAyMS4xMDE1NjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo4OTkuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo4MzUuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo3NzEuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo3MDcuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo2NDMuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo1NjcuNjQwNjI1fSx7IngiOjE5ODIuNTQ2ODc1LCJ5Ijo0NzkuNjQwNjI1fSx7IngiOjkyMC4yMTg2OTMyMDA4ODA5LCJ5IjozNjIuMjEwOTk0Mjk5MTE5MX1d" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M354.012,1452.397L397.085,1442.073C440.159,1431.749,526.306,1411.101,569.38,1381.12C612.453,1351.138,612.453,1311.823,612.453,1272.508C612.453,1233.193,612.453,1193.878,612.453,1151.977C612.453,1110.076,612.453,1065.589,612.453,1023.102C612.453,980.615,612.453,940.128,612.453,909.217C612.453,878.307,612.453,856.974,612.453,835.641C612.453,814.307,612.453,792.974,612.453,771.641C612.453,750.307,612.453,728.974,612.453,707.641C612.453,686.307,612.453,664.974,612.453,641.641C612.453,618.307,612.453,592.974,612.453,565.641C612.453,538.307,612.453,508.974,640.19,478.895C667.927,448.816,723.402,417.991,751.139,402.579L778.876,387.167" id="L_H_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_C_0" data-points="W3sieCI6MzU0LjAxMTcxODc1LCJ5IjoxNDUyLjM5NzAxMzI0NDYxOX0seyJ4Ijo2MTIuNDUzMTI1LCJ5IjoxMzkwLjQ1MzEyNX0seyJ4Ijo2MTIuNDUzMTI1LCJ5IjoxMjcyLjUwNzgxMjV9LHsieCI6NjEyLjQ1MzEyNSwieSI6MTE1NC41NjI1fSx7IngiOjYxMi40NTMxMjUsInkiOjEwMjEuMTAxNTYyNX0seyJ4Ijo2MTIuNDUzMTI1LCJ5Ijo4OTkuNjQwNjI1fSx7IngiOjYxMi40NTMxMjUsInkiOjgzNS42NDA2MjV9LHsieCI6NjEyLjQ1MzEyNSwieSI6NzcxLjY0MDYyNX0seyJ4Ijo2MTIuNDUzMTI1LCJ5Ijo3MDcuNjQwNjI1fSx7IngiOjYxMi40NTMxMjUsInkiOjY0My42NDA2MjV9LHsieCI6NjEyLjQ1MzEyNSwieSI6NTY3LjY0MDYyNX0seyJ4Ijo2MTIuNDUzMTI1LCJ5Ijo0NzkuNjQwNjI1fSx7IngiOjc4Mi4zNzI1MjYwMTg2NTU1LCJ5IjozODUuMjI0MDg4NTE4NjU1NTV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M758.568,1886.961L772.105,1869.96C785.642,1852.958,812.715,1818.956,826.252,1781.746C839.789,1744.536,839.789,1704.12,839.789,1665.703C839.789,1627.286,839.789,1590.87,839.789,1559.995C839.789,1529.12,839.789,1503.786,839.789,1476.453C839.789,1449.12,839.789,1419.786,839.789,1385.462C839.789,1351.138,839.789,1311.823,839.789,1272.508C839.789,1233.193,839.789,1193.878,839.789,1151.977C839.789,1110.076,839.789,1065.589,839.789,1023.102C839.789,980.615,839.789,940.128,839.789,909.217C839.789,878.307,839.789,856.974,839.789,835.641C839.789,814.307,839.789,792.974,839.789,771.641C839.789,750.307,839.789,728.974,839.789,707.641C839.789,686.307,839.789,664.974,839.789,641.641C839.789,618.307,839.789,592.974,839.789,565.641C839.789,538.307,839.789,508.974,839.789,488.807C839.789,468.641,839.789,457.641,839.789,452.141L839.789,446.641" id="L_L_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_L_C_0" data-points="W3sieCI6NzU4LjU2ODI1OTQ5NDk4NTksInkiOjE4ODYuOTYwOTM3NX0seyJ4Ijo4MzkuNzg5MDYyNSwieSI6MTc4NC45NTMxMjV9LHsieCI6ODM5Ljc4OTA2MjUsInkiOjE2NjMuNzAzMTI1fSx7IngiOjgzOS43ODkwNjI1LCJ5IjoxNTU0LjQ1MzEyNX0seyJ4Ijo4MzkuNzg5MDYyNSwieSI6MTQ3OC40NTMxMjV9LHsieCI6ODM5Ljc4OTA2MjUsInkiOjEzOTAuNDUzMTI1fSx7IngiOjgzOS43ODkwNjI1LCJ5IjoxMjcyLjUwNzgxMjV9LHsieCI6ODM5Ljc4OTA2MjUsInkiOjExNTQuNTYyNX0seyJ4Ijo4MzkuNzg5MDYyNSwieSI6MTAyMS4xMDE1NjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo4OTkuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo4MzUuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo3NzEuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo3MDcuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo2NDMuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo1NjcuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo0NzkuNjQwNjI1fSx7IngiOjgzOS43ODkwNjI1LCJ5Ijo0NDIuNjQwNjI1fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1111.765,2115.969L1124.093,2107.802C1136.42,2099.635,1161.075,2083.302,1173.403,2051.634C1185.73,2019.966,1185.73,1972.964,1185.73,1925.961C1185.73,1878.958,1185.73,1831.956,1185.73,1788.246C1185.73,1744.536,1185.73,1704.12,1185.73,1665.703C1185.73,1627.286,1185.73,1590.87,1185.73,1559.995C1185.73,1529.12,1185.73,1503.786,1185.73,1476.453C1185.73,1449.12,1185.73,1419.786,1185.73,1385.462C1185.73,1351.138,1185.73,1311.823,1185.73,1272.508C1185.73,1233.193,1185.73,1193.878,1185.73,1151.977C1185.73,1110.076,1185.73,1065.589,1185.73,1023.102C1185.73,980.615,1185.73,940.128,1185.73,909.217C1185.73,878.307,1185.73,856.974,1185.73,835.641C1185.73,814.307,1185.73,792.974,1185.73,771.641C1185.73,750.307,1185.73,728.974,1185.73,707.641C1185.73,686.307,1185.73,664.974,1185.73,641.641C1185.73,618.307,1185.73,592.974,1185.73,565.641C1185.73,538.307,1185.73,508.974,1139.605,477.464C1093.479,445.955,1001.227,412.269,955.101,395.426L908.975,378.584" id="L_N_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_N_C_0" data-points="W3sieCI6MTExMS43NjUwMDM1NTExMzYzLCJ5IjoyMTE1Ljk2ODc1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjIwNjYuOTY4NzV9LHsieCI6MTE4NS43MzA0Njg3NSwieSI6MTkyNS45NjA5Mzc1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjE3ODQuOTUzMTI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjE2NjMuNzAzMTI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjE1NTQuNDUzMTI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjE0NzguNDUzMTI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjEzOTAuNDUzMTI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjEyNzIuNTA3ODEyNX0seyJ4IjoxMTg1LjczMDQ2ODc1LCJ5IjoxMTU0LjU2MjV9LHsieCI6MTE4NS43MzA0Njg3NSwieSI6MTAyMS4xMDE1NjI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjg5OS42NDA2MjV9LHsieCI6MTE4NS43MzA0Njg3NSwieSI6ODM1LjY0MDYyNX0seyJ4IjoxMTg1LjczMDQ2ODc1LCJ5Ijo3NzEuNjQwNjI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjcwNy42NDA2MjV9LHsieCI6MTE4NS43MzA0Njg3NSwieSI6NjQzLjY0MDYyNX0seyJ4IjoxMTg1LjczMDQ2ODc1LCJ5Ijo1NjcuNjQwNjI1fSx7IngiOjExODUuNzMwNDY4NzUsInkiOjQ3OS42NDA2MjV9LHsieCI6OTA1LjIxODAyNTQ3OTk0NiwieSI6Mzc3LjIxMTY2MjAyMDA1Mzk1fV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M1491.476,2552.172L1503.848,2544.005C1516.22,2535.839,1540.963,2519.505,1553.335,2487.655C1565.707,2455.805,1565.707,2408.438,1565.707,2363.07C1565.707,2317.703,1565.707,2274.336,1565.707,2239.986C1565.707,2205.635,1565.707,2180.302,1565.707,2152.969C1565.707,2125.635,1565.707,2096.302,1565.707,2058.134C1565.707,2019.966,1565.707,1972.964,1565.707,1925.961C1565.707,1878.958,1565.707,1831.956,1565.707,1788.246C1565.707,1744.536,1565.707,1704.12,1565.707,1665.703C1565.707,1627.286,1565.707,1590.87,1565.707,1559.995C1565.707,1529.12,1565.707,1503.786,1565.707,1476.453C1565.707,1449.12,1565.707,1419.786,1565.707,1385.462C1565.707,1351.138,1565.707,1311.823,1565.707,1272.508C1565.707,1233.193,1565.707,1193.878,1565.707,1151.977C1565.707,1110.076,1565.707,1065.589,1565.707,1023.102C1565.707,980.615,1565.707,940.128,1565.707,909.217C1565.707,878.307,1565.707,856.974,1565.707,835.641C1565.707,814.307,1565.707,792.974,1565.707,771.641C1565.707,750.307,1565.707,728.974,1565.707,707.641C1565.707,686.307,1565.707,664.974,1565.707,641.641C1565.707,618.307,1565.707,592.974,1565.707,565.641C1565.707,538.307,1565.707,508.974,1458.058,475.575C1350.408,442.176,1135.11,404.71,1027.46,385.978L919.811,367.245" id="L_Q_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_Q_C_0" data-points="W3sieCI6MTQ5MS40NzYyMDczODYzNjM3LCJ5IjoyNTUyLjE3MTg3NX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5IjoyNTAzLjE3MTg3NX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5IjoyMzYxLjA3MDMxMjV9LHsieCI6MTU2NS43MDcwMzEyNSwieSI6MjIzMC45Njg3NX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5IjoyMTU0Ljk2ODc1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjIwNjYuOTY4NzV9LHsieCI6MTU2NS43MDcwMzEyNSwieSI6MTkyNS45NjA5Mzc1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjE3ODQuOTUzMTI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjE2NjMuNzAzMTI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjE1NTQuNDUzMTI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjE0NzguNDUzMTI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjEzOTAuNDUzMTI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjEyNzIuNTA3ODEyNX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5IjoxMTU0LjU2MjV9LHsieCI6MTU2NS43MDcwMzEyNSwieSI6MTAyMS4xMDE1NjI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjg5OS42NDA2MjV9LHsieCI6MTU2NS43MDcwMzEyNSwieSI6ODM1LjY0MDYyNX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5Ijo3NzEuNjQwNjI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjcwNy42NDA2MjV9LHsieCI6MTU2NS43MDcwMzEyNSwieSI6NjQzLjY0MDYyNX0seyJ4IjoxNTY1LjcwNzAzMTI1LCJ5Ijo1NjcuNjQwNjI1fSx7IngiOjE1NjUuNzA3MDMxMjUsInkiOjQ3OS42NDA2MjV9LHsieCI6OTE1Ljg3MDE1NTM2NDA5MTgsInkiOjM2Ni41NTk1MzIxMzU5MDgyfV0=" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M772.223,375.075L718.095,392.502C663.966,409.93,555.71,444.785,501.581,467.713C447.453,490.641,447.453,501.641,447.453,507.141L447.453,512.641" id="L_C_V_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_V_0" data-points="W3sieCI6NzcyLjIyMjk4NDY5MzIwNTEsInkiOjM3NS4wNzQ1NDcxOTMyMDUxfSx7IngiOjQ0Ny40NTMxMjUsInkiOjQ3OS42NDA2MjV9LHsieCI6NDQ3LjQ1MzEyNSwieSI6NTE2LjY0MDYyNX1d" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path><path d="M447.453,618.641L447.453,622.807C447.453,626.974,447.453,635.307,447.453,644.974C447.453,654.641,447.453,665.641,447.453,671.141L447.453,676.641" id="L_V_W_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_V_W_0" data-points="W3sieCI6NDQ3LjQ1MzEyNSwieSI6NjE4LjY0MDYyNX0seyJ4Ijo0NDcuNDUzMTI1LCJ5Ijo2NDMuNjQwNjI1fSx7IngiOjQ0Ny40NTMxMjUsInkiOjY4MC42NDA2MjV9XQ==" marker-end="url(#mermaid-1791953878348_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(75.328125, 1272.5078125)"><g class="label" data-id="L_G_H_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(245.30078125, 1154.5625)"><g class="label" data-id="L_G_I_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(245.30078125, 1390.453125)"><g class="label" data-id="L_I_H_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(643.78125, 1390.453125)"><g class="label" data-id="L_I_J_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(643.78125, 1784.953125)"><g class="label" data-id="L_K_L_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(983.390625, 1784.953125)"><g class="label" data-id="L_K_M_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(983.390625, 2066.96875)"><g class="label" data-id="L_M_N_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1349.89453125, 2066.96875)"><g class="label" data-id="L_M_O_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_O_P_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1349.89453125, 2503.171875)"><g class="label" data-id="L_P_Q_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1730.34765625, 2503.171875)"><g class="label" data-id="L_P_R_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_R_S_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1817.546875, 2879.3125)"><g class="label" data-id="L_S_T_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1643.1484375, 2967.3125)"><g class="label" data-id="L_S_U_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_T_U_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_U_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_L_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_N_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_Q_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(447.453125, 479.640625)"><g class="label" data-id="L_C_V_0" transform="translate(-17.9375, -12)"><foreignObject width="35.875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Done</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_V_W_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(839.7890625, 47)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>START: Read Selection Parameters</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(839.7890625, 175)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>SELECT Revisions from T352R</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(839.7890625, 353.3203125)"><polygon points="89.3203125,0 178.640625,-89.3203125 89.3203125,-178.640625 0,-89.3203125" class="label-container" transform="translate(-88.8203125, 89.3203125)"></polygon><g class="label" style="" transform="translate(-62.3203125, -12)"><rect></rect><foreignObject width="124.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>For Each Revision</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-5" transform="translate(138, 567.640625)"><rect class="basic label-container" style="" x="-129.453125" y="-39" width="258.90625" height="78"></rect><g class="label" style="" transform="translate(-99.453125, -24)"><rect></rect><foreignObject width="198.90625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Check Status = REL via JEST<br>STAT=I0002, INACT≠X</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-7" transform="translate(138, 707.640625)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Check REVED ≤ SY-DATUM - P_DAYS</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-9" transform="translate(138, 835.640625)"><rect class="basic label-container" style="" x="-118.828125" y="-39" width="237.65625" height="78"></rect><g class="label" style="" transform="translate(-88.828125, -24)"><rect></rect><foreignObject width="177.65625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Get Notifications/Orders<br>from DIWPS_RV_CR</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-11" transform="translate(138, 1021.1015625)"><polygon points="96.4609375,0 192.921875,-96.4609375 96.4609375,-192.921875 0,-96.4609375" class="label-container" transform="translate(-95.9609375, 96.4609375)"></polygon><g class="label" style="" transform="translate(-57.4609375, -24)"><rect></rect><foreignObject width="114.921875" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>All Notifications<br>NOCO? I0072</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-13" transform="translate(245.30078125, 1478.453125)"><rect class="basic label-container" style="" x="-108.7109375" y="-39" width="217.421875" height="78"></rect><g class="label" style="" transform="translate(-78.7109375, -24)"><rect></rect><foreignObject width="157.421875" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log Error: Open items<br>Skip revision</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-15" transform="translate(245.30078125, 1272.5078125)"><polygon points="80.9453125,0 161.890625,-80.9453125 80.9453125,-161.890625 0,-80.9453125" class="label-container" transform="translate(-80.4453125, 80.9453125)"></polygon><g class="label" style="" transform="translate(-41.9453125, -24)"><rect></rect><foreignObject width="83.890625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>All Orders<br>CLSD? I0046</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-19" transform="translate(643.78125, 1478.453125)"><rect class="basic label-container" style="" x="-132.46875" y="-51" width="264.9375" height="102"></rect><g class="label" style="" transform="translate(-102.46875, -36)"><rect></rect><foreignObject width="204.9375" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Close Revision<br>/AXONEBX/GET_REV_CLOSE + COMMIT</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-21" transform="translate(643.78125, 1663.703125)"><polygon points="84.25,0 168.5,-84.25 84.25,-168.5 0,-84.25" class="label-container" transform="translate(-83.75, 84.25)"></polygon><g class="label" style="" transform="translate(-57.25, -12)"><rect></rect><foreignObject width="114.5" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Network linked?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-23" transform="translate(727.515625, 1925.9609375)"><rect class="basic label-container" style="" x="-101.8671875" y="-39" width="203.734375" height="78"></rect><g class="label" style="" transform="translate(-71.8671875, -24)"><rect></rect><foreignObject width="143.734375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log: Revision closed<br>without network</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-M-25" transform="translate(983.390625, 1925.9609375)"><polygon points="104.0078125,0 208.015625,-104.0078125 104.0078125,-208.015625 0,-104.0078125" class="label-container" transform="translate(-103.5078125, 104.0078125)"></polygon><g class="label" style="" transform="translate(-65.0078125, -24)"><rect></rect><foreignObject width="130.015625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>All other revisions<br>for network CLSD?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-N-27" transform="translate(1052.89453125, 2154.96875)"><rect class="basic label-container" style="" x="-117" y="-39" width="234" height="78"></rect><g class="label" style="" transform="translate(-87, -24)"><rect></rect><foreignObject width="174" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log Error: Revision open<br>Skip network TECO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-O-29" transform="translate(1349.89453125, 2154.96875)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>TECO Network<br>BAPI_BUS2002_SET_STATUS + COMMIT</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-P-31" transform="translate(1349.89453125, 2361.0703125)"><polygon points="105.1015625,0 210.203125,-105.1015625 105.1015625,-210.203125 0,-105.1015625" class="label-container" transform="translate(-104.6015625, 105.1015625)"></polygon><g class="label" style="" transform="translate(-66.1015625, -24)"><rect></rect><foreignObject width="132.203125" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>All other networks<br>for WBS TECO?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-Q-33" transform="translate(1432.39453125, 2591.171875)"><rect class="basic label-container" style="" x="-117.953125" y="-39" width="235.90625" height="78"></rect><g class="label" style="" transform="translate(-87.953125, -24)"><rect></rect><foreignObject width="175.90625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log Error: Network open<br>Skip WBS TECO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-R-35" transform="translate(1730.34765625, 2591.171875)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>TECO WBS<br>BAPI_BUS2054_SET_STATUS + COMMIT</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-S-37" transform="translate(1730.34765625, 2767.2421875)"><polygon points="75.0703125,0 150.140625,-75.0703125 75.0703125,-150.140625 0,-75.0703125" class="label-container" transform="translate(-74.5703125, 75.0703125)"></polygon><g class="label" style="" transform="translate(-48.0703125, -12)"><rect></rect><foreignObject width="96.140625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Plant = ECE2?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-T-39" transform="translate(1817.546875, 2967.3125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Send Email to EC FI<br>via CL_BCS / SO15 / MO-0595</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-U-41" transform="translate(1817.546875, 3095.3125)"><rect class="basic label-container" style="" x="-88.5234375" y="-27" width="177.046875" height="54"></rect><g class="label" style="" transform="translate(-58.5234375, -12)"><rect></rect><foreignObject width="117.046875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log success only</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-V-55" transform="translate(447.453125, 567.640625)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Display/Spool<br>Consolidated Log via CL_SALV_TABLE</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-W-57" transform="translate(447.453125, 707.640625)"><rect class="basic label-container" style="" x="-44.296875" y="-27" width="88.59375" height="54"></rect><g class="label" style="" transform="translate(-14.296875, -12)"><rect></rect><foreignObject width="28.59375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>END</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h3>3.6 UI Details</h3>
+<p>Not applicable — this is a background batch program with no interactive UI. The selection screen is used only for variant maintenance in SM36. A Fiori Tile for job monitoring is planned separately per SIA Code Quality Strategy.</p>
+
+<h3>3.7 Processing Logic</h3>
+
+<p><strong>STEP 1 — FETCH REVISIONS:</strong></p>
+<p>SELECT REVNR, REVTY, REVBD, REVED, IWERK, VAPLZ, VAWRK, OBJNR, AUFNR, ZZ_ESLOT_START, ZZ_ESLOT_END FROM T352R INTO TABLE lt_revisions WHERE REVNR IN S_REVNR AND REVTY IN S_REVTY AND REVBD IN S_REVBD AND REVED IN S_REVED AND IWERK IN S_IWERK AND VAPLZ IN S_VAPLZ AND VAWRK IN S_VAWRK. Filter additionally by ZZ_ESLOT_START IN S_ESLOTS AND ZZ_ESLOT_END IN S_ESLOTE.</p>
+
+<p><strong>STEP 2 — FILTER BY STATUS (REL) AND AGE:</strong></p>
+<p>FOR ALL ENTRIES IN lt_revisions: SELECT OBJNR, STAT FROM JEST WHERE OBJNR = lt_revisions-OBJNR AND STAT = 'I0002' AND INACT &lt;&gt; 'X'. Additionally filter: REVED ≤ SY-DATUM - P_DAYS (default 60 days).</p>
+
+<p><strong>STEP 3 — GET LINKED NOTIFICATIONS AND ORDERS:</strong></p>
+<p>FOR ALL ENTRIES IN lt_released_revisions: SELECT WPID, NOTIFID, ORDER_NO FROM DIWPS_RV_CR WHERE WPID = lt_released_revisions-REVNR. Note: DIWPS_RV_CR field WPID maps to revision number (data element REVNI, CHAR 8).</p>
+
+<p><strong>STEP 4 — CHECK NOTIFICATION STATUS (NOCO = I0072):</strong></p>
+<p>For each notification: SELECT QMNUM, OBJNR FROM QMEL WHERE QMNUM = notification-id. Then check JEST for STAT = 'I0072' AND INACT &lt;&gt; 'X'. If ANY notification lacks NOCO → mark revision as 'cannot close', log ZPM_AUTOCOMPLETE 001.</p>
+
+<p><strong>STEP 5 — CHECK ORDER STATUS (CLSD = I0046):</strong></p>
+<p>For each order: SELECT AUFNR, OBJNR FROM AUFK WHERE AUFNR = order-no. Then check JEST for STAT = 'I0046' AND INACT &lt;&gt; 'X'. If ANY order lacks CLSD → mark revision as 'cannot close', log ZPM_AUTOCOMPLETE 001.</p>
+
+<p><strong>STEP 6 — CLOSE REVISION (CLSD):</strong></p>
+<p>If all notifications NOCO and all orders CLSD: CALL FUNCTION '/AXONEBX/GET_REV_CLOSE' EXPORTING I_REVNR = lv_revnr I_WERKS = lv_iwerk. On success → BAPI_TRANSACTION_COMMIT WAIT='X'. Log ZPM_AUTOCOMPLETE 004. If no linked network (T352R-AUFNR is initial) → Log ZPM_AUTOCOMPLETE 007, continue to next revision.</p>
+
+<p><strong>STEP 7 — CLOSE NETWORK (TECO = I0045):</strong></p>
+<p>Get network AUFNR from T352R for the closed revision. Check other revisions linked to same network: SELECT REVNR FROM T325R WHERE AUFNR = lv_network AND REVNR &lt;&gt; current. For each other revision, check JEST for CLSD (I0046). If ALL other revisions CLSD: CALL FUNCTION 'BAPI_BUS2002_SET_STATUS' EXPORTING NUMBER = lv_network SET_SYSTEM_STATUS = 'I0045'. Check RETURN (TYPE BAPIRETURN1 — fields: TYPE, ID, NUMBER, MESSAGE, MESSAGE_V1..V4). On success → COMMIT. Log ZPM_AUTOCOMPLETE 005.</p>
+
+<p><strong>STEP 8 — CLOSE WBS (TECO = I0045):</strong></p>
+<p>Get WBS element: SELECT PSPEL FROM AUFK WHERE AUFNR = lv_network. PSPEL is NUMC 8 (data element PS_PSP_ELE). Convert to external format via CONVERSION_EXIT_ABPSP_OUTPUT for BAPI parameter WBS_ELEMENT (PS_POSID, CHAR 24). Check other networks for same WBS. If ALL networks TECO: Populate lt_wbs_status TYPE BAPI_WBS_MNT_SYSTEM_STATUS (WBS_ELEMENT = external, SET_SYSTEM_STATUS = 'TECO'). CALL FUNCTION 'BAPI_BUS2054_SET_STATUS' TABLES I_WBS_SYSTEM_STATUS = lt_wbs_status. Check RETURN. COMMIT. Log ZPM_AUTOCOMPLETE 006.</p>
+
+<p><strong>STEP 9 — EMAIL NOTIFICATION (Plant ECE2 only):</strong></p>
+<p>If WBS TECO'd AND T352R-IWERK = 'ECE2': Read distribution list SO15 for EC FI email addresses. Send email via CL_BCS using MO-0595 template. Log ZPM_AUTOCOMPLETE 008 on success, 009 on failure.</p>
+
+<p><strong>STEP 10 — DISPLAY LOG:</strong></p>
+<p>Consolidate all messages. Log columns: Revision No | Network No | WBS Element | Step | Status (S/E/W/I) | Message Text. If SY-BATCH = 'X' → output to spool. If foreground → display via CL_SALV_TABLE.</p>
+
+<h3>3.8 Reusable Code</h3>
+<table class="data">
+<thead><tr><th>Method / Subroutine</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>CHECK_OBJECT_STATUS</td><td>Generic method: checks if OBJNR has a specific system status in JEST (INACT ≠ 'X'). Params: IV_OBJNR TYPE J_OBJNR, IV_STATUS TYPE J_STATUS → RV_HAS_STATUS TYPE ABAP_BOOL. Reused for REL, NOCO, CLSD, TECO.</td></tr>
+<tr><td>GET_LINKED_ITEMS</td><td>Retrieves linked Notifications (NOTIFID) and Orders (ORDER_NO) from DIWPS_RV_CR for a given revision (WPID).</td></tr>
+<tr><td>CLOSE_REVISION</td><td>Calls /AXONEBX/GET_REV_CLOSE BAPI with I_REVNR and I_WERKS. Handles BAPI return messages and commit/rollback.</td></tr>
+<tr><td>CLOSE_NETWORK</td><td>Validates all linked revisions are CLSD via T325R, then calls BAPI_BUS2002_SET_STATUS with SET_SYSTEM_STATUS = 'I0045'.</td></tr>
+<tr><td>CLOSE_WBS</td><td>Validates all linked networks are TECO, converts WBS internal PSPEL → external format, calls BAPI_BUS2054_SET_STATUS.</td></tr>
+<tr><td>SEND_EMAIL_ECE2</td><td>CL_BCS email wrapper: reads SO15 distribution list, sends using MO-0595 template. Only for plant ECE2.</td></tr>
+<tr><td>BUILD_LOG_OUTPUT</td><td>Consolidates processing messages into ALV-compatible internal table. Renders via CL_SALV_TABLE (foreground) or spool (background).</td></tr>
+<tr><td>CONVERT_WBS_ELEMENT</td><td>Wrapper for CONVERSION_EXIT_ABPSP_OUTPUT to convert internal PSPEL (NUMC 8) → external WBS (CHAR 24) for BAPI.</td></tr>
+</tbody>
+</table>
+
+<h3>3.9 Messages</h3>
+<table class="data">
+<thead><tr><th>Message Class</th><th>ID</th><th>Type</th><th>Message Text</th></tr></thead>
+<tbody>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>001</td><td>E</td><td>Notification &amp;1 and Order &amp;2 are open — cannot close revision &amp;3.</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>002</td><td>E</td><td>Revision &amp;1 is open — cannot TECO network &amp;2.</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>003</td><td>E</td><td>Network &amp;1 not yet TECO — cannot close WBS &amp;2.</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>004</td><td>S</td><td>Revision &amp;1 successfully closed (CLSD).</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>005</td><td>S</td><td>Network &amp;1 successfully completed (TECO).</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>006</td><td>S</td><td>WBS Element &amp;1 successfully completed (TECO).</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>007</td><td>I</td><td>Revision &amp;1 closed without network.</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>008</td><td>S</td><td>Email notification sent to EC FI for WBS &amp;1 (Plant ECE2).</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>009</td><td>W</td><td>Email notification failed for WBS &amp;1 — &amp;2.</td></tr>
+<tr><td>ZPM_AUTOCOMPLETE</td><td>010</td><td>I</td><td>No data found matching selection criteria.</td></tr>
+</tbody>
+</table>
+<p>Additionally, standard BAPI return messages (BAPIRETURN1) from /AXONEBX/GET_REV_CLOSE, BAPI_BUS2002_SET_STATUS, and BAPI_BUS2054_SET_STATUS are captured and logged.</p>
+
+<h3>3.10 Subroutines</h3>
+<p>See Section 3.8 Reusable Code for the full method/subroutine inventory.</p>
+
+<h2><span class="sec-num">4</span> Report Output</h2>
+
+<h3>4.1 Output Method</h3>
+<p>ALV Grid display via CL_SALV_TABLE (foreground execution) or spool output (background batch job via SM37).</p>
+
+<h3>4.2 Main Heading</h3>
+<p><strong>Auto Complete Revision, Network and WBS — Execution Log</strong></p>
+
+<h3>4.3 Sub Heading</h3>
+<p>Run Date: SY-DATUM | Run Time: SY-UZEIT | User: SY-UNAME | Variant: SY-SLSET</p>
+
+<h3>4.4 Layout / UI Design</h3>
+<table class="data">
+<thead><tr><th>#</th><th>Column</th><th>Technical Field</th><th>Type</th><th>Length</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Revision No</td><td>REVNR</td><td>CHAR</td><td>8</td><td>Revision number processed</td></tr>
+<tr><td>2</td><td>Network No</td><td>AUFNR</td><td>CHAR</td><td>12</td><td>Linked network number</td></tr>
+<tr><td>3</td><td>WBS Element</td><td>WBS_ELEMENT</td><td>CHAR</td><td>24</td><td>Linked WBS element (external format)</td></tr>
+<tr><td>4</td><td>Step</td><td>STEP</td><td>CHAR</td><td>20</td><td>Processing step (Revision/Network/WBS/Email)</td></tr>
+<tr><td>5</td><td>Status</td><td>MSGTY</td><td>CHAR</td><td>1</td><td>Message type (S=Success, E=Error, W=Warning, I=Info)</td></tr>
+<tr><td>6</td><td>Message Text</td><td>MESSAGE</td><td>CHAR</td><td>220</td><td>BAPI return message or custom message text</td></tr>
+</tbody>
+</table>
+
+<h3>4.5 Totaling</h3>
+<p>Footer line: <strong>End of Log — Total Processed: XXX | Success: YYY | Errors: ZZZ</strong></p>
+
+<h3>4.6 Sorting</h3>
+<p>Default sort: by Revision Number (ascending), then by Step (Revision → Network → WBS → Email).</p>
+
+<h3>4.7 Page Break</h3>
+<p>Standard page breaks as required to prevent overflow. No special page break requirements.</p>
+
+<h3>4.8 Error Handling</h3>
+<p>1. BAPI RETURN TYPE='E'/'A' → log error, BAPI_TRANSACTION_ROLLBACK, skip to next object.<br/>
+2. Open Notification/Order → ZPM_AUTOCOMPLETE 001.<br/>
+3. Open Revision for Network → ZPM_AUTOCOMPLETE 002.<br/>
+4. Open Network for WBS → ZPM_AUTOCOMPLETE 003.<br/>
+5. Revision without Network → ZPM_AUTOCOMPLETE 007 (informational).<br/>
+6. Email failure → ZPM_AUTOCOMPLETE 009 (warning, no rollback of WBS TECO).<br/>
+7. No data → ZPM_AUTOCOMPLETE 010.</p>
+
+<h3>4.9 Report Header &amp; Footer</h3>
+<p><strong>Header:</strong> 'Auto Complete Revision, Network and WBS — Execution Log'<br/>
+<strong>Sub:</strong> Run Date | Run Time | User | Variant<br/>
+<strong>Footer:</strong> 'End of Log — Total: XXX | Success: YYY | Errors: ZZZ'</p>
+
+<h2><span class="sec-num">5</span> Assumptions in Technical Design</h2>
+<p>1. All service orders are assumed to be closed (CLSD) within 60 days from revision end date — controlled by P_DAYS parameter (default 60).<br/>
+2. Service Orders and Notifications are linked to Revision via DIWPS_RV_CR table (WPID = Revision Number, data element REVNI, CHAR 8).<br/>
+3. Network is linked to Revision via T352R-AUFNR field (data element NW_AUFNR, CHAR 12).<br/>
+4. WBS Element is linked to Network via AUFK-PSPEL field (data element PS_PSP_ELE, NUMC 8).<br/>
+5. BAPI /AXONEBX/GET_REV_CLOSE is available on target S/4HANA system (Axone partner namespace).<br/>
+6. Distribution list SO15 for EC FI email recipients is maintained.<br/>
+7. Email template MO-0595 is available and configured.<br/>
+8. BAPI_TRANSACTION_COMMIT (WAIT='X') is called after each successful status change.<br/>
+9. Sequential processing — no parallel processing required.<br/>
+10. BAPI_BUS2002_SET_STATUS NUMBER parameter typed as BAPI_NETWORK_LIST-NETWORK (NW_AUFNR, CHAR 12).<br/>
+11. BAPI_BUS2054_SET_STATUS WBS_ELEMENT typed as PS_POSID (CHAR 24, external format — requires CONVERSION_EXIT_ABPSP_OUTPUT).</p>
+
+<h2><span class="sec-num">6</span> Open Issues in Technical Design</h2>
+<table class="data">
+<thead><tr><th>#</th><th>Issue</th><th>Status</th><th>Resolution</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>/AXONEBX/GET_REV_CLOSE BAPI not found on connected ECC system — partner BAPI from Axone namespace</td><td>Open</td><td>Confirm availability and exact interface on target S/4HANA system</td></tr>
+<tr><td>2</td><td>FS references both DIWPS_RV_CR and DIWPA_RV_CR. DIWPA_RV_CR returned no fields on this system.</td><td>Resolved</td><td>Confirmed: DIWPS_RV_CR contains WPID, NOTIFID, ORDER_NO. Use DIWPS_RV_CR.</td></tr>
+<tr><td>3</td><td>T325R table (Revision-Network link) returned no fields on connected ECC system</td><td>Open</td><td>Confirm existence on target S/4HANA. Alternative: use T352R-AUFNR directly.</td></tr>
+<tr><td>4</td><td>Email template MO-0595 format and variable placeholders unknown</td><td>Open</td><td>Obtain template specifications from functional team</td></tr>
+<tr><td>5</td><td>BAPI_BUS2054_SET_STATUS WBS_ELEMENT format — internal vs external</td><td>Resolved</td><td>BAPI expects external format (PS_POSID CHAR 24). Use CONVERSION_EXIT_ABPSP_OUTPUT.</td></tr>
+<tr><td>6</td><td>TECO status code for Network/WBS</td><td>Resolved</td><td>Confirmed: I0045 is the standard SAP TECO system status code.</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">7</span> Unit Test Results</h2>
+<table class="data">
+<thead><tr><th>Scenario #</th><th>Input / Selection Criteria</th><th>Expected Result</th><th>Pass/Fail</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Revision with linked open Notifications and Service Orders (not completed).</td><td>System ignores revision for auto close and logs informational message listing open items.</td><td>—</td></tr>
+<tr><td>2</td><td>Revision with all Notifications completed (NOCO) and all Service Orders closed (CLSD).</td><td>System closes the revision (CLSD) via /AXONEBX/GET_REV_CLOSE and logs success message.</td><td>—</td></tr>
+<tr><td>3</td><td>Revision with linked network; network linked to multiple revisions — all other revisions closed.</td><td>System TECOs the network via BAPI_BUS2002_SET_STATUS and logs success.</td><td>—</td></tr>
+<tr><td>4</td><td>Network linked to multiple revisions — at least one other revision still open.</td><td>System skips network TECO and logs error indicating which revision is open.</td><td>—</td></tr>
+<tr><td>5</td><td>WBS linked to single TECO network; no other networks linked to WBS.</td><td>System TECOs the WBS via BAPI_BUS2054_SET_STATUS and logs success.</td><td>—</td></tr>
+<tr><td>6</td><td>WBS linked to multiple networks; at least one network not yet TECO.</td><td>System skips WBS TECO and logs error for the open network.</td><td>—</td></tr>
+<tr><td>7</td><td>Plant ECE2 revision closed, WBS TECO'd — email trigger test.</td><td>System sends email notification to EC FI distribution list (SO15) using MO-0595 template.</td><td>—</td></tr>
+<tr><td>8</td><td>Non-ECE2 plant revision closed, WBS TECO'd — no email test.</td><td>System does NOT send email. Only logs the successful WBS TECO.</td><td>—</td></tr>
+<tr><td>9</td><td>Revision validated for close but has no linked network.</td><td>System closes revision and logs informational message 'Revision XXXXX closed without network'.</td><td>—</td></tr>
+<tr><td>10</td><td>No revisions match selection criteria (no released revisions within XX days threshold).</td><td>System displays 'No data found matching selection criteria' and exits gracefully.</td><td>—</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">8</span> Related Documentation</h2>
+<table class="data">
+<thead><tr><th>#</th><th>Document</th><th>Version</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>FSD_EN-MO-0613 Auto Complete Network, WBS and Revision</td><td>0.1</td><td>Source functional specification (Muralikrishna K, 10-Sep-2026)</td></tr>
+<tr><td>2</td><td>Email Template MO-0595</td><td>—</td><td>Used for WBS TECO notification email to EC FI</td></tr>
+<tr><td>3</td><td>Project Polaris Lodestar Phase 2A</td><td>—</td><td>Parent project</td></tr>
+<tr><td>4</td><td>Reviewed by: Shigeo Yamaguchi</td><td>0.1</td><td>FS review completed 22-Sep-2026</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">9</span> BAPI Interface Reference (Verified from SAP)</h2>
+
+<h3>9.1 BAPI_BUS2002_SET_STATUS (Network Status Change)</h3>
+<table class="data">
+<thead><tr><th>Direction</th><th>Parameter</th><th>Type</th><th>Structure</th><th>Optional</th></tr></thead>
+<tbody>
+<tr><td>IMPORTING</td><td>NUMBER</td><td>BAPI_NETWORK_LIST-NETWORK</td><td>NW_AUFNR (CHAR 12)</td><td>No</td></tr>
+<tr><td>IMPORTING</td><td>SET_SYSTEM_STATUS</td><td>BAPI_SYSTEM_STATUS-SYSTEM_STATUS</td><td>CHAR 4</td><td>Yes</td></tr>
+<tr><td>IMPORTING</td><td>UNDO_SYSTEM_STATUS</td><td>BAPI_SYSTEM_STATUS-SYSTEM_STATUS</td><td>CHAR 4</td><td>Yes</td></tr>
+<tr><td>IMPORTING</td><td>SET_USER_STATUS</td><td>BAPI_USER_STATUS-USER_STATUS</td><td>CHAR 4</td><td>Yes</td></tr>
+<tr><td>IMPORTING</td><td>UNDO_USER_STATUS</td><td>BAPI_USER_STATUS-USER_STATUS</td><td>CHAR 4</td><td>Yes</td></tr>
+<tr><td>EXPORTING</td><td>RETURN</td><td>BAPIRETURN1</td><td>TYPE, ID, NUMBER, MESSAGE, MESSAGE_V1..V4</td><td>No</td></tr>
+<tr><td>TABLES</td><td>I_ACTIVITY_SYSTEM_STATUS</td><td>BAPI_ACT_MNT_SYSTEM_STATUS</td><td>Activity-level status</td><td>Yes</td></tr>
+<tr><td>TABLES</td><td>I_ACTIVITY_USER_STATUS</td><td>BAPI_ACT_MNT_USER_STATUS</td><td>Activity-level user status</td><td>Yes</td></tr>
+<tr><td>TABLES</td><td>E_RESULT</td><td>BAPI_STATUS_RESULT</td><td>Status change results</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h3>9.2 BAPI_BUS2054_SET_STATUS (WBS Element Status Change)</h3>
+<table class="data">
+<thead><tr><th>Direction</th><th>Parameter</th><th>Type</th><th>Structure</th><th>Optional</th></tr></thead>
+<tbody>
+<tr><td>EXPORTING</td><td>RETURN</td><td>BAPIRETURN1</td><td>TYPE, ID, NUMBER, MESSAGE, MESSAGE_V1..V4</td><td>No</td></tr>
+<tr><td>TABLES</td><td>I_WBS_SYSTEM_STATUS</td><td>BAPI_WBS_MNT_SYSTEM_STATUS</td><td>WBS_ELEMENT (PS_POSID CHAR 24) + SET_SYSTEM_STATUS (CHAR 4)</td><td>Yes</td></tr>
+<tr><td>TABLES</td><td>I_WBS_USER_STATUS</td><td>BAPI_WBS_MNT_USER_STATUS</td><td>WBS user status</td><td>Yes</td></tr>
+<tr><td>TABLES</td><td>E_RESULT</td><td>BAPI_STATUS_RESULT</td><td>Status change results</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h3>9.3 BAPI_TRANSACTION_COMMIT</h3>
+<table class="data">
+<thead><tr><th>Direction</th><th>Parameter</th><th>Type</th><th>Notes</th></tr></thead>
+<tbody>
+<tr><td>IMPORTING</td><td>WAIT</td><td>BAPITA-WAIT</td><td>Set to 'X' for synchronous commit</td></tr>
+<tr><td>EXPORTING</td><td>RETURN</td><td>BAPIRET2</td><td>Commit result</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<strong>⚠️ Open Issue:</strong> The BAPI /AXONEBX/GET_REV_CLOSE referenced in the Functional Specification is from the Axone partner namespace and was <strong>not found</strong> on the connected ECC system. Its exact interface (IMPORTING/EXPORTING parameters, RETURN structure) must be confirmed on the target S/4HANA system before development begins.
+</div>
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 14 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
