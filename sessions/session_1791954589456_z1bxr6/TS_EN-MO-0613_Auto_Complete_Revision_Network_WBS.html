@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS EN MO 0613 Auto Complete Revision Network WBS</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>TS EN MO 0613 Auto Complete Revision Network WBS</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>TS EN MO 0613 Auto Complete Revision Network WBS</td>
+        <td class="meta-label">Date</td>
+        <td>14 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<h2><span class="sec-num">1</span> Document Organization</h2>
+
+<h3>1.1 Document Log</h3>
+<table class="data">
+<thead><tr><th>Version</th><th>Status</th><th>Date</th><th>Created by</th><th>Role</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>0.1</td><td>Draft</td><td>2026-10-14</td><td>C16 AI Generator</td><td>Author</td><td>Initial draft — Technical Specification generated from FSD EN-MO-0613 v0.1 (Muralikrishna K, 10 Sep 2026)</td></tr>
+</tbody>
+</table>
+
+<h3>1.2 Integration, Document Reference</h3>
+<table class="data">
+<thead><tr><th>S. No.</th><th>Referred Document Name</th><th>Version</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>FSD_EN-MO-0613 Auto Complete Revision, Network and WBS</td><td>0.1 (10 Sep 2026)</td></tr>
+<tr><td>2</td><td>MO-0595 Email Template — WBS TECO notification</td><td>Current</td></tr>
+<tr><td>3</td><td>SO15 Distribution List — EC FI email addresses</td><td>Current</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">2</span> Code Quality</h2>
+<table class="data">
+<thead><tr><th>Final Solution</th><th>Category</th><th>Comments</th></tr></thead>
+<tbody>
+<tr><td>Custom program using standard BAPIs</td><td><strong>Tier 1 — Cloud Development</strong></td><td>Uses standard BAPIs (BAPI_BUS2002_SET_STATUS, BAPI_BUS2054_SET_STATUS) and partner BAPI (/AXONEBX/GET_REV_CLOSE). All data reads from standard SAP tables (T352R, JEST, AUFK, QMEL, DIWPS_RV_CR). Conforms to SIA Code Quality strategy. Fiori Tile planned for monitoring.</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">3</span> Program Attributes</h2>
+<table class="data">
+<tbody>
+<tr><td><strong>Program Title</strong></td><td>Auto Complete Revision, Network and WBS</td></tr>
+<tr><td><strong>Program Name</strong></td><td>ZEN_MO_0613_REV_AUTO_CLOSE</td></tr>
+<tr><td><strong>Program Type</strong></td><td>Executable</td></tr>
+<tr><td><strong>Package</strong></td><td>ZEN_PM (To be defined by project team)</td></tr>
+<tr><td><strong>Authorization Group</strong></td><td>As per BU decision</td></tr>
+</tbody>
+</table>
+
+<table class="data">
+<tbody>
+<tr><td><strong>Transaction Code</strong></td><td>N/A — Runs as daily batch job via SM36/SM37</td></tr>
+<tr><td><strong>Include Programs</strong></td><td>N/A</td></tr>
+<tr><td><strong>Function Modules</strong></td><td>/AXONEBX/GET_REV_CLOSE, BAPI_BUS2002_SET_STATUS, BAPI_BUS2054_SET_STATUS, BAPI_TRANSACTION_COMMIT</td></tr>
+<tr><td><strong>Message Class</strong></td><td>Standard BAPI return messages (BAPIRETURN1) + Custom application messages</td></tr>
+</tbody>
+</table>
+
+<table class="data">
+<tbody>
+<tr><td><strong>SAP Tables Read</strong></td><td>T352R (Revision Header), JEST (Object Status), AUFK (Order Master), QMEL (Notification Header), DIWPS_RV_CR (Revision Work Packages), T325R (Revision-Network Assignment)</td></tr>
+<tr><td><strong>Custom Tables</strong></td><td>N/A</td></tr>
+<tr><td><strong>Custom Indexes</strong></td><td>N/A</td></tr>
+<tr><td><strong>CDS Views</strong></td><td>N/A — Background executable; no CDS views required</td></tr>
+<tr><td><strong>OData Service</strong></td><td>N/A</td></tr>
+<tr><td><strong>Business Object</strong></td><td>BUS2002 (Network), BUS2054 (WBS Element)</td></tr>
+<tr><td><strong>Fiori App Name</strong></td><td>To be developed as per SIA Code Quality strategy</td></tr>
+</tbody>
+</table>
+
+<h3>3.1 Selection Screen</h3>
+<table class="data">
+<thead><tr><th>P/S</th><th>Type / Field Name</th><th>Mandatory</th><th>Default</th><th>Parameter ID</th><th>Search Help</th><th>Selection Screen Text</th></tr></thead>
+<tbody>
+<tr><td>S</td><td>T352R-REVNR</td><td>No</td><td>—</td><td>S_REVNR</td><td>Standard</td><td>Revision Number</td></tr>
+<tr><td>S</td><td>T352R-REVTY</td><td>No</td><td>—</td><td>S_REVTY</td><td>Standard</td><td>Revision Type</td></tr>
+<tr><td>S</td><td>T352R-REVBD</td><td>No</td><td>—</td><td>S_REVBD</td><td>Standard</td><td>Revision Start Date</td></tr>
+<tr><td>S</td><td>T352R-REVED</td><td>No</td><td>—</td><td>S_REVED</td><td>Standard</td><td>Revision End Date</td></tr>
+<tr><td>S</td><td>T352R-IWERK</td><td>No</td><td>—</td><td>S_IWERK</td><td>Standard</td><td>Planning Plant of Revision</td></tr>
+<tr><td>S</td><td>T352R-VAPLZ</td><td>No</td><td>—</td><td>S_VAPLZ</td><td>Standard</td><td>Main Workcenter for Revision</td></tr>
+<tr><td>S</td><td>T352R-VAWRK</td><td>No</td><td>—</td><td>S_VAWRK</td><td>Standard</td><td>Main Workcenter Plant</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_START</td><td>No</td><td>—</td><td>S_ESLOTS</td><td>Standard</td><td>eSLOT Start Date</td></tr>
+<tr><td>S</td><td>T352R-ZZ_ESLOT_END</td><td>No</td><td>—</td><td>S_ESLOTE</td><td>Standard</td><td>eSLOT End Date</td></tr>
+<tr><td>P</td><td>TYPE I (Default: 60)</td><td>No</td><td>60</td><td>P_DAYS</td><td>N/A</td><td>XX Days Threshold</td></tr>
+</tbody>
+</table>
+
+<h3>3.2 Validation of Selection Criteria</h3>
+<p><strong>1. Revision Status (REL):</strong> T352R-OBJNR → JEST check: STAT = I0002 (Released) with INACT ≠ 'X'. JEST confirmed: OBJNR (CHAR 22, DE: J_OBJNR), STAT (CHAR 5, DE: J_STATUS), INACT (CHAR 1, DE: J_INACT).</p>
+<p><strong>2. Age Threshold:</strong> T352R-REVED ≤ SY-DATUM − P_DAYS (default 60 days).</p>
+<p><strong>3. Notification Completion (NOCO):</strong> All linked notifications (DIWPS_RV_CR-NOTIFID, DE: QMNUM) must have JEST STAT = I0072. QMEL-OBJNR (DE: QMOBJNR) used for JEST lookup.</p>
+<p><strong>4. Order Closure (CLSD):</strong> All linked orders (DIWPS_RV_CR-ORDER_NO, DE: AUFNR) must have JEST STAT = I0046. AUFK-OBJNR (DE: J_OBJNR) used for JEST lookup.</p>
+<p><strong>5.</strong> If ANY notification or order is open → revision skipped with error message.</p>
+
+<h3>3.3 CDS Views / AMDP / Table Function</h3>
+<p>Not applicable — this is a background executable program that processes status changes via standard BAPIs. No CDS views, AMDP, or table functions are required.</p>
+
+<h3>3.4 Authorization Requirements</h3>
+<p>Authorization is managed at the batch job scheduling level as per BU decision. The BAPIs called enforce their own standard SAP authorization checks internally.</p>
+<p><strong>Recommended authorization objects:</strong></p>
+<table class="data">
+<thead><tr><th>Auth Object</th><th>Field</th><th>Value</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>S_BTCH_JOB</td><td>JOBACTION</td><td>RELE</td><td>Batch job scheduling and release</td></tr>
+<tr><td>I_IWERK</td><td>IWERK</td><td>ECE2 or * (per BU)</td><td>Plant-level access control</td></tr>
+<tr><td>B_USERSTAT</td><td>ACTVT</td><td>02 (Change)</td><td>Status changes on objects</td></tr>
+</tbody>
+</table>
+<p><strong>DCL Details:</strong> Not applicable. <strong>BTP Details:</strong> Not applicable — on-premise S/4HANA program.</p>
+
+<h3>3.5 Technical Flow Diagram</h3>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1791955246137" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 669.62890625 1922.265625" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1791955246137{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1791955246137 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1791955246137 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1791955246137 .error-icon{fill:#552222;}#mermaid-1791955246137 .error-text{fill:#552222;stroke:#552222;}#mermaid-1791955246137 .edge-thickness-normal{stroke-width:1px;}#mermaid-1791955246137 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1791955246137 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1791955246137 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1791955246137 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1791955246137 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1791955246137 .marker{fill:#666;stroke:#666;}#mermaid-1791955246137 .marker.cross{stroke:#666;}#mermaid-1791955246137 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1791955246137 p{margin:0;}#mermaid-1791955246137 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1791955246137 .cluster-label text{fill:#333;}#mermaid-1791955246137 .cluster-label span{color:#333;}#mermaid-1791955246137 .cluster-label span p{background-color:transparent;}#mermaid-1791955246137 .label text,#mermaid-1791955246137 span{fill:#000000;color:#000000;}#mermaid-1791955246137 .node rect,#mermaid-1791955246137 .node circle,#mermaid-1791955246137 .node ellipse,#mermaid-1791955246137 .node polygon,#mermaid-1791955246137 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1791955246137 .rough-node .label text,#mermaid-1791955246137 .node .label text,#mermaid-1791955246137 .image-shape .label,#mermaid-1791955246137 .icon-shape .label{text-anchor:middle;}#mermaid-1791955246137 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1791955246137 .rough-node .label,#mermaid-1791955246137 .node .label,#mermaid-1791955246137 .image-shape .label,#mermaid-1791955246137 .icon-shape .label{text-align:center;}#mermaid-1791955246137 .node.clickable{cursor:pointer;}#mermaid-1791955246137 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1791955246137 .arrowheadPath{fill:#333333;}#mermaid-1791955246137 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1791955246137 .flowchart-link{stroke:#666;fill:none;}#mermaid-1791955246137 .edgeLabel{background-color:white;text-align:center;}#mermaid-1791955246137 .edgeLabel p{background-color:white;}#mermaid-1791955246137 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1791955246137 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1791955246137 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1791955246137 .cluster text{fill:#333;}#mermaid-1791955246137 .cluster span{color:#333;}#mermaid-1791955246137 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1791955246137 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1791955246137 rect.text{fill:none;stroke-width:0;}#mermaid-1791955246137 .icon-shape,#mermaid-1791955246137 .image-shape{background-color:white;text-align:center;}#mermaid-1791955246137 .icon-shape p,#mermaid-1791955246137 .image-shape p{background-color:white;padding:2px;}#mermaid-1791955246137 .icon-shape .label rect,#mermaid-1791955246137 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1791955246137 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1791955246137 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1791955246137 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1791955246137_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791955246137_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791955246137_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1791955246137_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1791955246137_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1791955246137_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M292.148,86L292.148,90.167C292.148,94.333,292.148,102.667,292.148,110.333C292.148,118,292.148,125,292.148,128.5L292.148,132" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjg2fSx7IngiOjI5Mi4xNDg0Mzc1LCJ5IjoxMTF9LHsieCI6MjkyLjE0ODQzNzUsInkiOjEzNn1d" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M292.148,214L292.148,218.167C292.148,222.333,292.148,230.667,292.148,238.333C292.148,246,292.148,253,292.148,256.5L292.148,260" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjIxNH0seyJ4IjoyOTIuMTQ4NDM3NSwieSI6MjM5fSx7IngiOjI5Mi4xNDg0Mzc1LCJ5IjoyNjR9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M292.148,342L292.148,346.167C292.148,350.333,292.148,358.667,292.148,366.333C292.148,374,292.148,381,292.148,384.5L292.148,388" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjM0Mn0seyJ4IjoyOTIuMTQ4NDM3NSwieSI6MzY3fSx7IngiOjI5Mi4xNDg0Mzc1LCJ5IjozOTJ9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M292.148,470L292.148,474.167C292.148,478.333,292.148,486.667,292.148,494.333C292.148,502,292.148,509,292.148,512.5L292.148,516" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjQ3MH0seyJ4IjoyOTIuMTQ4NDM3NSwieSI6NDk1fSx7IngiOjI5Mi4xNDg0Mzc1LCJ5Ijo1MjB9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M292.148,598L292.148,602.167C292.148,606.333,292.148,614.667,292.148,622.333C292.148,630,292.148,637,292.148,640.5L292.148,644" id="L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjU5OH0seyJ4IjoyOTIuMTQ4NDM3NSwieSI6NjIzfSx7IngiOjI5Mi4xNDg0Mzc1LCJ5Ijo2NDh9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M292.148,726L292.148,730.167C292.148,734.333,292.148,742.667,292.148,750.333C292.148,758,292.148,765,292.148,768.5L292.148,772" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6MjkyLjE0ODQzNzUsInkiOjcyNn0seyJ4IjoyOTIuMTQ4NDM3NSwieSI6NzUxfSx7IngiOjI5Mi4xNDg0Mzc1LCJ5Ijo3NzZ9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M243.162,905.138L225.644,919.469C208.126,933.8,173.09,962.463,155.573,982.294C138.055,1002.125,138.055,1013.125,138.055,1018.625L138.055,1024.125" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6MjQzLjE2MTU3ODg4MzE1NjcyLCJ5Ijo5MDUuMTM4MTQxMzgzMTU2N30seyJ4IjoxMzguMDU0Njg3NSwieSI6OTkxLjEyNX0seyJ4IjoxMzguMDU0Njg3NSwieSI6MTAyOC4xMjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M350.648,895.625L381.114,911.542C411.579,927.459,472.51,959.292,502.976,987.875C533.441,1016.458,533.441,1041.792,533.441,1065.125C533.441,1088.458,533.441,1109.792,533.441,1133.125C533.441,1156.458,533.441,1181.792,533.441,1209.125C533.441,1236.458,533.441,1265.792,533.441,1295.125C533.441,1324.458,533.441,1353.792,533.441,1381.125C533.441,1408.458,533.441,1433.792,533.441,1463.137C533.441,1492.482,533.441,1525.839,533.441,1561.195C533.441,1596.552,533.441,1633.909,533.441,1660.087C533.441,1686.266,533.441,1701.266,533.441,1708.766L533.441,1716.266" id="L_G_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_L_0" data-points="W3sieCI6MzUwLjY0ODA1NjY5MDE1NzcsInkiOjg5NS42MjUzODA4MDk4NDIzfSx7IngiOjUzMy40NDE0MDYyNSwieSI6OTkxLjEyNX0seyJ4Ijo1MzMuNDQxNDA2MjUsInkiOjEwNjcuMTI1fSx7IngiOjUzMy40NDE0MDYyNSwieSI6MTEzMS4xMjV9LHsieCI6NTMzLjQ0MTQwNjI1LCJ5IjoxMjA3LjEyNX0seyJ4Ijo1MzMuNDQxNDA2MjUsInkiOjEyOTUuMTI1fSx7IngiOjUzMy40NDE0MDYyNSwieSI6MTM4My4xMjV9LHsieCI6NTMzLjQ0MTQwNjI1LCJ5IjoxNDU5LjEyNX0seyJ4Ijo1MzMuNDQxNDA2MjUsInkiOjE1NTkuMTk1MzEyNX0seyJ4Ijo1MzMuNDQxNDA2MjUsInkiOjE2NzEuMjY1NjI1fSx7IngiOjUzMy40NDE0MDYyNSwieSI6MTcyMC4yNjU2MjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M138.055,1106.125L138.055,1110.292C138.055,1114.458,138.055,1122.792,138.055,1130.458C138.055,1138.125,138.055,1145.125,138.055,1148.625L138.055,1152.125" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6MTM4LjA1NDY4NzUsInkiOjExMDYuMTI1fSx7IngiOjEzOC4wNTQ2ODc1LCJ5IjoxMTMxLjEyNX0seyJ4IjoxMzguMDU0Njg3NSwieSI6MTE1Ni4xMjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M138.055,1258.125L138.055,1264.292C138.055,1270.458,138.055,1282.792,138.055,1294.458C138.055,1306.125,138.055,1317.125,138.055,1322.625L138.055,1328.125" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6MTM4LjA1NDY4NzUsInkiOjEyNTguMTI1fSx7IngiOjEzOC4wNTQ2ODc1LCJ5IjoxMjk1LjEyNX0seyJ4IjoxMzguMDU0Njg3NSwieSI6MTMzMi4xMjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M138.055,1434.125L138.055,1438.292C138.055,1442.458,138.055,1450.792,138.055,1458.458C138.055,1466.125,138.055,1473.125,138.055,1476.625L138.055,1480.125" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6MTM4LjA1NDY4NzUsInkiOjE0MzQuMTI1fSx7IngiOjEzOC4wNTQ2ODc1LCJ5IjoxNDU5LjEyNX0seyJ4IjoxMzguMDU0Njg3NSwieSI6MTQ4NC4xMjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M170.905,1601.415L179.963,1613.057C189.021,1624.699,207.138,1647.982,216.196,1665.124C225.254,1682.266,225.254,1693.266,225.254,1698.766L225.254,1704.266" id="L_K_M_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_M_0" data-points="W3sieCI6MTcwLjkwNTAzMTI1NDI4ODEzLCJ5IjoxNjAxLjQxNTI4MTI0NTcxMTl9LHsieCI6MjI1LjI1MzkwNjI1LCJ5IjoxNjcxLjI2NTYyNX0seyJ4IjoyMjUuMjUzOTA2MjUsInkiOjE3MDguMjY1NjI1fV0=" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M105.204,1601.415L96.146,1613.057C87.088,1624.699,68.972,1647.982,59.914,1672.291C50.855,1696.599,50.855,1721.932,50.855,1745.266C50.855,1768.599,50.855,1789.932,61.584,1804.536C72.312,1819.14,93.768,1827.014,104.497,1830.951L115.225,1834.888" id="L_K_N_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_N_0" data-points="W3sieCI6MTA1LjIwNDM0Mzc0NTcxMTg4LCJ5IjoxNjAxLjQxNTI4MTI0NTcxMTl9LHsieCI6NTAuODU1NDY4NzUsInkiOjE2NzEuMjY1NjI1fSx7IngiOjUwLjg1NTQ2ODc1LCJ5IjoxNzQ3LjI2NTYyNX0seyJ4Ijo1MC44NTU0Njg3NSwieSI6MTgxMS4yNjU2MjV9LHsieCI6MTE4Ljk3OTg1ODM5ODQzNzUsInkiOjE4MzYuMjY1NjI1fV0=" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M225.254,1786.266L225.254,1790.432C225.254,1794.599,225.254,1802.932,225.254,1810.599C225.254,1818.266,225.254,1825.266,225.254,1828.766L225.254,1832.266" id="L_M_N_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_N_0" data-points="W3sieCI6MjI1LjI1MzkwNjI1LCJ5IjoxNzg2LjI2NTYyNX0seyJ4IjoyMjUuMjUzOTA2MjUsInkiOjE4MTEuMjY1NjI1fSx7IngiOjIyNS4yNTM5MDYyNSwieSI6MTgzNi4yNjU2MjV9XQ==" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path><path d="M533.441,1774.266L533.441,1780.432C533.441,1786.599,533.441,1798.932,504.396,1811.131C475.351,1823.329,417.261,1835.392,388.216,1841.424L359.17,1847.456" id="L_L_N_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_L_N_0" data-points="W3sieCI6NTMzLjQ0MTQwNjI1LCJ5IjoxNzc0LjI2NTYyNX0seyJ4Ijo1MzMuNDQxNDA2MjUsInkiOjE4MTEuMjY1NjI1fSx7IngiOjM1NS4yNTM5MDYyNSwieSI6MTg0OC4yNjkwNzI1NzY1NTY1fV0=" marker-end="url(#mermaid-1791955246137_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(138.0546875, 991.125)"><g class="label" data-id="L_G_H_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(533.44140625, 1295.125)"><g class="label" data-id="L_G_L_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_J_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(225.25390625, 1671.265625)"><g class="label" data-id="L_K_M_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(50.85546875, 1747.265625)"><g class="label" data-id="L_K_N_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_M_N_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_L_N_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(292.1484375, 47)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>1. Read Selection Parameters</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(292.1484375, 175)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>2. Fetch Revisions from T352R</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(292.1484375, 303)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>3. Filter: JEST REL Status + Age Check</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-5" transform="translate(292.1484375, 431)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>4. Get Linked Objects from DIWPS_RV_CR</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-7" transform="translate(292.1484375, 559)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>5. Check Notifications: QMEL → JEST I0072 NOCO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-9" transform="translate(292.1484375, 687)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>6. Check Orders: AUFK → JEST I0046 CLSD</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-11" transform="translate(292.1484375, 865.0625)"><polygon points="89.0625,0 178.125,-89.0625 89.0625,-178.125 0,-89.0625" class="label-container" transform="translate(-88.5625, 89.0625)"></polygon><g class="label" style="" transform="translate(-62.0625, -12)"><rect></rect><foreignObject width="124.125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>All NOCO + CLSD?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-13" transform="translate(138.0546875, 1067.125)"><rect class="basic label-container" style="" x="-130.0546875" y="-39" width="260.109375" height="78"></rect><g class="label" style="" transform="translate(-100.0546875, -24)"><rect></rect><foreignObject width="200.109375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>7. Close Revision via /AXONEBX/GET_REV_CLOSE</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-15" transform="translate(533.44140625, 1747.265625)"><rect class="basic label-container" style="" x="-128.1875" y="-27" width="256.375" height="54"></rect><g class="label" style="" transform="translate(-98.1875, -12)"><rect></rect><foreignObject width="196.375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Log Error: Open items exist</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-17" transform="translate(138.0546875, 1207.125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>8. Close Network via BAPI_BUS2002_SET_STATUS TECO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-19" transform="translate(138.0546875, 1383.125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>9. Close WBS via BAPI_BUS2054_SET_STATUS TECO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-21" transform="translate(138.0546875, 1559.1953125)"><polygon points="75.0703125,0 150.140625,-75.0703125 75.0703125,-150.140625 0,-75.0703125" class="label-container" transform="translate(-74.5703125, 75.0703125)"></polygon><g class="label" style="" transform="translate(-48.0703125, -12)"><rect></rect><foreignObject width="96.140625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Plant = ECE2?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-M-23" transform="translate(225.25390625, 1747.265625)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>10. Send Email via SO15 / MO-0595</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-N-25" transform="translate(225.25390625, 1875.265625)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>11. Display Log / Spool Output</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h3>3.6 UI Details</h3>
+<p>Not applicable — the program runs as a background batch job. A Fiori Tile for execution monitoring is planned as a separate development per SIA Code Quality strategy.</p>
+
+<h3>3.7 Processing Logic</h3>
+<p><strong>STEP 1 — Data Selection:</strong></p>
+<p>SELECT REVNR, REVTY, REVBD, REVED, IWERK, VAPLZ, VAWRK, AUFNR, OBJNR FROM T352R WHERE matching selection criteria. Field types confirmed from live system: REVNR (CHAR 8, DE: REVNI), REVTY (CHAR 2, DE: DIWPS_REVTY_CORE), REVED (DATS 8, DE: REVED), IWERK (CHAR 4, DE: IWERK), AUFNR (CHAR 12, DE: NW_AUFNR), OBJNR (CHAR 22, DE: J_OBJNR).</p>
+
+<p><strong>STEP 2 — REL Status Validation:</strong></p>
+<p>For each revision, read JEST WHERE OBJNR = T352R-OBJNR AND INACT ≠ 'X'. Check STAT = I0002 (Released). Also verify REVED ≤ SY-DATUM − P_DAYS. Sample data confirmed: JEST records with STAT=I0002 and INACT='' exist in the system (e.g., OBJNR 'RV100000000006').</p>
+
+<p><strong>STEP 3 — Get Linked Objects:</strong></p>
+<p>Read DIWPS_RV_CR WHERE WPID = revision_number. Confirmed fields from live system: WPID (CHAR 8, DE: REVNI), NOTIFID (CHAR 12, DE: QMNUM), ORDER_NO (CHAR 12, DE: AUFNR). Table has 30 fields total including IWERK, QMART, ARCH_ORDER.</p>
+
+<p><strong>STEP 4 — Notification Status Check (NOCO):</strong></p>
+<p>For each NOTIFID: SELECT OBJNR FROM QMEL WHERE QMNUM = notification_number (QMEL-OBJNR DE: QMOBJNR). Then SELECT STAT FROM JEST WHERE OBJNR = QMEL-OBJNR AND INACT ≠ 'X'. Check STAT = I0072 (NOCO). If ANY notification is not NOCO → skip revision.</p>
+
+<p><strong>STEP 5 — Order Status Check (CLSD):</strong></p>
+<p>For each ORDER_NO: SELECT OBJNR FROM AUFK WHERE AUFNR = order_number (AUFK-OBJNR DE: J_OBJNR). Then SELECT STAT FROM JEST WHERE OBJNR = AUFK-OBJNR AND INACT ≠ 'X'. Check STAT = I0046 (CLSD). If ANY order is not CLSD → skip revision.</p>
+
+<p><strong>STEP 6 — Close Revision (CLSD):</strong></p>
+<p>CALL FUNCTION '/AXONEBX/GET_REV_CLOSE' EXPORTING I_REVNR = revision_number, I_WERKS = planning_plant. Evaluate return and log result.</p>
+
+<p><strong>STEP 7 — Network Closure Logic (TECO):</strong></p>
+<p>Read T352R-AUFNR (network, CHAR 12, DE: NW_AUFNR). Check if network is linked to other revisions via T325R. For each other revision (excluding current), verify JEST STAT = I0046 (CLSD). If ALL are CLSD:</p>
+<p>CALL FUNCTION 'BAPI_BUS2002_SET_STATUS' EXPORTING NUMBER = network_number (TYPE BAPI_NETWORK_LIST-NETWORK), SET_SYSTEM_STATUS = 'I0045' (TECO). IMPORTING RETURN = ls_return (TYPE BAPIRETURN1: TYPE CHAR 1, ID CHAR 20, NUMBER NUMC 3, MESSAGE CHAR 220, MESSAGE_V1–V4 CHAR 50). Then CALL FUNCTION 'BAPI_TRANSACTION_COMMIT' EXPORTING WAIT = 'X'.</p>
+<p>If revision has no linked network → log info: 'Revision XXXXX closed without network'.</p>
+
+<p><strong>STEP 8 — WBS Closure Logic (TECO):</strong></p>
+<p>Read AUFK-PSPEL (NUMC 8, DE: PS_PSP_ELE) for the WBS element. Check if WBS is linked to other networks via AUFK-PSPEL. For each other network (excluding current), verify JEST status for TECO (I0045). If ALL are TECO:</p>
+<p>CALL FUNCTION 'BAPI_BUS2054_SET_STATUS' TABLES I_WBS_SYSTEM_STATUS (TYPE BAPI_WBS_MNT_SYSTEM_STATUS). IMPORTING RETURN = ls_return (TYPE BAPIRETURN1). Then CALL FUNCTION 'BAPI_TRANSACTION_COMMIT' EXPORTING WAIT = 'X'.</p>
+
+<p><strong>STEP 9 — Email Notification:</strong></p>
+<p>If WBS successfully set to TECO AND T352R-IWERK = 'ECE2': Read SO15 distribution list for EC FI email addresses. Send email using MO-0595 template via CL_BCS or SO_NEW_DOCUMENT_SEND_API1.</p>
+
+<p><strong>STEP 10 — Log Output:</strong></p>
+<p>Display all collected log entries as a tabular spool list with columns: Revision No | Network No | WBS Element | Action (CLSD/TECO) | Result (Success/Error/Info) | Message Text. Stored as spool in background execution.</p>
+
+<h3>3.8 Reusable Code</h3>
+<p><strong>CHECK_OBJECT_STATUS</strong> — Reusable JEST status checker for any OBJNR + target status code.</p>
+<p><strong>BAPI_ERROR_HANDLER</strong> — Evaluates BAPIRETURN1 structure and populates log table.</p>
+<p><strong>SEND_NOTIFICATION_EMAIL</strong> — Reads SO15 distribution list and sends email per MO-0595 template.</p>
+
+<h3>3.9 Messages</h3>
+<table class="data">
+<thead><tr><th>Message Class</th><th>Type</th><th>Message Text</th></tr></thead>
+<tbody>
+<tr><td>BAPIRETURN1</td><td>E/S/I</td><td>Standard BAPI return messages from all three BAPIs</td></tr>
+<tr><td>Custom</td><td>E</td><td>Notification and order are open — cannot close revision &amp;1</td></tr>
+<tr><td>Custom</td><td>E</td><td>Revision(s) are open — cannot close network &amp;1</td></tr>
+<tr><td>Custom</td><td>E</td><td>Network &amp;1 not yet closed — cannot close WBS &amp;2</td></tr>
+<tr><td>Custom</td><td>S</td><td>Revision &amp;1 closed successfully (CLSD)</td></tr>
+<tr><td>Custom</td><td>S</td><td>Network &amp;1 completed successfully (TECO)</td></tr>
+<tr><td>Custom</td><td>S</td><td>WBS &amp;1 completed successfully (TECO)</td></tr>
+<tr><td>Custom</td><td>I</td><td>Revision &amp;1 closed without network</td></tr>
+<tr><td>Custom</td><td>I</td><td>No revisions found matching the selection criteria</td></tr>
+<tr><td>Custom</td><td>S</td><td>Email sent to EC FI for WBS &amp;1 completion (Plant ECE2)</td></tr>
+</tbody>
+</table>
+
+<h3>3.10 Subroutines / Methods</h3>
+<table class="data">
+<thead><tr><th>Name</th><th>Description</th></tr></thead>
+<tbody>
+<tr><td>CHECK_OBJECT_STATUS</td><td>Reads JEST for given OBJNR; checks if target status (I0002/I0072/I0046/I0045) is active (INACT ≠ 'X'). Returns TRUE/FALSE.</td></tr>
+<tr><td>GET_LINKED_OBJECTS</td><td>Reads DIWPS_RV_CR for revision WPID; returns internal tables of NOTIFID and ORDER_NO.</td></tr>
+<tr><td>CLOSE_REVISION</td><td>Calls /AXONEBX/GET_REV_CLOSE with I_REVNR + I_WERKS; evaluates BAPI return; logs result.</td></tr>
+<tr><td>CLOSE_NETWORK</td><td>Calls BAPI_BUS2002_SET_STATUS (NUMBER = network, SET_SYSTEM_STATUS = 'I0045' TECO); calls BAPI_TRANSACTION_COMMIT; logs result.</td></tr>
+<tr><td>CLOSE_WBS</td><td>Calls BAPI_BUS2054_SET_STATUS (I_WBS_SYSTEM_STATUS with SYSTEM_STATUS = 'I0045' TECO); calls BAPI_TRANSACTION_COMMIT; logs result.</td></tr>
+<tr><td>SEND_WBS_EMAIL</td><td>Reads SO15 distribution list for EC FI; constructs email from MO-0595 template; sends via CL_BCS.</td></tr>
+<tr><td>DISPLAY_LOG</td><td>Outputs collected log table as tabular spool list (Revision | Network | WBS | Action | Result | Message).</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">4</span> Report Output</h2>
+
+<h3>4.1 Output Method</h3>
+<p>Background spool output — the program runs as a daily batch job and all results are written to the spool (viewable via SM37/SP01). In foreground execution, the log is displayed as a WRITE list.</p>
+
+<h3>4.2 Main Heading</h3>
+<p>Auto Complete Revision, Network and WBS — Execution Log</p>
+
+<h3>4.3 Sub Heading</h3>
+<p>Executed on: SY-DATUM / SY-UZEIT | User: SY-UNAME | Variant: (selection variant name)</p>
+
+<h3>4.4 Layout / UI Design — Log Output Columns</h3>
+<table class="data">
+<thead><tr><th>#</th><th>Field Name</th><th>Column Header</th><th>Visible</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>REVNR</td><td>Revision Number</td><td>Yes</td></tr>
+<tr><td>2</td><td>REVTY</td><td>Revision Type</td><td>Yes</td></tr>
+<tr><td>3</td><td>IWERK</td><td>Planning Plant</td><td>Yes</td></tr>
+<tr><td>4</td><td>AUFNR</td><td>Network Number</td><td>Yes</td></tr>
+<tr><td>5</td><td>PSPEL</td><td>WBS Element</td><td>Yes</td></tr>
+<tr><td>6</td><td>STATUS</td><td>Action Taken (CLSD/TECO)</td><td>Yes</td></tr>
+<tr><td>7</td><td>RESULT</td><td>Result (Success/Error/Info)</td><td>Yes</td></tr>
+<tr><td>8</td><td>MESSAGE</td><td>BAPI Return Message Text</td><td>Yes</td></tr>
+</tbody>
+</table>
+
+<h3>4.5 Totaling</h3>
+<p>Summary line at end of log: Total Revisions Processed | Total Revisions Closed | Total Networks Completed (TECO) | Total WBS Completed (TECO) | Total Errors</p>
+
+<h3>4.6 Sorting</h3>
+<p>Default sort by Revision Number ascending.</p>
+
+<h3>4.7 Page Break</h3>
+<p>Not applicable — spool output with continuous log entries.</p>
+
+<h3>4.8 Error Handling</h3>
+<p>1. <strong>BAPI Return Handling:</strong> After each BAPI call, check RETURN-TYPE. TYPE = 'E' or 'A' → log error, skip to next object, call BAPI_TRANSACTION_ROLLBACK. TYPE = 'S' or blank → call BAPI_TRANSACTION_COMMIT EXPORTING WAIT = 'X'.</p>
+<p>2. <strong>Exception Handling:</strong> Wrap BAPI calls in TRY/CATCH CX_ROOT as safety net.</p>
+<p>3. <strong>Partial Processing:</strong> If revision close fails, do NOT attempt network or WBS closure for that revision.</p>
+<p>4. <strong>Logging:</strong> Every step logs result to internal table with Status (Success/Error/Info) and Message Text.</p>
+<p>5. <strong>Spool Storage:</strong> Complete log written to spool for audit trail (viewable via SP01).</p>
+
+<h3>4.9 Report Header &amp; Footer</h3>
+<p><strong>Header:</strong> 'Auto Complete Revision, Network and WBS — EN-MO-0613'</p>
+<p><strong>Footer:</strong> 'End of execution log — Total records processed: &amp;1'</p>
+
+<h2><span class="sec-num">5</span> Assumptions in Technical Design</h2>
+<p>1. All service orders are expected to be closed (CLSD) within 60 days from revision end date (configurable via P_DAYS parameter).</p>
+<p>2. The BAPI /AXONEBX/GET_REV_CLOSE is a partner-provided BAPI from the AXONE extension and must be available in the target system.</p>
+<p>3. The distribution list SO15 for EC FI must be maintained in the system before the email feature is activated.</p>
+<p>4. The MO-0595 email template must be configured and available.</p>
+<p>5. DIWPS_RV_CR table stores the revision-to-notification and revision-to-order linkages (confirmed on live system: WPID, NOTIFID, ORDER_NO fields exist with 30 fields total).</p>
+<p>6. T325R stores revision-to-network assignment (not confirmed on connected ECC system — must be verified on target S/4HANA system).</p>
+<p>7. BAPI_TRANSACTION_COMMIT with WAIT = 'X' is called after each successful status change for synchronous database commit.</p>
+<p>8. ZZ_ESLOT_START and ZZ_ESLOT_END are custom append fields on T352R — their existence must be confirmed on the target system.</p>
+
+<h2><span class="sec-num">6</span> Open Issues in Technical Design</h2>
+<table class="data">
+<thead><tr><th>#</th><th>Issue</th><th>Status</th><th>Action Required</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>T325R table returned no fields via batch_field_lookup on connected ECC system</td><td>Open</td><td>Confirm field names on target S/4HANA system</td></tr>
+<tr><td>2</td><td>/AXONEBX/GET_REV_CLOSE is a partner namespace BAPI</td><td>Open</td><td>Confirm availability and interface on target system</td></tr>
+<tr><td>3</td><td>ZZ_ESLOT_START and ZZ_ESLOT_END on T352R are custom appends</td><td>Open</td><td>Confirm field existence on target system</td></tr>
+<tr><td>4</td><td>Fiori Tile development for monitoring</td><td>Out of scope</td><td>Separate Technical Specification required</td></tr>
+<tr><td>5</td><td>TECO status code I0045</td><td>Open</td><td>Confirm correct status code on target system</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">7</span> Unit Test Results</h2>
+<table class="data">
+<thead><tr><th>Scenario #</th><th>Input / Test Condition</th><th>Expected Result</th><th>Pass/Fail</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>Revision with linked Notifications and Service Orders NOT yet completed</td><td>System ignores revision for auto close with error message</td><td>—</td></tr>
+<tr><td>2</td><td>Revision with all linked Notifications completed (NOCO) and all Orders closed (CLSD)</td><td>System closes revision (CLSD) with success message</td><td>—</td></tr>
+<tr><td>3</td><td>Revision with network; network linked to multiple revisions (all other revisions CLSD)</td><td>System completes network (TECO)</td><td>—</td></tr>
+<tr><td>4</td><td>WBS linked to network; all networks under WBS are TECO; Planning plant ECE2</td><td>System completes WBS (TECO) and sends email to EC FI</td><td>—</td></tr>
+<tr><td>5</td><td>Network linked to multiple revisions; at least one revision NOT closed</td><td>System ignores network; error message logged</td><td>—</td></tr>
+<tr><td>6</td><td>WBS TECO for planning plant ECE2</td><td>Email sent to distribution list SO15 using MO-0595 template</td><td>—</td></tr>
+<tr><td>7</td><td>Revision without any linked network</td><td>Revision closed; info message: 'Revision XXXXX closed without network'</td><td>—</td></tr>
+<tr><td>8</td><td>No matching revisions found for selection criteria</td><td>Informational message displayed</td><td>—</td></tr>
+<tr><td>9</td><td>BAPI returns error on revision/network/WBS close attempt</td><td>Error logged; processing continues with remaining objects</td><td>—</td></tr>
+<tr><td>10</td><td>Background batch execution — full run</td><td>Spool contains complete log of all processed revisions, networks, and WBS elements</td><td>—</td></tr>
+</tbody>
+</table>
+
+<h2><span class="sec-num">8</span> Related Documentation</h2>
+<table class="data">
+<thead><tr><th>#</th><th>Document</th><th>Purpose</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>FSD_EN-MO-0613 Auto Complete Revision, Network and WBS — v0.1 (10 Sep 2026)</td><td>Source Functional Specification</td></tr>
+<tr><td>2</td><td>MO-0595 Email Template</td><td>WBS TECO email notification content</td></tr>
+<tr><td>3</td><td>SO15 Distribution List</td><td>EC FI email addresses for WBS completion notification</td></tr>
+<tr><td>4</td><td>SAP Documentation: BAPI_BUS2002_SET_STATUS</td><td>Network status change BAPI (confirmed: NUMBER, SET_SYSTEM_STATUS, RETURN params)</td></tr>
+<tr><td>5</td><td>SAP Documentation: BAPI_BUS2054_SET_STATUS</td><td>WBS element status change BAPI (confirmed: I_WBS_SYSTEM_STATUS table, RETURN)</td></tr>
+<tr><td>6</td><td>SAP Documentation: BAPI_TRANSACTION_COMMIT</td><td>Synchronous commit (confirmed: WAIT param, BAPIRET2 return)</td></tr>
+</tbody>
+</table>
+
+<div class="callout">
+<strong>BAPI Interface Summary (Verified from Live SAP System)</strong><br/>
+<strong>BAPI_BUS2002_SET_STATUS</strong> (Network): IMPORTING — NUMBER (BAPI_NETWORK_LIST-NETWORK), SET_SYSTEM_STATUS (BAPI_SYSTEM_STATUS-SYSTEM_STATUS, optional), UNDO_SYSTEM_STATUS (optional), SET_USER_STATUS (optional), UNDO_USER_STATUS (optional). EXPORTING — RETURN (BAPIRETURN1). TABLES — E_RESULT (BAPI_STATUS_RESULT), I_ACTIVITY_SYSTEM_STATUS, I_ACTIVITY_USER_STATUS.<br/><br/>
+<strong>BAPI_BUS2054_SET_STATUS</strong> (WBS): EXPORTING — RETURN (BAPIRETURN1). TABLES — I_WBS_SYSTEM_STATUS (BAPI_WBS_MNT_SYSTEM_STATUS), I_WBS_USER_STATUS (BAPI_WBS_MNT_USER_STATUS), E_RESULT (BAPI_STATUS_RESULT).<br/><br/>
+<strong>BAPI_TRANSACTION_COMMIT</strong>: IMPORTING — WAIT (BAPITA-WAIT, optional). EXPORTING — RETURN (BAPIRET2).
+</div>
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 14 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
