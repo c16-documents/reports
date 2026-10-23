@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS ZMM PR TO RFQ S4 Ariba</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>FS ZMM PR TO RFQ S4 Ariba</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>FS ZMM PR TO RFQ S4 Ariba</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<h2><span class="sec-num">1</span> Document Control</h2>
+<table class="data">
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Document</td><td>Functional Specification – Automatic conversion of Purchase Requisitions to S/4HANA RFQs published to SAP Ariba Sourcing</td></tr>
+<tr><td>WRICEF type</td><td>Report / Background job (E – Enhancement, Interface-relevant)</td></tr>
+<tr><td>Proposed object name</td><td>ZMM_PR_TO_RFQ_S4 (to be confirmed – naming follows MM module convention)</td></tr>
+<tr><td>Target platform</td><td>SAP S/4HANA (new Sourcing RFQ), integrated with SAP Ariba Sourcing (integration assumed live)</td></tr>
+<tr><td>Version / Status</td><td>0.1 – Draft for customer review</td></tr>
+<tr><td>Date</td><td>2026-10-23</td></tr>
+<tr><td>Related documents</td><td>Technical Specification (to follow once the S/4HANA release is confirmed)</td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Business Requirement</h2>
+<p>Buyers currently create every Request for Quotation (RFQ) manually from purchase requisitions (PRs). The customer wants released PRs to be converted into RFQs automatically. Each RFQ is to be invited to up to three suppliers, published straight away, and sent to SAP Ariba Sourcing, where suppliers submit their quotations.</p>
+<h3>2.1 In scope</h3>
+<ul>
+<li>A scheduled background job that selects qualifying PR items in S/4HANA.</li>
+<li>Deriving the purchasing organisation from the PR's purchasing group.</li>
+<li>Determining up to 3 bidders, starting with the supplier entered on the PR.</li>
+<li>Creating the S/4HANA RFQ with header, item, schedule-line and bidder data.</li>
+<li>Publishing the RFQ, which triggers the standard outbound transfer to SAP Ariba Sourcing.</li>
+<li>Processing log, test-run mode, reprocessing of failed items, and exclusion of PRs that already have an RFQ.</li>
+</ul>
+<h3>2.2 Out of scope</h3>
+<ul>
+<li>Configuring the S/4HANA ⇄ Ariba integration. It is assumed live and is documented here only as integration points.</li>
+<li>Quotation comparison, award, and creating the PO or contract from the awarded quotation (standard S/4HANA / Ariba process).</li>
+<li>Service PR items (item category D / lean services) in phase 1. See open item OI-05.</li>
+<li>Decommissioning the existing ECC programs (ZHZL_PR_TO_RFQ, ZBDC_RFQ_CREATE, ZBDC_RFQ_CREATE1, ZMM_PR_TO_RFQ_PO*). This is noted for the migration plan only.</li>
+</ul>
+
+<h2><span class="sec-num">3</span> Customer Decisions Captured</h2>
+<table class="data">
+<tr><th>#</th><th>Topic</th><th>Customer decision</th><th>Design consequence</th></tr>
+<tr><td>D-01</td><td>Target object</td><td>New S/4HANA RFQ (Sourcing)</td><td>Built on the released S/4HANA RFQ API / business object. No BDC, no ME41, no internal function modules.</td></tr>
+<tr><td>D-02</td><td>Supplier source</td><td>Supplier entered on the PR</td><td>The PR supplier is always bidder 1.</td></tr>
+<tr><td>D-03</td><td>Number of suppliers</td><td>3 suppliers</td><td>Up to 3 bidders per RFQ (see §6.5 for how bidders 2 and 3 are found).</td></tr>
+<tr><td>D-04</td><td>Quotation deadline</td><td>30 days from creation</td><td>Quotation deadline = RFQ creation date + 30 calendar days (parameter, default 30).</td></tr>
+<tr><td>D-05</td><td>RFQ name</td><td>RFQ&lt;today's timestamp&gt;</td><td>RFQ name = <code>RFQ</code> + <code>YYYYMMDDhhmmss</code> (system time of creation).</td></tr>
+<tr><td>D-06</td><td>Delivery date</td><td>Copy from PR</td><td>RFQ item delivery date = PR item delivery date.</td></tr>
+<tr><td>D-07</td><td>Texts and terms</td><td>Standard header texts and terms</td><td>Taken from the standard RFQ text/terms defaults of the purchasing organisation (see §6.6).</td></tr>
+<tr><td>D-08</td><td>Exclude already-converted PRs</td><td>Yes</td><td>A PR item that is referenced by an active RFQ item is not selected again.</td></tr>
+<tr><td>D-09</td><td>Log / test run</td><td>Yes</td><td>ALV log per PR item, plus a simulation mode.</td></tr>
+<tr><td>D-10</td><td>Output channel</td><td>Published and sent through Ariba</td><td>RFQ is published by the program. Transfer to Ariba Sourcing uses the standard integration. No print or e-mail output.</td></tr>
+<tr><td>D-11</td><td>Trigger</td><td>Option (a) – scheduled background job</td><td>Executable report, scheduled periodically via SM36/Application Jobs. Can also be run online.</td></tr>
+<tr><td>D-12</td><td>Ariba integration</td><td>Assume it is live</td><td>The FS documents every S/4HANA-side integration point (§8).</td></tr>
+<tr><td>D-13</td><td>Purchasing organisation</td><td>Take from the purchasing group</td><td>Derived via a new custom mapping table (§6.4). This is needed because standard SAP has no purchasing group → purchasing organisation link.</td></tr>
+</table>
+
+<div class="callout warning"><strong>Why D-13 needs a custom table:</strong> In SAP the purchasing group (table T024) has no purchasing organisation field. I checked: T024 has only EKGRP, EKNAM, EKTEL, LDEST, TELFX, TEL_NUMBER, TEL_EXTENS, SMTP_ADDR. Purchasing groups are client-wide. Deriving the organisation from the plant is not a reliable alternative either. In the current system, plant 1000 is assigned to 5 purchasing organisations (0001, 1, 1000, 1710, C100) in T024W. So "org from purchasing group" can only be deterministic through a maintained mapping table.</div>
+
+<h2><span class="sec-num">4</span> Assumptions (to be confirmed by the customer)</h2>
+<table class="data">
+<tr><th>#</th><th>Assumption</th><th>Impact if wrong</th></tr>
+<tr><td>A-01</td><td>Target is SAP S/4HANA on-premise or RISE Private Cloud, release 2021 or higher, with the Sourcing RFQ (Manage RFQs) active.</td><td>API, field names and publish step change. The TS cannot be finalised.</td></tr>
+<tr><td>A-02</td><td>Only PR items with completed release are selected. Classic release strategy: final release reached. Flexible workflow: processing status "Released".</td><td>Unreleased PRs would reach suppliers.</td></tr>
+<tr><td>A-03</td><td>Both fixed supplier and desired supplier count as "supplier entered on the PR". Fixed supplier takes priority.</td><td>Most supplier-bearing PR lines carry a fixed supplier. In the current ECC data, 3,977 of the 7,704 open lines have a fixed supplier and 123 have a desired supplier. Excluding them would leave very few RFQs.</td></tr>
+<tr><td>A-04</td><td>Bidders 2 and 3 come from the valid source list for material + plant, then from purchasing info records for material + purchasing organisation. Blocked suppliers are excluded.</td><td>If the customer has a custom PR field or table holding 3 suppliers, §6.5 changes.</td></tr>
+<tr><td>A-05</td><td>If fewer than 3 bidders are found, the RFQ is still created with the available bidders (minimum 1) and a warning is logged.</td><td>Alternative: do not create, log an error.</td></tr>
+<tr><td>A-06</td><td>Grouping: one RFQ per PR, split further by derived purchasing organisation and bidder set. Bidders are held at RFQ header level in S/4HANA.</td><td>Combining several PRs into one RFQ would change the grouping key.</td></tr>
+<tr><td>A-07</td><td>PR items without a supplier are not processed. They are logged as "no supplier on PR".</td><td>Alternative: create the RFQ with source-list bidders only.</td></tr>
+<tr><td>A-08</td><td>RFQ document type = the standard S/4HANA RFQ type configured for Sourcing. Held in the custom mapping table so it can vary by purchasing organisation.</td><td>Configuration only.</td></tr>
+<tr><td>A-09</td><td>The RFQ name is exactly <code>RFQ</code>+timestamp. RFQs created in the same second share a name. The RFQ number remains the unique key.</td><td>If a unique name is needed, a suffix (e.g. PR number) is appended – see OI-04.</td></tr>
+</table>
+
+<h2><span class="sec-num">5</span> Process Flow</h2>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792759885384" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 1773.125 2081.078125" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792759885384{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792759885384 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792759885384 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792759885384 .error-icon{fill:#552222;}#mermaid-1792759885384 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792759885384 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792759885384 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792759885384 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792759885384 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792759885384 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792759885384 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792759885384 .marker{fill:#666;stroke:#666;}#mermaid-1792759885384 .marker.cross{stroke:#666;}#mermaid-1792759885384 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792759885384 p{margin:0;}#mermaid-1792759885384 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792759885384 .cluster-label text{fill:#333;}#mermaid-1792759885384 .cluster-label span{color:#333;}#mermaid-1792759885384 .cluster-label span p{background-color:transparent;}#mermaid-1792759885384 .label text,#mermaid-1792759885384 span{fill:#000000;color:#000000;}#mermaid-1792759885384 .node rect,#mermaid-1792759885384 .node circle,#mermaid-1792759885384 .node ellipse,#mermaid-1792759885384 .node polygon,#mermaid-1792759885384 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792759885384 .rough-node .label text,#mermaid-1792759885384 .node .label text,#mermaid-1792759885384 .image-shape .label,#mermaid-1792759885384 .icon-shape .label{text-anchor:middle;}#mermaid-1792759885384 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792759885384 .rough-node .label,#mermaid-1792759885384 .node .label,#mermaid-1792759885384 .image-shape .label,#mermaid-1792759885384 .icon-shape .label{text-align:center;}#mermaid-1792759885384 .node.clickable{cursor:pointer;}#mermaid-1792759885384 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792759885384 .arrowheadPath{fill:#333333;}#mermaid-1792759885384 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792759885384 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792759885384 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792759885384 .edgeLabel p{background-color:white;}#mermaid-1792759885384 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792759885384 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792759885384 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792759885384 .cluster text{fill:#333;}#mermaid-1792759885384 .cluster span{color:#333;}#mermaid-1792759885384 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792759885384 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792759885384 rect.text{fill:none;stroke-width:0;}#mermaid-1792759885384 .icon-shape,#mermaid-1792759885384 .image-shape{background-color:white;text-align:center;}#mermaid-1792759885384 .icon-shape p,#mermaid-1792759885384 .image-shape p{background-color:white;padding:2px;}#mermaid-1792759885384 .icon-shape .label rect,#mermaid-1792759885384 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792759885384 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792759885384 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792759885384 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792759885384_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792759885384_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792759885384_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792759885384_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792759885384_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792759885384_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M729.668,86L729.668,90.167C729.668,94.333,729.668,102.667,729.668,110.333C729.668,118,729.668,125,729.668,128.5L729.668,132" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6NzI5LjY2Nzk2ODc1LCJ5Ijo4Nn0seyJ4Ijo3MjkuNjY3OTY4NzUsInkiOjExMX0seyJ4Ijo3MjkuNjY3OTY4NzUsInkiOjEzNn1d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M729.668,214L729.668,218.167C729.668,222.333,729.668,230.667,729.668,238.333C729.668,246,729.668,253,729.668,256.5L729.668,260" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NzI5LjY2Nzk2ODc1LCJ5IjoyMTR9LHsieCI6NzI5LjY2Nzk2ODc1LCJ5IjoyMzl9LHsieCI6NzI5LjY2Nzk2ODc1LCJ5IjoyNjR9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M634.52,405.102L543.318,427.127C452.115,449.152,269.71,493.201,178.507,535.024C87.305,576.846,87.305,616.443,87.305,656.039C87.305,695.635,87.305,735.232,87.305,769.697C87.305,804.161,87.305,833.495,87.305,860.828C87.305,888.161,87.305,913.495,87.305,938.828C87.305,964.161,87.305,989.495,87.305,1014.828C87.305,1040.161,87.305,1065.495,87.305,1088.828C87.305,1112.161,87.305,1133.495,87.305,1156.828C87.305,1180.161,87.305,1205.495,87.305,1234.099C87.305,1262.703,87.305,1294.578,87.305,1326.453C87.305,1358.328,87.305,1390.203,87.305,1418.807C87.305,1447.411,87.305,1472.745,87.305,1498.078C87.305,1523.411,87.305,1548.745,87.305,1572.078C87.305,1595.411,87.305,1616.745,87.305,1638.078C87.305,1659.411,87.305,1680.745,87.305,1698.911C87.305,1717.078,87.305,1732.078,87.305,1739.578L87.305,1747.078" id="L_C_X1_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_X1_0" data-points="W3sieCI6NjM0LjUyMDI4NTIyNzAyNSwieSI6NDA1LjEwMjMxNjQ3NzAyNTA2fSx7IngiOjg3LjMwNDY4NzUsInkiOjUzNy4yNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5Ijo2NTYuMDM5MDYyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5Ijo3NzQuODI4MTI1fSx7IngiOjg3LjMwNDY4NzUsInkiOjg2Mi44MjgxMjV9LHsieCI6ODcuMzA0Njg3NSwieSI6OTM4LjgyODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxMDE0LjgyODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxMDkwLjgyODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxMTU0LjgyODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxMjMwLjgyODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxMzI2LjQ1MzEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNDIyLjA3ODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNDk4LjA3ODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNTc0LjA3ODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNjM4LjA3ODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNzAyLjA3ODEyNX0seyJ4Ijo4Ny4zMDQ2ODc1LCJ5IjoxNzUxLjA3ODEyNX1d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M779.129,450.789L789.509,465.199C799.889,479.609,820.65,508.43,831.03,528.34C841.41,548.25,841.41,559.25,841.41,564.75L841.41,570.25" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6Nzc5LjEyOTA3MzQzNjkwNTQsInkiOjQ1MC43ODg4OTUzMTMwOTQ2Nn0seyJ4Ijo4NDEuNDEwMTU2MjUsInkiOjUzNy4yNX0seyJ4Ijo4NDEuNDEwMTU2MjUsInkiOjU3NC4yNX1d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M774.582,671L697.283,688.305C619.984,705.609,465.387,740.219,388.088,772.19C310.789,804.161,310.789,833.495,310.789,860.828C310.789,888.161,310.789,913.495,310.789,938.828C310.789,964.161,310.789,989.495,310.789,1014.828C310.789,1040.161,310.789,1065.495,310.789,1088.828C310.789,1112.161,310.789,1133.495,310.789,1156.828C310.789,1180.161,310.789,1205.495,310.789,1234.099C310.789,1262.703,310.789,1294.578,310.789,1326.453C310.789,1358.328,310.789,1390.203,310.789,1418.807C310.789,1447.411,310.789,1472.745,310.789,1498.078C310.789,1523.411,310.789,1548.745,310.789,1572.078C310.789,1595.411,310.789,1616.745,310.789,1638.078C310.789,1659.411,310.789,1680.745,310.789,1698.911C310.789,1717.078,310.789,1732.078,310.789,1739.578L310.789,1747.078" id="L_D_X2_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_X2_0" data-points="W3sieCI6Nzc0LjU4MTgxNzY2Nzg4ODIsInkiOjY3MC45OTk3ODY0MTc4ODgyfSx7IngiOjMxMC43ODkwNjI1LCJ5Ijo3NzQuODI4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5Ijo4NjIuODI4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5Ijo5MzguODI4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5IjoxMDE0LjgyODEyNX0seyJ4IjozMTAuNzg5MDYyNSwieSI6MTA5MC44MjgxMjV9LHsieCI6MzEwLjc4OTA2MjUsInkiOjExNTQuODI4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5IjoxMjMwLjgyODEyNX0seyJ4IjozMTAuNzg5MDYyNSwieSI6MTMyNi40NTMxMjV9LHsieCI6MzEwLjc4OTA2MjUsInkiOjE0MjIuMDc4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5IjoxNDk4LjA3ODEyNX0seyJ4IjozMTAuNzg5MDYyNSwieSI6MTU3NC4wNzgxMjV9LHsieCI6MzEwLjc4OTA2MjUsInkiOjE2MzguMDc4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5IjoxNzAyLjA3ODEyNX0seyJ4IjozMTAuNzg5MDYyNSwieSI6MTc1MS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M879.835,699.403L890.974,711.974C902.113,724.545,924.39,749.687,935.529,767.757C946.668,785.828,946.668,796.828,946.668,802.328L946.668,807.828" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6ODc5LjgzNDg3MzQyMjEzNTQsInkiOjY5OS40MDM0MDc4Mjc4NjQ2fSx7IngiOjk0Ni42Njc5Njg3NSwieSI6Nzc0LjgyODEyNX0seyJ4Ijo5NDYuNjY3OTY4NzUsInkiOjgxMS44MjgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M816.668,886.055L767.441,894.851C718.214,903.646,619.759,921.237,570.532,942.699C521.305,964.161,521.305,989.495,521.305,1014.828C521.305,1040.161,521.305,1065.495,521.305,1088.828C521.305,1112.161,521.305,1133.495,521.305,1156.828C521.305,1180.161,521.305,1205.495,521.305,1234.099C521.305,1262.703,521.305,1294.578,521.305,1326.453C521.305,1358.328,521.305,1390.203,521.305,1418.807C521.305,1447.411,521.305,1472.745,521.305,1498.078C521.305,1523.411,521.305,1548.745,521.305,1572.078C521.305,1595.411,521.305,1616.745,521.305,1638.078C521.305,1659.411,521.305,1680.745,521.305,1698.911C521.305,1717.078,521.305,1732.078,521.305,1739.578L521.305,1747.078" id="L_E_X3_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_X3_0" data-points="W3sieCI6ODE2LjY2Nzk2ODc1LCJ5Ijo4ODYuMDU1MzI5Njg3MTd9LHsieCI6NTIxLjMwNDY4NzUsInkiOjkzOC44MjgxMjV9LHsieCI6NTIxLjMwNDY4NzUsInkiOjEwMTQuODI4MTI1fSx7IngiOjUyMS4zMDQ2ODc1LCJ5IjoxMDkwLjgyODEyNX0seyJ4Ijo1MjEuMzA0Njg3NSwieSI6MTE1NC44MjgxMjV9LHsieCI6NTIxLjMwNDY4NzUsInkiOjEyMzAuODI4MTI1fSx7IngiOjUyMS4zMDQ2ODc1LCJ5IjoxMzI2LjQ1MzEyNX0seyJ4Ijo1MjEuMzA0Njg3NSwieSI6MTQyMi4wNzgxMjV9LHsieCI6NTIxLjMwNDY4NzUsInkiOjE0OTguMDc4MTI1fSx7IngiOjUyMS4zMDQ2ODc1LCJ5IjoxNTc0LjA3ODEyNX0seyJ4Ijo1MjEuMzA0Njg3NSwieSI6MTYzOC4wNzgxMjV9LHsieCI6NTIxLjMwNDY4NzUsInkiOjE3MDIuMDc4MTI1fSx7IngiOjUyMS4zMDQ2ODc1LCJ5IjoxNzUxLjA3ODEyNX1d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1029.32,913.828L1036.073,917.995C1042.825,922.161,1056.331,930.495,1063.083,938.161C1069.836,945.828,1069.836,952.828,1069.836,956.328L1069.836,959.828" id="L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MTAyOS4zMjAxNTgzMDU5MjEsInkiOjkxMy44MjgxMjV9LHsieCI6MTA2OS44MzU5Mzc1LCJ5Ijo5MzguODI4MTI1fSx7IngiOjEwNjkuODM1OTM3NSwieSI6OTYzLjgyODEyNX1d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1069.836,1065.828L1069.836,1069.995C1069.836,1074.161,1069.836,1082.495,1069.836,1090.161C1069.836,1097.828,1069.836,1104.828,1069.836,1108.328L1069.836,1111.828" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6MTA2OS44MzU5Mzc1LCJ5IjoxMDY1LjgyODEyNX0seyJ4IjoxMDY5LjgzNTkzNzUsInkiOjEwOTAuODI4MTI1fSx7IngiOjEwNjkuODM1OTM3NSwieSI6MTExNS44MjgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1069.836,1193.828L1069.836,1199.995C1069.836,1206.161,1069.836,1218.495,1069.836,1230.161C1069.836,1241.828,1069.836,1252.828,1069.836,1258.328L1069.836,1263.828" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6MTA2OS44MzU5Mzc1LCJ5IjoxMTkzLjgyODEyNX0seyJ4IjoxMDY5LjgzNTkzNzUsInkiOjEyMzAuODI4MTI1fSx7IngiOjEwNjkuODM1OTM3NSwieSI6MTI2Ny44MjgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1025.303,1340.545L982.359,1354.134C939.415,1367.723,853.528,1394.9,810.584,1421.156C767.641,1447.411,767.641,1472.745,767.641,1498.078C767.641,1523.411,767.641,1548.745,767.641,1572.078C767.641,1595.411,767.641,1616.745,767.641,1638.078C767.641,1659.411,767.641,1680.745,767.641,1696.911C767.641,1713.078,767.641,1724.078,767.641,1729.578L767.641,1735.078" id="L_H_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_L_0" data-points="W3sieCI6MTAyNS4zMDI3NjYwMTg2ODU4LCJ5IjoxMzQwLjU0NDk1MzUxODY4NTh9LHsieCI6NzY3LjY0MDYyNSwieSI6MTQyMi4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTQ5OC4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTU3NC4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTYzOC4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTcwMi4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTczOS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1104.605,1350.309L1122.039,1362.27C1139.472,1374.232,1174.34,1398.155,1191.773,1415.617C1209.207,1433.078,1209.207,1444.078,1209.207,1449.578L1209.207,1455.078" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6MTEwNC42MDUxNTUzMjI3Njk2LCJ5IjoxMzUwLjMwODkwNzE3NzIzMDR9LHsieCI6MTIwOS4yMDcwMzEyNSwieSI6MTQyMi4wNzgxMjV9LHsieCI6MTIwOS4yMDcwMzEyNSwieSI6MTQ1OS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1125.652,1537.078L1112.441,1543.245C1099.229,1549.411,1072.806,1561.745,1059.594,1578.578C1046.383,1595.411,1046.383,1616.745,1046.383,1638.078C1046.383,1659.411,1046.383,1680.745,1046.383,1698.911C1046.383,1717.078,1046.383,1732.078,1046.383,1739.578L1046.383,1747.078" id="L_I_X4_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_X4_0" data-points="W3sieCI6MTEyNS42NTI0OTc5NDQwNzksInkiOjE1MzcuMDc4MTI1fSx7IngiOjEwNDYuMzgyODEyNSwieSI6MTU3NC4wNzgxMjV9LHsieCI6MTA0Ni4zODI4MTI1LCJ5IjoxNjM4LjA3ODEyNX0seyJ4IjoxMDQ2LjM4MjgxMjUsInkiOjE3MDIuMDc4MTI1fSx7IngiOjEwNDYuMzgyODEyNSwieSI6MTc1MS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1280.726,1537.078L1292.035,1543.245C1303.344,1549.411,1325.961,1561.745,1337.27,1573.411C1348.578,1585.078,1348.578,1596.078,1348.578,1601.578L1348.578,1607.078" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6MTI4MC43MjY0MDgzMDU5MjEsInkiOjE1MzcuMDc4MTI1fSx7IngiOjEzNDguNTc4MTI1LCJ5IjoxNTc0LjA3ODEyNX0seyJ4IjoxMzQ4LjU3ODEyNSwieSI6MTYxMS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1338.684,1665.078L1336.424,1671.245C1334.164,1677.411,1329.645,1689.745,1327.385,1701.411C1325.125,1713.078,1325.125,1724.078,1325.125,1729.578L1325.125,1735.078" id="L_J_X5_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_X5_0" data-points="W3sieCI6MTMzOC42ODM4Mzc4OTA2MjUsInkiOjE2NjUuMDc4MTI1fSx7IngiOjEzMjUuMTI1LCJ5IjoxNzAyLjA3ODEyNX0seyJ4IjoxMzI1LjEyNSwieSI6MTczOS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1420.789,1654.206L1456.512,1662.185C1492.234,1670.164,1563.68,1686.121,1599.402,1699.6C1635.125,1713.078,1635.125,1724.078,1635.125,1729.578L1635.125,1735.078" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6MTQyMC43ODkwNjI1LCJ5IjoxNjU0LjIwNjM3NjI2Nzc5fSx7IngiOjE2MzUuMTI1LCJ5IjoxNzAyLjA3ODEyNX0seyJ4IjoxNjM1LjEyNSwieSI6MTczOS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1546.766,1817.078L1537.326,1821.245C1527.885,1825.411,1509.005,1833.745,1508.395,1841.809C1507.785,1849.873,1525.446,1857.668,1534.276,1861.565L1543.106,1865.463" id="L_K_M_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_M_0" data-points="W3sieCI6MTU0Ni43NjU2MjUsInkiOjE4MTcuMDc4MTI1fSx7IngiOjE0OTAuMTI1LCJ5IjoxODQyLjA3ODEyNX0seyJ4IjoxNTQ2Ljc2NTYyNSwieSI6MTg2Ny4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1635.125,1945.078L1635.125,1949.245C1635.125,1953.411,1635.125,1961.745,1635.125,1969.411C1635.125,1977.078,1635.125,1984.078,1635.125,1987.578L1635.125,1991.078" id="L_M_N_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_N_0" data-points="W3sieCI6MTYzNS4xMjUsInkiOjE5NDUuMDc4MTI1fSx7IngiOjE2MzUuMTI1LCJ5IjoxOTcwLjA3ODEyNX0seyJ4IjoxNjM1LjEyNSwieSI6MTk5NS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M767.641,1817.078L767.641,1821.245C767.641,1825.411,767.641,1833.745,767.641,1843.411C767.641,1853.078,767.641,1864.078,767.641,1869.578L767.641,1875.078" id="L_L_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_L_Z_0" data-points="W3sieCI6NzY3LjY0MDYyNSwieSI6MTgxNy4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTg0Mi4wNzgxMjV9LHsieCI6NzY3LjY0MDYyNSwieSI6MTg3OS4wNzgxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M87.305,1805.078L87.305,1811.245C87.305,1817.411,87.305,1829.745,186.181,1845.213C285.058,1860.681,482.811,1879.284,581.688,1888.585L680.564,1897.887" id="L_X1_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_X1_Z_0" data-points="W3sieCI6ODcuMzA0Njg3NSwieSI6MTgwNS4wNzgxMjV9LHsieCI6ODcuMzA0Njg3NSwieSI6MTg0Mi4wNzgxMjV9LHsieCI6Njg0LjU0Njg3NSwieSI6MTg5OC4yNjEzOTg0Mjg3OTc3fV0=" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M310.789,1805.078L310.789,1811.245C310.789,1817.411,310.789,1829.745,372.422,1844.546C434.055,1859.346,557.32,1876.614,618.953,1885.249L680.586,1893.883" id="L_X2_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_X2_Z_0" data-points="W3sieCI6MzEwLjc4OTA2MjUsInkiOjE4MDUuMDc4MTI1fSx7IngiOjMxMC43ODkwNjI1LCJ5IjoxODQyLjA3ODEyNX0seyJ4Ijo2ODQuNTQ2ODc1LCJ5IjoxODk0LjQzNzU4MjU2NDUxMjV9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M521.305,1805.078L521.305,1811.245C521.305,1817.411,521.305,1829.745,547.866,1842.812C574.428,1855.88,627.552,1869.682,654.114,1876.583L680.675,1883.484" id="L_X3_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_X3_Z_0" data-points="W3sieCI6NTIxLjMwNDY4NzUsInkiOjE4MDUuMDc4MTI1fSx7IngiOjUyMS4zMDQ2ODc1LCJ5IjoxODQyLjA3ODEyNX0seyJ4Ijo2ODQuNTQ2ODc1LCJ5IjoxODg0LjQ4OTcxOTkzODMxNDd9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1046.383,1805.078L1046.383,1811.245C1046.383,1817.411,1046.383,1829.745,1014.424,1843.249C982.466,1856.754,918.55,1871.429,886.591,1878.767L854.633,1886.104" id="L_X4_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_X4_Z_0" data-points="W3sieCI6MTA0Ni4zODI4MTI1LCJ5IjoxODA1LjA3ODEyNX0seyJ4IjoxMDQ2LjM4MjgxMjUsInkiOjE4NDIuMDc4MTI1fSx7IngiOjg1MC43MzQzNzUsInkiOjE4ODYuOTk5NTYzMzgxMTIwN31d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1325.125,1817.078L1325.125,1821.245C1325.125,1825.411,1325.125,1833.745,1246.722,1846.912C1168.319,1860.08,1011.514,1878.081,933.111,1887.082L854.708,1896.083" id="L_X5_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_X5_Z_0" data-points="W3sieCI6MTMyNS4xMjUsInkiOjE4MTcuMDc4MTI1fSx7IngiOjEzMjUuMTI1LCJ5IjoxODQyLjA3ODEyNX0seyJ4Ijo4NTAuNzM0Mzc1LCJ5IjoxODk2LjUzODg0NDE5MDU2MDJ9XQ==" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path><path d="M1641.219,1817.078L1641.87,1821.245C1642.521,1825.411,1643.823,1833.745,1512.74,1847.52C1381.658,1861.294,1118.191,1880.51,986.457,1890.119L854.724,1899.727" id="L_K_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_Z_0" data-points="W3sieCI6MTY0MS4yMTg3NSwieSI6MTgxNy4wNzgxMjV9LHsieCI6MTY0NS4xMjUsInkiOjE4NDIuMDc4MTI1fSx7IngiOjg1MC43MzQzNzUsInkiOjE5MDAuMDE3NjE4MjI0NTk0M31d" marker-end="url(#mermaid-1792759885384_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(87.3046875, 1154.828125)"><g class="label" data-id="L_C_X1_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(841.41015625, 537.25)"><g class="label" data-id="L_C_D_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(310.7890625, 1230.828125)"><g class="label" data-id="L_D_X2_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(946.66796875, 774.828125)"><g class="label" data-id="L_D_E_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(521.3046875, 1326.453125)"><g class="label" data-id="L_E_X3_0" transform="translate(-35.4296875, -12)"><foreignObject width="70.859375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Not found</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_G_H_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(767.640625, 1574.078125)"><g class="label" data-id="L_H_L_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1209.20703125, 1422.078125)"><g class="label" data-id="L_H_I_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1046.3828125, 1638.078125)"><g class="label" data-id="L_I_X4_0" transform="translate(-17.90625, -12)"><foreignObject width="35.8125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Error</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_J_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(1325.125, 1702.078125)"><g class="label" data-id="L_J_X5_0" transform="translate(-17.90625, -12)"><foreignObject width="35.8125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Error</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_K_M_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_M_N_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_L_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_X1_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_X2_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_X3_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_X4_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_X5_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_K_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(729.66796875, 47)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Background job ZMM_PR_TO_RFQ_S4 starts</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(729.66796875, 175)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Select released, open PR items</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(729.66796875, 382.125)"><polygon points="118.125,0 236.25,-118.125 118.125,-236.25 0,-118.125" class="label-container" transform="translate(-117.625, 118.125)"></polygon><g class="label" style="" transform="translate(-91.125, -12)"><rect></rect><foreignObject width="182.25" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Already in an active RFQ?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-X1-5" transform="translate(87.3046875, 1778.078125)"><rect class="basic label-container" style="" x="-79.3046875" y="-27" width="158.609375" height="54"></rect><g class="label" style="" transform="translate(-49.3046875, -12)"><rect></rect><foreignObject width="98.609375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Skip - log Info</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-7" transform="translate(841.41015625, 656.0390625)"><polygon points="81.7890625,0 163.578125,-81.7890625 81.7890625,-163.578125 0,-81.7890625" class="label-container" transform="translate(-81.2890625, 81.7890625)"></polygon><g class="label" style="" transform="translate(-54.7890625, -12)"><rect></rect><foreignObject width="109.578125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Supplier on PR?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-X2-9" transform="translate(310.7890625, 1778.078125)"><rect class="basic label-container" style="" x="-94.1796875" y="-27" width="188.359375" height="54"></rect><g class="label" style="" transform="translate(-64.1796875, -12)"><rect></rect><foreignObject width="128.359375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Skip - log Warning</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-11" transform="translate(946.66796875, 862.828125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Derive Purchasing Org from Purchasing Group - ZMM_EKGRP_EKORG</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-X3-13" transform="translate(521.3046875, 1778.078125)"><rect class="basic label-container" style="" x="-66.3359375" y="-27" width="132.671875" height="54"></rect><g class="label" style="" transform="translate(-36.3359375, -12)"><rect></rect><foreignObject width="72.671875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Error - log</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-15" transform="translate(1069.8359375, 1014.828125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Determine bidders: PR supplier + source list + info records, max 3</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-17" transform="translate(1069.8359375, 1154.828125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Group items into RFQs: PR + Purch Org + Bidder set</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-19" transform="translate(1069.8359375, 1326.453125)"><polygon points="58.625,0 117.25,-58.625 58.625,-117.25 0,-58.625" class="label-container" transform="translate(-58.125, 58.625)"></polygon><g class="label" style="" transform="translate(-31.625, -12)"><rect></rect><foreignObject width="63.25" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Test run?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-21" transform="translate(767.640625, 1778.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Simulate - log planned RFQs</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-23" transform="translate(1209.20703125, 1498.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Create RFQ via released RFQ API</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-X4-25" transform="translate(1046.3828125, 1778.078125)"><rect class="basic label-container" style="" x="-98.7421875" y="-27" width="197.484375" height="54"></rect><g class="label" style="" transform="translate(-68.7421875, -12)"><rect></rect><foreignObject width="137.484375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Rollback - log Error</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-27" transform="translate(1348.578125, 1638.078125)"><rect class="basic label-container" style="" x="-72.2109375" y="-27" width="144.421875" height="54"></rect><g class="label" style="" transform="translate(-42.2109375, -12)"><rect></rect><foreignObject width="84.421875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Publish RFQ</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-X5-29" transform="translate(1325.125, 1778.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>RFQ kept as Draft - log Error - reprocessable</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-31" transform="translate(1635.125, 1778.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Standard outbound to SAP Ariba Sourcing</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-M-33" transform="translate(1635.125, 1906.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Ariba Sourcing event - suppliers quote</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-N-35" transform="translate(1635.125, 2034.078125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Supplier quotations returned to S/4HANA</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-Z-37" transform="translate(767.640625, 1906.078125)"><rect class="basic label-container" style="" x="-83.09375" y="-27" width="166.1875" height="54"></rect><g class="label" style="" transform="translate(-53.09375, -12)"><rect></rect><foreignObject width="106.1875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>ALV / spool log</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h2><span class="sec-num">6</span> Functional Design</h2>
+<h3>6.1 Trigger and scheduling</h3>
+<ul>
+<li>Executable report, run as a periodic background job (recommended: hourly during business hours, frequency to be confirmed). It can also be started online by a buyer with the same selection screen.</li>
+<li>Saved selection variants per purchasing organisation or region are recommended, e.g. <code>ZRFQ_EU</code>, <code>ZRFQ_US</code>.</li>
+<li>Two parallel runs on the same PRs must be prevented. The program locks each PR before processing and skips locked PRs with a log entry.</li>
+</ul>
+
+<h3>6.2 Selection screen</h3>
+<table class="data">
+<tr><th>Type</th><th>Technical name</th><th>Reference (DDIC)</th><th>Mandatory</th><th>Default</th><th>Purpose</th></tr>
+<tr><td>Select-option</td><td>S_BANFN</td><td>EBAN-BANFN</td><td>No</td><td>–</td><td>Purchase requisition number</td></tr>
+<tr><td>Select-option</td><td>S_BSART</td><td>EBAN-BSART</td><td>No</td><td>–</td><td>PR document type</td></tr>
+<tr><td>Select-option</td><td>S_EKGRP</td><td>EBAN-EKGRP</td><td>No</td><td>–</td><td>Purchasing group (also drives purchasing organisation)</td></tr>
+<tr><td>Select-option</td><td>S_WERKS</td><td>EBAN-WERKS</td><td>No</td><td>–</td><td>Plant</td></tr>
+<tr><td>Select-option</td><td>S_MATKL</td><td>EBAN-MATKL</td><td>No</td><td>–</td><td>Material group</td></tr>
+<tr><td>Select-option</td><td>S_BADAT</td><td>EBAN-BADAT</td><td>No</td><td>–</td><td>PR request date</td></tr>
+<tr><td>Select-option</td><td>S_FRGDT</td><td>EBAN-FRGDT</td><td>No</td><td>–</td><td>PR release date (lets jobs pick up recently released PRs only)</td></tr>
+<tr><td>Parameter</td><td>P_DAYS</td><td>Integer (days)</td><td>Yes</td><td>30</td><td>Quotation deadline offset in days from creation (D-04)</td></tr>
+<tr><td>Parameter</td><td>P_MAXBID</td><td>Integer</td><td>Yes</td><td>3</td><td>Maximum number of bidders per RFQ (D-03). Allowed range 1–3.</td></tr>
+<tr><td>Checkbox</td><td>P_PUBL</td><td>Flag</td><td>No</td><td>X</td><td>Publish the RFQ right after creation (D-10). If unflagged, the RFQ stays in Draft.</td></tr>
+<tr><td>Checkbox</td><td>P_TEST</td><td>Flag</td><td>No</td><td>X</td><td>Test run – simulate only, nothing is created (D-09)</td></tr>
+<tr><td>Checkbox</td><td>P_REPROC</td><td>Flag</td><td>No</td><td>–</td><td>Reprocess mode – only re-publish RFQs created by this program that are still in Draft after a failed publish</td></tr>
+</table>
+<h3>6.3 Validation of selection criteria</h3>
+<ul>
+<li>P_DAYS must be greater than 0 and at most 365. Otherwise an error message is shown.</li>
+<li>P_MAXBID must be between 1 and 3. Otherwise an error message is shown.</li>
+<li>Online run: at least one of S_BANFN, S_EKGRP, S_WERKS or S_FRGDT must be filled, so a full scan of all PRs is not triggered by accident. In background with a variant this check is a warning only.</li>
+<li>Authorisation check on the entered purchasing groups and plants (see §10). Values without authorisation are removed and logged.</li>
+</ul>
+
+<h3>6.4 Purchasing organisation derivation (D-13)</h3>
+<p>A new customer configuration table, <strong>ZMM_EKGRP_EKORG</strong> (maintenance view via SM30), maps the purchasing group to the purchasing organisation and RFQ defaults:</p>
+<table class="data">
+<tr><th>Field</th><th>Key</th><th>Reference</th><th>Description</th></tr>
+<tr><td>MANDT</td><td>X</td><td>MANDT</td><td>Client</td></tr>
+<tr><td>EKGRP</td><td>X</td><td>EKGRP</td><td>Purchasing group</td></tr>
+<tr><td>WERKS</td><td>X</td><td>WERKS_D</td><td>Plant – optional, blank = all plants. Supports a group that buys for several organisations by plant.</td></tr>
+<tr><td>EKORG</td><td></td><td>EKORG</td><td>Purchasing organisation used on the RFQ</td></tr>
+<tr><td>RFQ_TYPE</td><td></td><td>RFQ document type</td><td>RFQ document type to create (A-08)</td></tr>
+<tr><td>ACTIVE</td><td></td><td>Flag</td><td>Purchasing group active for automatic RFQ creation</td></tr>
+</table>
+<p><strong>Derivation rule (deterministic):</strong></p>
+<ol>
+<li>Read ZMM_EKGRP_EKORG with PR purchasing group + PR plant.</li>
+<li>If no entry is found, read with PR purchasing group + blank plant.</li>
+<li>If still not found, or ACTIVE is not set: <strong>error</strong> "No purchasing organisation maintained for purchasing group &amp;1". The PR item is not processed. No fallback to the PR's own purchasing organisation, so the result is always the same.</li>
+<li>Consistency check: the derived purchasing organisation must be assigned to the PR plant in standard configuration (plant ↔ purchasing org assignment). Otherwise an error is logged.</li>
+<li>Company code = company code of the purchasing organisation. If the organisation is cross-company, the company code of the plant is used.</li>
+</ol>
+
+<h3>6.5 Bidder determination (D-02, D-03)</h3>
+<ol>
+<li><strong>Bidder 1</strong> = fixed supplier of the PR item. If blank, the desired supplier of the PR item (A-03).</li>
+<li><strong>Bidders 2..P_MAXBID</strong> are filled in this order, skipping duplicates:
+  <ol type="a">
+  <li>valid source list entries for material + plant on the RFQ creation date, not blocked</li>
+  <li>purchasing info records for material + derived purchasing organisation, not flagged for deletion</li>
+  </ol></li>
+<li>Exclusions: suppliers with a central or purchasing-org posting/purchasing block, or a deletion flag. Suppliers not enabled for Ariba Sourcing (no Ariba Network ID mapping – see §8, IP-06) are also excluded, with a warning.</li>
+<li>If the final number of bidders is below P_MAXBID, the RFQ is created and a warning is logged (A-05).</li>
+<li>Items without material (free-text items) get only the PR supplier as bidder.</li>
+</ol>
+
+<h3>6.6 RFQ header mapping</h3>
+<table class="data">
+<tr><th>RFQ header field</th><th>Source / rule</th></tr>
+<tr><td>RFQ type</td><td>ZMM_EKGRP_EKORG-RFQ_TYPE</td></tr>
+<tr><td>RFQ name</td><td><code>RFQ</code> + system date/time at creation, format YYYYMMDDhhmmss (D-05)</td></tr>
+<tr><td>Purchasing organisation</td><td>Derived (§6.4)</td></tr>
+<tr><td>Purchasing group</td><td>PR item purchasing group</td></tr>
+<tr><td>Company code</td><td>Derived (§6.4)</td></tr>
+<tr><td>Quotation deadline</td><td>Creation date + P_DAYS (default 30), time 23:59:59 in the user's time zone (D-04)</td></tr>
+<tr><td>Bidders</td><td>§6.5</td></tr>
+<tr><td>Document currency</td><td>Purchasing organisation / company code currency</td></tr>
+<tr><td>Header texts</td><td>Standard RFQ header text defaults (D-07) – text types and default texts as configured for RFQ in S/4HANA</td></tr>
+<tr><td>Terms (payment terms, Incoterms)</td><td>Standard defaults of the purchasing organisation / RFQ type. Not copied from a single supplier, because the RFQ has several bidders (D-07).</td></tr>
+</table>
+
+<h3>6.7 RFQ item mapping</h3>
+<table class="data">
+<tr><th>RFQ item field</th><th>Source (PR item)</th></tr>
+<tr><td>PR reference (number + item)</td><td>EBAN-BANFN / EBAN-BNFPO – mandatory, used for document flow and the D-08 exclusion</td></tr>
+<tr><td>Material / short text</td><td>EBAN-MATNR / EBAN-TXZ01</td></tr>
+<tr><td>Material group</td><td>EBAN-MATKL</td></tr>
+<tr><td>Plant / storage location</td><td>EBAN-WERKS / EBAN-LGORT</td></tr>
+<tr><td>Quantity / unit</td><td>Open quantity = EBAN-MENGE − EBAN-BSMNG; unit EBAN-MEINS</td></tr>
+<tr><td>Delivery date</td><td>EBAN-LFDAT (D-06)</td></tr>
+<tr><td>Account assignment category</td><td>EBAN-KNTTP (account assignment data copied from the PR)</td></tr>
+<tr><td>Item texts</td><td>PR item texts copied</td></tr>
+</table>
+
+<h3>6.8 PR selection criteria</h3>
+<ul>
+<li>Item not deleted (EBAN-LOEKZ blank) and not closed (EBAN-EBAKZ blank).</li>
+<li>Release completed (A-02).</li>
+<li>Open quantity &gt; 0 (EBAN-MENGE − EBAN-BSMNG).</li>
+<li>Item category: standard / non-service items only in phase 1 (OI-05).</li>
+<li>Not already referenced by an RFQ item that is active (not deleted, not completed/cancelled) – D-08.</li>
+<li>Supplier present on the PR (A-07).</li>
+<li>Purchasing group active in ZMM_EKGRP_EKORG.</li>
+</ul>
+
+<h3>6.9 Create and publish</h3>
+<ol>
+<li>For each RFQ group: create the RFQ via the released S/4HANA RFQ API (business object / OData API – exact interface fixed in the TS for the target release). Commit per RFQ; rollback on error so partial RFQs are not left behind.</li>
+<li>If P_PUBL = X: execute the <em>Publish</em> operation on the created RFQ. If publishing fails, the RFQ stays in Draft, an error is logged with the RFQ number, and the RFQ can be re-published with P_REPROC.</li>
+<li>Publishing triggers the standard outbound message to SAP Ariba Sourcing (§8). The program does not call Ariba directly.</li>
+</ol>
+
+<h3>6.10 Output / log</h3>
+<p>ALV list online, spool list in background. One row per PR item:</p>
+<table class="data">
+<tr><th>Column</th><th>Content</th></tr>
+<tr><td>Status</td><td>Traffic light: green = created &amp; published, yellow = created (Draft) / warning, red = error, grey = skipped / simulated</td></tr>
+<tr><td>PR / item</td><td>Purchase requisition and item</td></tr>
+<tr><td>Purchasing group / derived purchasing org</td><td>Input and derived value</td></tr>
+<tr><td>RFQ number / RFQ name</td><td>Created RFQ</td></tr>
+<tr><td>Bidder 1–3</td><td>Supplier numbers</td></tr>
+<tr><td>Quotation deadline</td><td>Calculated deadline</td></tr>
+<tr><td>Publish status</td><td>Published / Draft / Not attempted</td></tr>
+<tr><td>Message</td><td>Message text from validation or API</td></tr>
+</table>
+<p>Totals line: PR items read, skipped, RFQs created, RFQs published, errors. Log entries are also written to the application log (SLG1, object/sub-object to be defined in the TS) for job monitoring.</p>
+
+<h2><span class="sec-num">7</span> Error Handling and Messages</h2>
+<table class="data">
+<tr><th>#</th><th>Type</th><th>Message</th><th>Behaviour</th></tr>
+<tr><td>001</td><td>E</td><td>Quotation deadline days must be between 1 and 365</td><td>Selection screen stops</td></tr>
+<tr><td>002</td><td>E</td><td>Number of bidders must be between 1 and 3</td><td>Selection screen stops</td></tr>
+<tr><td>003</td><td>E</td><td>Enter at least one restriction (PR, purchasing group, plant or release date)</td><td>Online only</td></tr>
+<tr><td>004</td><td>I</td><td>PR &amp;1 item &amp;2 already in RFQ &amp;3 – skipped</td><td>Item skipped</td></tr>
+<tr><td>005</td><td>W</td><td>PR &amp;1 item &amp;2 has no supplier – skipped</td><td>Item skipped</td></tr>
+<tr><td>006</td><td>E</td><td>No purchasing organisation maintained for purchasing group &amp;1</td><td>Item not processed</td></tr>
+<tr><td>007</td><td>E</td><td>Purchasing org &amp;1 not assigned to plant &amp;2</td><td>Item not processed</td></tr>
+<tr><td>008</td><td>W</td><td>Only &amp;1 of &amp;2 bidders found for PR &amp;3 item &amp;4</td><td>RFQ created</td></tr>
+<tr><td>009</td><td>W</td><td>Supplier &amp;1 blocked or not Ariba-enabled – not invited</td><td>Bidder skipped</td></tr>
+<tr><td>010</td><td>E</td><td>RFQ creation failed: &amp;1</td><td>Rollback, group logged</td></tr>
+<tr><td>011</td><td>E</td><td>RFQ &amp;1 created but publish failed: &amp;2</td><td>RFQ stays in Draft, reprocessable</td></tr>
+<tr><td>012</td><td>S</td><td>RFQ &amp;1 created and published</td><td>–</td></tr>
+<tr><td>013</td><td>W</td><td>PR &amp;1 locked by another user/job – skipped</td><td>Picked up next run</td></tr>
+</table>
+<p>Message texts are held in a message class (T100). Name defined in the TS.</p>
+
+<h2><span class="sec-num">8</span> Integration Points – S/4HANA Side (SAP Ariba Sourcing)</h2>
+<p>The integration is assumed live (D-12). The program only creates and publishes the RFQ; the standard integration handles the transfer. The S/4HANA-side points below must be in place and are the hand-over items for the integration team. Service and object names are to be confirmed against the target release in the TS.</p>
+<table class="data">
+<tr><th>ID</th><th>Integration point</th><th>Direction</th><th>S/4HANA object / setting</th><th>What this program relies on</th><th>Monitoring</th></tr>
+<tr><td>IP-01</td><td>RFQ outbound to Ariba Sourcing</td><td>S/4 → Ariba</td><td>Standard RFQ outbound message triggered on publish (Ariba Sourcing integration scope)</td><td>Publish of a program-created RFQ triggers the outbound message exactly as a manually published RFQ does</td><td>Message monitoring (SRT_MONI / AIF) and the RFQ's processing status</td></tr>
+<tr><td>IP-02</td><td>Connectivity</td><td>S/4 → Integration middleware → Ariba</td><td>SOAMANAGER logical port / communication arrangement towards SAP Integration Suite (Ariba integration content) or the Cloud Integration Gateway</td><td>Endpoint active in every system of the landscape (Q and P)</td><td>SOAMANAGER / communication arrangement status</td></tr>
+<tr><td>IP-03</td><td>Sourcing configuration</td><td>S/4</td><td>Customising that RFQs of the configured RFQ type are processed externally in Ariba Sourcing</td><td>RFQ_TYPE in ZMM_EKGRP_EKORG must be an Ariba-relevant type</td><td>Config check in test phase</td></tr>
+<tr><td>IP-04</td><td>Supplier quotations inbound</td><td>Ariba → S/4</td><td>Standard supplier quotation inbound message, created with reference to the RFQ</td><td>None (downstream). Listed so the end-to-end flow is tested.</td><td>Message monitoring; Manage Supplier Quotations</td></tr>
+<tr><td>IP-05</td><td>Award / follow-on document</td><td>Ariba → S/4</td><td>Awarded quotation → PO or contract creation (standard)</td><td>PR reference on the RFQ item must be kept, so the follow-on document consumes the PR</td><td>Document flow PR → RFQ → Quotation → PO</td></tr>
+<tr><td>IP-06</td><td>Supplier master alignment</td><td>S/4 ⇄ Ariba</td><td>Business Partner (supplier role) replicated to / mapped in Ariba (Ariba Network ID / SM vendor ID)</td><td>Every invited bidder must exist and be enabled in Ariba, otherwise the event fails on the Ariba side</td><td>Supplier replication monitoring</td></tr>
+<tr><td>IP-07</td><td>Master data for items</td><td>S/4 → Ariba</td><td>Material, material group, plant and unit mapping to Ariba commodity / region codes</td><td>Item data copied from the PR must be mappable</td><td>Integration content error log</td></tr>
+<tr><td>IP-08</td><td>Status feedback</td><td>Ariba → S/4</td><td>RFQ status updates (e.g. event published / completed) returned to S/4</td><td>Used by the D-08 exclusion only via RFQ status (active vs. completed)</td><td>RFQ status in Manage RFQs</td></tr>
+<tr><td>IP-09</td><td>Error handling</td><td>S/4</td><td>Failed outbound messages are restarted in message monitoring – not by this program</td><td>Program logs publish success only; the transfer outcome is monitored in IP-01</td><td>Integration support runbook</td></tr>
+</table>
+<div class="callout tip">Integration team action: confirm IP-01 to IP-08 for the target release, and confirm that an RFQ created via API and then published produces the same outbound message as one created in the Manage RFQs app.</div>
+
+<h2><span class="sec-num">9</span> New Custom Objects (functional view)</h2>
+<table class="data">
+<tr><th>Object</th><th>Type</th><th>Purpose</th></tr>
+<tr><td>ZMM_PR_TO_RFQ_S4</td><td>Executable report</td><td>Selection, derivation, creation, publish, log</td></tr>
+<tr><td>ZMM_EKGRP_EKORG</td><td>Customising table + SM30 view</td><td>Purchasing group → purchasing org / RFQ type mapping</td></tr>
+<tr><td>Message class</td><td>T100</td><td>Messages in §7</td></tr>
+<tr><td>Application log object</td><td>SLG0</td><td>Job log persistence</td></tr>
+<tr><td>Background job + variants</td><td>Job definition</td><td>Periodic scheduling</td></tr>
+</table>
+
+<h2><span class="sec-num">10</span> Authorisations</h2>
+<ul>
+<li>Run authorisation: S_PROGRAM / report authorisation group, or a dedicated transaction code (e.g. ZMM_RFQ_AUTO) for online use.</li>
+<li>PR access: M_BANF_EKG (purchasing group), M_BANF_WRK (plant), display activity.</li>
+<li>RFQ creation and publish: the standard RFQ authorisation objects for document type, purchasing organisation and purchasing group, with create/change activities. The standard API performs these checks; the program checks in advance to give a clean log.</li>
+<li>Background job user: a technical user holding the above for all purchasing organisations in scope.</li>
+<li>Table ZMM_EKGRP_EKORG: maintenance restricted to the purchasing master-data team (S_TABU_NAM).</li>
+</ul>
+
+<h2><span class="sec-num">11</span> Non-Functional Requirements</h2>
+<ul>
+<li>Volume: expected PR item volume per run to be confirmed (OI-07). For reference, the current ECC system has 7,704 open, non-deleted PR lines. The design must handle at least that volume in one run with package-wise commits.</li>
+<li>Performance: one database read for PR items, buffered reads for the mapping, source list and info records. One API call per RFQ.</li>
+<li>Restartability: every run can be repeated safely. Already converted items are excluded (D-08) and Draft RFQs are re-published via P_REPROC.</li>
+<li>Code Quality: only released S/4HANA APIs; no modifications, no BDC, no direct updates of SAP tables.</li>
+</ul>
+
+<h2><span class="sec-num">12</span> Test Scenarios</h2>
+<table class="data">
+<tr><th>#</th><th>Scenario</th><th>Expected result</th></tr>
+<tr><td>T-01</td><td>Released PR, fixed supplier, 2 further source-list suppliers</td><td>1 RFQ with 3 bidders, deadline = today + 30, name RFQ&lt;timestamp&gt;, published, outbound message to Ariba successful</td></tr>
+<tr><td>T-02</td><td>PR with desired supplier only, no source list or info record</td><td>RFQ with 1 bidder, warning 008</td></tr>
+<tr><td>T-03</td><td>PR without supplier</td><td>Skipped, warning 005</td></tr>
+<tr><td>T-04</td><td>Purchasing group not in ZMM_EKGRP_EKORG</td><td>Error 006, no RFQ</td></tr>
+<tr><td>T-05</td><td>PR not released</td><td>Not selected</td></tr>
+<tr><td>T-06</td><td>Second run over the same PR</td><td>Skipped, info 004 (D-08)</td></tr>
+<tr><td>T-07</td><td>Test run (P_TEST = X)</td><td>Log of planned RFQs, nothing created</td></tr>
+<tr><td>T-08</td><td>Publish fails (e.g. integration endpoint inactive)</td><td>RFQ in Draft, error 011; re-run with P_REPROC publishes it</td></tr>
+<tr><td>T-09</td><td>Supplier blocked or not in Ariba</td><td>Bidder skipped, warning 009</td></tr>
+<tr><td>T-10</td><td>PR with 2 items in different plants mapping to different purchasing orgs</td><td>2 RFQs (grouping A-06)</td></tr>
+<tr><td>T-11</td><td>User without authorisation for a purchasing group</td><td>Items of that group not processed, logged</td></tr>
+<tr><td>T-12</td><td>End-to-end: supplier quotes in Ariba, award</td><td>Supplier quotation in S/4 referencing the RFQ; PO references the PR</td></tr>
+</table>
+
+<h2><span class="sec-num">13</span> Open Items</h2>
+<table class="data">
+<tr><th>#</th><th>Open item</th><th>Owner</th></tr>
+<tr><td>OI-01</td><td>Confirm the S/4HANA release and deployment (on-premise / RISE Private Cloud) – needed for the TS (A-01)</td><td>Customer IT</td></tr>
+<tr><td>OI-02</td><td>Confirm where bidders 2 and 3 come from: source list / info records, or a custom PR field or table (A-04)</td><td>Customer procurement</td></tr>
+<tr><td>OI-03</td><td>Confirm that fixed-supplier PRs are in scope (A-03) and the rule when fewer than 3 bidders are found (A-05)</td><td>Customer procurement</td></tr>
+<tr><td>OI-04</td><td>Is a duplicate RFQ name in the same second acceptable, or should the PR number be appended (A-09)?</td><td>Customer procurement</td></tr>
+<tr><td>OI-05</td><td>Are service PRs in scope for a later phase?</td><td>Customer procurement</td></tr>
+<tr><td>OI-06</td><td>Initial content of ZMM_EKGRP_EKORG (purchasing group → purchasing org, RFQ type)</td><td>Customer MM master data</td></tr>
+<tr><td>OI-07</td><td>Expected volume per run and job frequency</td><td>Customer IT</td></tr>
+<tr><td>OI-08</td><td>Integration team sign-off on IP-01 to IP-08</td><td>Integration team</td></tr>
+<tr><td>OI-09</td><td>Plan for retiring the ECC programs ZHZL_PR_TO_RFQ, ZBDC_RFQ_CREATE, ZBDC_RFQ_CREATE1 and ZMM_PR_TO_RFQ_PO*</td><td>Customer IT</td></tr>
+</table>
+
+<h2><span class="sec-num">14</span> Evidence From the Current (ECC) System</h2>
+<table class="data">
+<tr><th>Check</th><th>Finding</th><th>Relevance</th></tr>
+<tr><td>Purchasing group table T024</td><td>No purchasing organisation field</td><td>Custom mapping table required (§6.4)</td></tr>
+<tr><td>Plant ↔ purchasing org (T024W)</td><td>Plants with several organisations, e.g. plant 1000 → 0001, 1, 1000, 1710, C100; plant 0006 → 0006, 2, 3000, C100</td><td>Plant-based derivation is ambiguous</td></tr>
+<tr><td>Open PR lines (EBAN)</td><td>7,704 open, non-deleted lines; 3,977 with fixed supplier; 123 with desired supplier</td><td>Volume sizing; A-03</td></tr>
+<tr><td>Custom PR fields</td><td>EBAN carries custom fields ZZAPRDATE (approval date) and ZZUSER</td><td>Confirm whether a custom approval step must be respected in S/4HANA in addition to release (relates to A-02)</td></tr>
+<tr><td>Existing custom programs</td><td>ZHZL_PR_TO_RFQ, ZBDC_RFQ_CREATE, ZBDC_RFQ_CREATE1 (package Z_SGGR), ZMM_PR_TO_RFQ_PO* ($TMP)</td><td>ECC/BDC solutions; replaced by this design (OI-09)</td></tr>
+</table>
+
+<h2><span class="sec-num">15</span> Standard Alternative Considered</h2>
+<p>S/4HANA standard lets a buyer create an RFQ from PRs manually (Manage Purchase Requisitions / Manage RFQs). It has no scheduled job that creates and publishes RFQs automatically with derived bidders. The customer explicitly does not want manual creation, so a small custom job on top of the released RFQ API is justified. This is a Code Quality-compliant extension: no modification, released interfaces only.</p>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
