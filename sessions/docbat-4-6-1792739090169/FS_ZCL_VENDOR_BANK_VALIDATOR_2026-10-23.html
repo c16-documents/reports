@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABLAAAAEuCAYAAACedetbAAAmsElEQVR42u3dd7hvV13v+/eANJJQIggkQOgtoTdpgQNI8VK9gEcUFFFE5Cioj3qVg+eCwFX04AGkiVSliIXiAanSiwZBWpAiJaGqBIQQ0sf5Yy24ISTZe6+991pz/dbr9Ty/Z/OQvdb8/sYY87fW/OzvHLMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA2CGGIQDY2eac8wJ/SIzh5wQAAJAAC4CWFFoJswAAgARYALSNgitBFgAAsNUuYggAEl5twfcBAABIBxYAtX8DJ91YAABAOrAAaMHdUrqxAACABFgAAAAAJMACIN1X6cICAAASYAHQioVXCbEAAIAEWAAAAAAkwAIg3VfpwgIAABJgAQAAAEACLAAAAAASYAGQ2wdzGyEAAJAACwAAAIAEWAAAAACQAAsAAAAANuQAQwAA0FbtG3dkdc3qitWV1v+8fHXE+utS1cWrg9ZfB1ajOr067Tyvr1VfrL50rtcXqhPGGF802rBSnx2XrI6prlVd7Tyv/zbG+GujBCTAAgBgDy82D6luVN2suml13eo61SU3+C0PXX/t7vG/Vn20+kj14epd1YfGGB68AMv+7DigtaDqptUN1v/3sdUVLuTL7lgJsICVMwwBgKcQ7tMfLGP42YJzcc7Dq9tVd1h/3bDl/cPhV6u3V2+p3jLG+IiZgy3/7LhqdVx1i9YC7xtWh+zht/nYGOMYowkkwAJAiCW8gvM5965R3au6d3Xrtl+n+2eqV1R/U71njHGOWYX9/rlxTGsdU7dtLbg6ah996yPHGF82wkACLAAEWAIsWO+WeGD1X1u7rWdVfLm1IOvPxhjv3YvxuXv1F9Vhu/irh44xvm1FsQM+M36g+uHqrtVdWtv3bn/4iTHGS404kAALAAGWAIsde44dVv1E9VPVbXbA71OfqP6stTDrc3swTg+vnlZddDf++iXHGN+wuljRz4wrV/epfrS1TquLbsJhnzPG+HmjDyTAAkCIJbxix51X165+sfrpNr75+nZ2TvWa6qljjDddyDiN6verX9+D733pMcbJVhkr9HlxdPWT1f2rG29BCf86xriGmQASYAEgwBJgsWPOp9tUv1Xd3Wh818eqp1QvGGOcfp6nLb5o/aJ9T1x+jPEVw8o2/6y41Praf2Br+1lt9c/Fo8cYJ5kZIAEWAEIs4RUrfQ7duXrM+oUo5+/z1e9Vf1pdvHpVaxvY76krjjG+YDjZxiH3w1oLrw5ZUGkPHmO80AwBCbAAEGIJr1jJ8+Zmrd0Cd8cllVWdvP46vTqztY3RDz/X6yJtbZB1RnW1DX79VccYn7X62EafE4e3djvxL1TXa+tv7/109ZHqo+t/fqT6+BjjTLMFrIoDDAEAQM05r1T9YWtdFFsZzJ5Uvbt6b3VC9fHqC2OMsy6k9oOra1TXrK7VWhfU7atLbVLNV/Q7KTvkc+LI6peqh2/i+XVuX63+sf8/pPpodYKneALpwAJAF5buK1b+HDmw+tXWbhc8bIvK+Gj159XfjjE+uo/e10Va2zz6Hq09MfFqC56GY8YYH7MaWfDnxDVb2wvvJ6uDNvnwn2vt9txXVO8YY5xtRgAAWOkga18xmqzQefFDc84T5tY4c8750jnnzTfhfY4553FzzheuH3dprm81stDPiKvPOV8w5zxrk8+JT885HzfnvIlZAABAiCW8YueeCwfNOZ+4BRelc855zpzzJXPOq++wC/IL4yKdpX1GXHHO+aebHPieOef86znnXeecOpwBAEBwxQ5f/9eZc35wi4Kaj8w5b72Qcbj2nPNtCwmwbmFlspDz4rD1zqdTN3H9nzjnfPT6/loAAMB5Hf/Rzwmt2GkXpz8x5/zmFnVdPXnOedDCxmPMOR825/z6FgdYt7E6WcC58OA55xc3cd1/fs75iKV9LgDkKYQALNH7TjjRILBTNmp/SmtPDttsp1Q/OcZ49dLGZYwxq2fPOf+u+pvqpn4nZQd+PhxbPbvarCD1y9XvVc8eY5xmBgB2z0UMAQCw4henR1Sva2vCqy9Ut1lieNX3BlknVretXpgAi53z2XCxOecTqw9sUnh1RvW46mpjjKcIrwD8sgAA8N0Ny6vXVNfegsN/rrrjGOPT22Gs1i+mHzzn/Gj1pE0+/IFWK5v82XCr6kXVNTbpkO+qfn6McYLRB0gHFgDAuS5Qb7B+0bgV4dUXq/+yXcKrvjfI+oPqEdX0j6qs4u3Ec84nVO9oc8Krb6yfT8cJrwD8sgAAcN6L1FtWr62O2ILD/2d1tzHGZ7fr+I0xnjHnPK16TpvzD546sNiMz4XrVi+pbrRJh3x/db8xxmeMPkA6sAAAznORetvqTW1NeHVO9RNjjA9v93EcYzyv+tX8oyor8gTS6vg2L7x6bmv73wmvABJgAQCc9yL1Zq3teXXYFpXw2DHGa1dlPMcYT6melg4stu9nwsFzzmdWL96kz4XTqoeMMX7OJu0A+dcuAIDzuVC9fvX66hJbVMI7q8ev4NA+qrpKdU+/k7LNPhOOql5V3WyTDnlydY8xxnuMPkA6sAAAzudC9YrV66of2KISvlU9aIxxzqqN7fp7emD1r+nAYvt8Jtyk+sc2L7w6qbqt8AogARYAwAVcqF68tdsGj9rCMn5nO2/a3q5DrG9UP16dmQ4slv+ZcN/WnjJ4hU065Mda2+/qY0YfIAEWAMD5XKhetHp5dYMtLOPD1VNWfazHGO+rfisdWCz7M+GXqr+sDt2kQ360Om6McZLRB0iABQBwAR5f3W2La/jtMcbZO2S8n9zaEx7TgUXLC68eWz21Gpt0yM9UdxljfNXoAyTAAgC4gIvVe1e/ucVlvHuM8b93ypiPMWb1sOrb6cBiOZ8FY875jOp3NvGwX6ruPMb4ohkASIAFAHABF6xXq17Y5nVaXJDf2mljP8b4dPXYdGCxkPCqek718E087Dequ44x/tUMACTAAgC4kH2v/qy65BaX8voxxtt36DT8z+qDCbDY+vDqWdXPbuZhq58eY3zYDAAkwAIA6MK7nm69gDr+cKdOwBjjrOoRuYWQrfWM6uc3+Zi/P8Z4paEHSIAFANAFd1zcuM3d5+aCfKJ6806eizHGu6q/SQcWW/NZ8MTqFzb5sH9f/XejD5AACwBgF7cOPqdldOs8Y31D853u/6nOTAcWm/tZ8Ig2f/+5/6gesIOeOAqQAAsAYGN+qbrpAur4VvUC01FjjE9Wf5IOLNq08Oq+1VO34NC/PMb4NzMAkAALAOBCLlqvWP3uQsp52RjjP83Kdz22OjUdWBtd29eac54y997Hd8BY3bS1Bzhs9jXM344xXupUB0iABQCwC0+sDl9ILS8zHZ27C+vf2/surAN2aHh1SPXS6rD2TWfgKo/VZatXVBfb5EN/o3q4Mx0gARYAwC4uXG9SPXAh5ZxcvdWsdH5PZDw9HVh76unVTfbR9zplhT8DDqz+qrrSFhz+cWOMLzjFARJgAQDswpOrsZBaXjXGOMuUdN4urC+0d/uCHbADg9lHVQ/Zh9/ylBUerj+ojtuC455Y/bEzHCABFgDALi7y71zdfkEl/bVZuUC/X52lA2u31vW9qv/Zvn+4wCqO1d2rR27R4f/7GON0pzZAAiwAgF34Hwuq5ZvVm0xJF9SF9ZnqlenAaheBzG1a2/dqX/8efuoKjtWR1fO36PAfrF7szAZIgAUAsIuL1ztVt1lQSW/XjbFLT0sH1oWt6ZtXr60O3Q/f/lsrNlajelH1g1tUwhPGGOc4pQESYAEA7MKjF1bP20xJu+rCenv1oXRgdT6BzB1b6+C7xH46xKp1YD20+uEtOvZnq79xRgMkwAIA2MXF/g2qOyTA2o7+WID1fev5QdXftf/Cq1qhAGvOeVT1pC0s4SljjLOdygAJsAAAduFRC6vnlOr9pmW3vLj6Wm4hbM554JzzKa3dCnfQfj7cKnVgPbO65BYd+z+r5zqNARJgAQDs4qL/MtUDFlbWu8cYZ5mdduc2wlOrl7TDO7DmnNes3lX98iYd8tsr9ITGe21hCX8+xvimMxkgARYAwC48qDpkYTW907TskRe0Qzuw5pwHzDkfWX2guvkmHvrUFRi7g6o/3OIy/szpC5AACwBgN/zMAmv6oGlpT7qw3ld9pB3WgTXn/OHWgqv/VR22yYdfhQ6sX66uuYXH/9QY4x+cwQAJsAAAdhEA3LS6/gJL+5DZ2WMvbId0YM057zbnfFf1xup6W1TGt1fg1uHHpPsKgARYAEDb4vbBpflm9TlTs8f+vDprVTuw5pxHzDkfNef8WGtPGLz1Fpe03Tuwfr39+5TG3fESpy3Ach1gCAB2rld+dlzof3/0a06cT7j70cNIsYl+dIE1fXiMMU1Ne3ob4ZfnnG+sfqQV6cCacx5e3aP6sfX3taS92r69jbuvfrB6xBaXccIY41POXIAEWABsvUe/5sS5t18j0GI/XsTevDp6gaV92Oxs2F+2ewHWAQtdkwdXN63usP66Tct7wMB3nLaN18lvtvl7hp3Xq52uAAmwAGjbBVe7+l6CLNoZ3Ve1Z5uR871eWT27XXdYHbiJodRoLYQ6eP11aHW56vLrrytUx1THVteoLrpNxvq0bRpcH1E9fAGlCLAAEmAB0PYPrgRZbIK7L7Qu+1+14dsIvzbnfFO77sI6YH9srN7a3lQ7xXbtwHpYayHiVvr3ytMHARJgAdDqBFeCLNo/XRiXbZlPHywBVptwG+GBhmmvnb4Nz/sD2vq9r6reMMY4Zz+8v0tVN6quXl1x/XWF6qjq8Opi53odWJ1anbL++s/qs9Un118fr94/xjjNUgcSYAGQ8GqvjivEYi/cqVrq+jnR9OyVV7Tr2wj9Trr3ztiGNd+/tVBnq72xvQ+rDqxu2dpeaTdpLbi68h5+m4uvv77jZuf576fNOd9TvaV6c/UeD5gAdhIXGgAJr/YlIRYbvPh7TvVzCyztm2OMS5ihbbmmdtothJcbY/zbNpujt1a3X0ApVxxjfGED9R9d3bu6c/Vf+t7waTN8pvrz6kWeoAjsBBcxBAAJr1awDradW+f2QWindGDNOa9W3W4BpfzLnoRXc85D5pw/M+d8e2u3+D21umebH15VXbV6TPXJOeeb5py3cxoACbAASHiVEIv9dCF78eo6uX0Q9saZ26zeB7eMu0H+fnefljjnfFz1+ep51XELu5vlTtXb5px/P+e8vdMBSIAFQMKrhFjsYzdf8O8kXzE9bBNntX1C61H99ELKeecuaj1szvn/ttZt9Zjq0gsf3jtUb51zvmzOeTmnBZAAC4CERAmx2EdutuDavmZ6SIC1r/1QdfRCanlXFxxePbD6RPU/qu22F95/rT4253yIUwNIgAVAwqGEWOwDxybAgr0xxxhnb6N677uQOj4/xjjxfIKrq8w531D9WXXUNl4XR1TPnXO+es55SacJkAALAGCvHJMAi31sjPG6sQmq0xfwds/eZtPzowup4919f3j1kOojrT1ZcFXcszp+znmsTwYgARYA6WpKFxZtbC+c6yy4xJPNEtvhVNpG5/z1q6svpJzjz1XXJeacf1k9tzpsBdfINav3zjnv43QBEmABAOyxI6vD04EF7YQAq7rrgmr5wHp4dUxrYdb9VnydHF791ZzzQU4ZIAEWAOlmShcWe+DohdcnwCIB1j51pwXV8s9zzntX/1Bda4eslYtWL5hz/rzTBthuDjAEAEACrAvybVME7avbBw+qjltIOSdWP1X9YRv7R/0zW7vF+FvVKevXVUdUl6kObPlNDM+ecx44xni6lQmkAwuAdDGlC4tduNLC6zvTFME+80MtZ3+pI6sn7+b10BnVO6rHVT/S2n5Sh44xLj/GuPoY44ZjjGPHGEe1dpvezatHVf+48Pl46noHGkA6sAAAdn0RmQALdoRbLaiW3emS+ufqT6sXjzG+3u49/fKM6n3rr6esb1r/+OpeLbOZ4SVzztuNMf7J8gTSgQUAcIF+YOH1nWGKYJ+5xTap85PVPcYYNx5jPH13w6vOP9D68Bjj3tVdqi8v8L0eWv3tnPNKlieQAAsA4AIdkQ4sSIC1GH9S3XCM8Zp9+U3HGG+sbli9q2V2wv75nNO1IZAAC4DsH5V9sEiABe3UDdwv17L3vDun+sUxxsPGGPvl4Q1jjH+r7lq9eYHv/3bVr1qpQAIsAIDzdYncQgg7wfVbdnj1wDHGM/f3gcYY36ru2doeWUvz+PU9uwASYAEAfK+DFl7fOaYI9onrLri2h44xXrpZB1vv8LpPy9sT6+DqBXPOYbkCCbAAANpOAdZFTRG0ygHW48cYz9vsg44xvlA9eIHjcZPqgZYrkAALAKA9fZT9VjrAFEGrGmC9pvqdrTr4GOP11fNb5q2Eh1iyQAIsAIC2S4eTDizYN662sHpOqh40xtjqB4v8WvW1hY3N0dUjLVkgARYAwHedlQ4xaMWfQHiR6qiFlfVTY4wtD47Wa3jSAqft13VhAQmwAAC+68yF13eoKYK9dmTLux33PQuq5Sktb0P3S1cPsHSBBFgAAFWdkQALVt2VFlbPXNJnz/pTCZ+1wHn7JUsXSIAFwJ56wt2PHt4HK+j0BFjQDujAWpJTF7D31Xk9q+UF+jeec97G8gUSYAEA9J8Lr+8wUwR77YiF1XPK0gZojPGV6pULnLufsnyBBFgAAIt7+tbSL7whAdZe++ZCx+nlC6zpXnNOndNAAiwAYKc7eeH1/YApglYtwPrWQsfptQus7fLVD1nCQAIsANpB+0fZ/4q2X4ClAwv23qUWVs+pSxyk9c3c37jA0u5tCQMJsADYE8d/9HNzu9e/3d8D+9wXFl7fZUwR7LVDEmDtrrcssKa7WsLAEhxgCADaVsHVfa4ye+Vnt18j032uMr/v/dz82CvryOKkhdd3lCmCvXbQwur59oLH6u8XWNP155wXW+8QA0gHFgDttI4l3Vi0/ADrSFMEe+3AhdVz+oLH6qPV11te08NNLGMgARYA7WFwde5uprZZ95XbCjmPz6UDCxJgbaozlzpQY4xZfWiBpd3CMgYSYAGQriRB1g41xviP6qsLLvFKHiEPe3+qL6yecxY+Xv+8wJpuZhkDCbAAqD0PcLZLF9ae1inI2pE+tuDaLpbbCKEV3nNqiT68wJqublqABFgACa42GNg84e5HL7oz5Al3P3psdKN2IdaOcsLC67uqKYJWKcBa+oOsPrPAmo62jIEEWAAJrvbQzY+98neDoaWGWOeu69z16sbifHxk4fVdwxRBAqx2dIB1+TnnwZYykAALIPtctWfBVQvuxLqgevamG0uQtdqnxMLrO8YUwV45NQHWnjixOrvl7WN2JUsZSIAFoOuqDQRXLTDE2lUdG+3GEmSttA9UZyy4vuuZImiVOrAu2rIfbnFW9bUFlmY/QCABFkCCqy4k8Gmb7Im1J8ff2yDLqmqVnkR4est8bHwCLEgH1tY4eYE1HWYpAwmwADbfvBAtbJ+rtsHG7hs97hL2x9qMtcAuvWPBtR0957y0KYIN+/eF1XNIAqw2+FRWgPzrA0CbE1rt6d8bY4zN7BDaaFdS5xMmPfo1J86lBlfn9743Mm7f+Zo9HbfNWgvstjdXv7Lg+m5R/Z1pgja6p9OSXDwB1kYcaikDCbAAWkRwdWFfu7vhxWbcKtgCgqz90en1nTHYn0HWZq4F9sjbqjOrAxNgQQKsdnqAdXoCLIAEWEDCq419nwsLLra666pNCrI24xbFvQ2yLmg8N2st0Eb2wTplzvne6riFlngbswQbdlI1159ktwSHb4MxO8P2MwDf/zhUgARXe3yxPbZDcLUruxNoLeHphnvb1bZZa4G9Pmd/vXpSy92E+ogxxhlmivOs29Oqg7e4jNPHGIcsfJy+XF1uIeWcMsa4+MLH60XVgxZW1gPHGC921gMJsAC2R3j1He874cS2a3DVNn2S40a+7mbHHL0Z3UPmc9+ct1evPrXgEo8bY7zTTCHA2tA4/WN186WUUx0wxjhnweP13OohCyvr3mOMVzvrgbSBAqy+jT5xD2PXzriN8F+rDy24xLuYJdiwTyzsH/Evk61e9tQpljGQAAugbdV9VXvW2SN8aUuCrM3ovtrMNbdDvHzBtd3D9MCG/dPC6rncwsfrQAEWQAIsIOFVmxdiCa7akiBrs8IrIdY+96Jqqbf13HjOeQVTBBty/MLquWwCrD11smUMJMACyC1v2E+MxhgnVW9acIn3MUvtq9D3knPOd80572Y0doT3V2enA6ttGmCdWX3WMgYSYAFs3w6Y83b6CK7a8rBws7uvdGHtc89bcG0/Znr2md+tbl393Zzzr+acVzQkrXI4fWr1sQRYu+vwhdXz6THGWVYykM0BAdIJxD6bA0HStveK6svV5RdY223nnEeOMb5kmtqbsPeG1S+e6/+6b3XXOedjq//lQrlVvo3wegup5SoLH6tLZhN+gHRgASS8gpbbqXFG9cwF/+70QLPU3oRXo3p6ddG+v+PkD6oPzDmPM1Ir6e0LquVqCx+rSy2sno9bvoAAC2AFbt3S8WMtWAv73DOr0xda28+Ynr3y8Oo2F/Lfr1e9bc75gjnnDxqulfKalvOQhqunA2tPfNjyBRJgAQB03i6sf2/tiYRLdN05563MUhsJeK9c/d7uLIHqp6uXGbWVO6/fs5ByrrreDbjE8+Qi1RELK+stVjCQAAsA4Hz9f609+WqJ/pvp2ZDnVBffg7//ZEO2cl69kDoOqa6w0DG6fMvaq/iT60+IBUiABQDQ93VrfKbldmHdf855pFlqT7pKfqG68x58yXvHGK8xcgmw9p/rL3SMlvZEzjdbtkACLACAC/WE6owF1nVg9UjT0+6GV8e0591U/93ItYrB9L+0nA3Bb7TQYbqCAAsgARYAsO26sJ6+0PJ+cc55KbPUrsKrQ1rby+pie/BlbxljuGheXc9bSB03XOj4XHVBtZxavcGSBRJgAQDs0u9WJy+wrotXv2p62p19rPbkVq2zq18xbCvtudVpCbAuyDELquWvxxjfsGSBBFgA7asujbGTj4+1sOJz+rXqsQst71fnnJczS11Q99WDq4fv4Zc9Z4zxQaO30uf0V6u/WEAp15pzHrHAIbpuuuUAEmABANvR06v3L7Cuw6rHmZ7OL7y6RfWsPfyyr1WPMXo75pxewrXQcQmwLsinq7dZqkACLACAdrdj4+zqoa3dXrY0P7ce1tB3w6sjq1dUB+/hl/7OGOM/jOCOOKePr45fQCm3X9i5c41qKV1hfzrGmFYrkAALYDVu3XLLmLVgLWza+L6/+qOF/j71rDnnAWap5pyXqP6uOmoPv/Q91TOMYDvtKaMJsL7HrRZSx8kt9wEaQAIsAICle0z1kQXWdWO3vtWc86Dqle355tinVw8ZY5xjibeTQulXVe/Y6nN3znnZBQ3LrRdSx5Ns3g4kwAJYnQ4YHTfWgrWw6fN6WvUTrQUeS/Pbc87j2rnh1UWrF1d32MCXP3aM8S9W+I706wu4Hrr3gsZjCR1hX6meZmkCCbAAViNIEFhYC9bCls3rh6vfWGBpB1R/M+e8ejsvvDqgekl1vw18+fHVH1jZO/Z8/ofqr7a4jP97IefRVVvGBu5PHGOcanUCCbAAAPb6ovep1UsXWNplqtfMOS/VzgqvXlb92Aa+/BvVj48xzrKqd7Tfqs7cwuPfcc55yQWMwz0XUMMHq2dakkACLIDV6LzRcWMtWAuL8HPVhxZY17Wrv55zHtjqh1eHV6+u7rvBb/HQMcanLeUd/zn9qerxW1jCQdVPLmAotvpWxjOrB48xzrQqgQRYAJsbXOzrcGF/fE+sBTY8B6euX/B9ZYHl3bG1EOuQVje8OrJ6e/UjG/wWfzLGeLmVvE8cvL4HWdv8iYT/sIXHf9gWn09XbmP7x7WPbx38Z6cTkAALYHt34AgrrAVrYZFz+tnq7tUpCyzvntXr55yXaPXCq5tW723t6Ysb8Y/VI1dk4/qDF1LOpbf5uXx29aDqW1tUwg3mnFv5BMAHV2OLbx18gp8qQAIsgO3bgaPTxlqwFhY/p/9U3b9a4j5Kt6veOue8bKsTXj28eld19Aa/xUnVvdefKLndLSmcPHYFzuVPVr+2hSU8aovOqQOrh2zh+/5G9QC3DgIJsACWF17sKoTY3b+HtcBi5vN11Y+3zBDrxtXxc87btr2Dq0vPOf+iekYb7zo6pbrHGOPLK7L0rrWgWm6/Iufys6tXbtHh7zfnvN4WHPdBbTwQ3ltnrz9I4WN+kgAAALRpIcv95pxnzmU6a875uPWn9m23cb3/nPMre/n+z5hz/l8rtt4evqD19dEVGtfD5pzv26Jx/MvNvg11zvmJLVw3v+InBwAAwNZc/N5nzvntuVzvnnMeu03G8jpzzr/dB+/5zDnn/VZwrb15YWvrnis0tpefc352C8bwnDnnLTfxfT5iC9fLc/3EAAAA2NqL39vNOb++4BDr7Dnn8+ecRy90/I6acz57vWtsX3Se/fgKrrEbrc/jknxyznnYCo3xMXPOr23BOH5wMzol55w/OOc8eas6zdb33gIAAGCLL36vP+c8cS7baXPOP5pzXnlBY/b8Oefp+/C2yQeu4No6cM75roWuqZfPOS+yQmN9h/XzZLP9xia8t5du0Rp52Xa8lRkAAKAVDrEuN+d851y+c+acb5pzPmDOecgmj9Gl5pw/N+d86z5+T6es2p5X59qz6EULX08vm3MeukJjfqc55zc3eQxP35+3Es45H7pFa+PFc86L+ukAAACwvIvfg+acfzK3j6/NOV+yHipddT+NyXXnnL+0vr/V6fvhPXx5znnTFVxLV5pzvmGbrKMT5pw/vEJjf4s551c3eQxPmnNedj+8l1vOOU/dgjXx/FXqzgN2Ho8EBwB2SpD1k9Uzq4tvs9I/U72n+nj1ifXXJ8cY39zF+x3V5aorVlerbrj+ukl15H6s98PVvcYYn12htXO96qHVz1bbbY+p46sXVn87xjhxm8/DsdUbqqM28bAfqH54jHHyPnoPN6zeWl1qE9/DOdVvjzF+308CIAEWAMC2uAC+RvXS6mYr8HbOqr5ZnbL+Oq06uLrY+uvS1WZv0vz86hFjjG9v0/UxqitVx1TXr25a3Xr9/1sF/1K9q3p39f7qhDHGGdtsjq5avaa67iYe9oPVXcYY/7aXtd+xevn6ublZvl49YIzxOj8BgARYAADb6gL4gOo3qt9pLfBh751a/eIY44VL37+qunxrXWlHV1de//MqrXWpXa218G+nOKu1zr4Tqo+1FnB9svrUGOPrC57Hw6pnVD+1iYf9UvWgMcabN7Lpf/Vr1e9WB2xyYHmvMcYnfUQBCbAAANquQdZ1qj+tbmM09sp7qoeMMf5lgXP8R9U1W7uV8sjWwisbWO+er1WfrT5fvXGM8bQFzu/PVH9cHbqJt+K9sHriGONTuxmY3qt6QpvbMTarZ1W/McY4xVIGEmABALTdQ6xRPaj6vfbvvlCr6FvVo6unjTHOWej8fr66gqnaa68aY9xnoXN8TGu35R27iYc9u3p99brqHa11Z51cHd7a7YE3qm5b3b/N3a+r6l+rnx1jvM2yBRJgAQC0akHWxavfqh7Z5nVzbGevr35h6Ru1C7Ba+QDrO08arR5VPaa1EGknOqd6WmubtZ9qyQKryGNUAYAdb4zxzTHGb7e2B9LTqtONShf0hMG7jzHutkpPGWTbn79njDGeVF27evEOHIJXVzccYzxKeAUkwAIA2BEXwl8ZY/xydY3qya095Y+1fZAeUt1ojPFaw8FCz98vjjEeWB1X/cMOeMtvqW41xrj3GOMjVgCQAAsAYMddCH9+jPFr1ZWq32xtM+ud6JPVI6prjjGev9S9ruA85+87xxi3rG5Xvaq12+taoVsFX1vdeYxxxzHGe804YA8sAACqmnNepLpL9bDqHtUBK/6W31394freR+ds43mzB1arvwfWbqyDa1W/Uv10dbFt+ja+XD2v+pMxxucsSSABFgAAu7gYvkxrTxf78dZuVVqV36f+o3pZ9YIxxj+tyFwJsBJgnWs9HF7dc/38vVvLD7O+3tqTDv+qevUY40xLEUiABQDABi6Ij2qtI+vu1Z2qw7bZWzittduRXlS91gUyO+jcPWz93L1vdfvqsgsp7RPV/15/vWOMcZbZAkiABQCwDy+ID65uvX4xfPvqltUhLfNJgm9Yf719jHGa2cP5O69W3epcrxu0/28V/kr1T9X71l/HjzG+bDYAEmABAGziBfGB1fWrm6y/blhdu7r0ZpXQ2ubzH6w+tP7nu10gw26fv0dXV6mueq4/r1AdXh16rtdhrYXVZ1bfXn+duv7nt1oLqk481+uk6jNjjC8ZaYAEWAAAC70w/oHWgqyrrF8MX6E6qrVg61Lrr0tUB1cHVge19uToM1q75e/cr1Orf6++WH3pXH+eVJ0wxjjFiAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA/R81FA7Y8Ft1EQAAAABJRU5ErkJggg==" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+<h2><span class="sec-num">1</span> Business Objective</h2>
+
+<p>Vendor bank detail accuracy is critical to the integrity of the Accounts Payable payment cycle. Incorrect bank country codes, malformed bank keys, or invalid account numbers cause payment run failures, returned payments, and bank reconciliation exceptions. Today, validation of vendor bank details is performed ad-hoc across multiple custom programs and user exit routines, leading to inconsistent checks and duplicated logic.</p>
+
+<p>The purpose of this utility class (<strong>ZCL_VENDOR_BANK_VALIDATOR</strong>) is to provide a <strong>single, reusable ABAP class</strong> that centralises all validation and formatting logic for vendor bank details — bank country, bank key, and account number — so that any consuming program (vendor master maintenance, payment processing, data migration, or mass-update tools) can call one consistent API and receive standardised, auditable results.</p>
+
+<h3>Scope</h3>
+<table class="data">
+<tr><th>In Scope</th><th>Out of Scope</th></tr>
+<tr><td>Validate bank country against SAP country master (T005)</td><td>Creating or modifying bank master records (BNKA)</td></tr>
+<tr><td>Validate bank key existence in bank directory (BNKA)</td><td>Payment run execution or payment medium generation</td></tr>
+<tr><td>Validate bank key length per country rules (T005-LNBLZ)</td><td>SEPA mandate management</td></tr>
+<tr><td>Validate account number length per country rules (T005-LNBKN)</td><td>Bank statement processing</td></tr>
+<tr><td>IBAN construction and check-digit validation (ISO 13616)</td><td>Electronic banking / payment file formatting</td></tr>
+<tr><td>Format/normalise bank key and account number (leading zeros, trim)</td><td>Vendor master creation or update transactions (FK01/FK02)</td></tr>
+<tr><td>Return structured validation result with messages</td><td>Authorization management or role assignment</td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Key Features and Functionality</h2>
+
+<h3>KF-001 — Bank Country Validation</h3>
+<p><strong>Purpose:</strong> Confirm that the supplied bank country code is a valid, active country maintained in SAP.</p>
+<p><strong>Method:</strong> The class receives a bank country value (TYPE <code>BANKS</code>, CHAR 3). It performs a lookup against table <strong>T005</strong> (Country master) to verify the country code exists. If the country is flagged for deletion or does not exist, a structured error message is returned. On success, the country-specific bank key length (<code>T005-LNBLZ</code>) and account number length (<code>T005-LNBKN</code>) are cached for downstream validations KF-002 and KF-003.</p>
+
+<h3>KF-002 — Bank Key Validation</h3>
+<p><strong>Purpose:</strong> Confirm that the bank key (routing number / sort code / BLZ) is structurally correct and exists in the SAP bank directory.</p>
+<p><strong>Method:</strong></p>
+<ul>
+  <li><strong>Length check:</strong> The bank key (TYPE <code>BANKK</code>, CHAR 15) is validated against the country-specific maximum length stored in <code>T005-LNBLZ</code>. For example, Germany (DE) requires exactly 8 digits; the US requires 9 digits; the UK requires 6 digits; India allows up to 15 characters.</li>
+  <li><strong>Character check:</strong> For countries that use purely numeric bank keys (DE, US, FR), the class verifies the bank key contains only digits. For countries with alphanumeric keys (IN, GB), alphanumeric characters are accepted.</li>
+  <li><strong>Existence check:</strong> A lookup against table <strong>BNKA</strong> (Bank master) using the composite key <code>BANKS</code> + <code>BANKL</code> confirms the bank exists in the SAP bank directory. If not found, a warning (not an error) is returned — some organisations maintain vendors with banks not yet in BNKA. The caller decides severity.</li>
+  <li><strong>SWIFT/BIC enrichment:</strong> If the bank exists in BNKA and has a populated <code>SWIFT</code> field, the SWIFT code is returned alongside the validation result for informational use by the caller.</li>
+</ul>
+
+<h3>KF-003 — Account Number Validation</h3>
+<p><strong>Purpose:</strong> Confirm that the vendor's bank account number is structurally valid for the given country.</p>
+<p><strong>Method:</strong></p>
+<ul>
+  <li><strong>Length check:</strong> The account number (TYPE <code>BANKN</code>, CHAR 18) is validated against the country-specific maximum length from <code>T005-LNBKN</code>. For example, DE allows up to 14 characters; US up to 13; GB up to 8; FR up to 11.</li>
+  <li><strong>Non-blank check:</strong> An empty or all-spaces account number is rejected with an error.</li>
+  <li><strong>Character validation:</strong> The class checks that the account number conforms to the character rules for the country (numeric-only for DE/US, alphanumeric for GB/IN).</li>
+</ul>
+
+<h3>KF-004 — IBAN Construction and Validation</h3>
+<p><strong>Purpose:</strong> For SEPA/IBAN-mandatory countries, construct the IBAN from bank country + bank key + account number, and validate its check digits per ISO 13616.</p>
+<p><strong>Method:</strong></p>
+<ul>
+  <li><strong>IBAN construction:</strong> The class assembles the IBAN from the country code (2 chars) + check digits (2 chars, computed per ISO 13616 Mod-97) + BBAN (bank key + account number, padded per country rules).</li>
+  <li><strong>Check-digit verification:</strong> If the caller supplies a pre-existing IBAN (e.g. from table <strong>TIBAN</strong>), the class recalculates the check digits and compares. A mismatch produces an error.</li>
+  <li><strong>Cross-reference:</strong> If an IBAN is constructed, the class optionally checks whether a matching entry exists in table <strong>TIBAN</strong> and returns the match status.</li>
+</ul>
+
+<h3>KF-005 — Bank Detail Formatting and Normalisation</h3>
+<p><strong>Purpose:</strong> Apply consistent formatting to bank keys and account numbers before storage or comparison.</p>
+<p><strong>Method:</strong></p>
+<ul>
+  <li><strong>Leading-zero padding:</strong> For numeric-only bank keys (DE, US, FR), pad with leading zeros to the country-required length.</li>
+  <li><strong>Trim and uppercase:</strong> Remove leading/trailing whitespace from all fields. Convert bank country and bank key to uppercase.</li>
+  <li><strong>Account number normalisation:</strong> Strip internal hyphens/dashes and spaces that users sometimes enter. Left-pad numeric account numbers with zeros to country-required length.</li>
+</ul>
+
+<h3>KF-006 — Structured Validation Result</h3>
+<p><strong>Purpose:</strong> Return a comprehensive, machine-readable validation result so that any consuming program can evaluate the outcome without parsing free text.</p>
+<p><strong>Method:</strong> The class returns a structure containing:</p>
+<table class="data">
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>VALID</td><td>ABAP_BOOL</td><td>Overall pass/fail indicator (ABAP_TRUE / ABAP_FALSE)</td></tr>
+<tr><td>BANKS_VALID</td><td>ABAP_BOOL</td><td>Bank country validation passed</td></tr>
+<tr><td>BANKL_VALID</td><td>ABAP_BOOL</td><td>Bank key validation passed</td></tr>
+<tr><td>BANKN_VALID</td><td>ABAP_BOOL</td><td>Account number validation passed</td></tr>
+<tr><td>IBAN_VALID</td><td>ABAP_BOOL</td><td>IBAN validation passed (if applicable)</td></tr>
+<tr><td>BANKS_FORMATTED</td><td>BANKS (CHAR 3)</td><td>Normalised bank country code</td></tr>
+<tr><td>BANKL_FORMATTED</td><td>BANKK (CHAR 15)</td><td>Formatted bank key</td></tr>
+<tr><td>BANKN_FORMATTED</td><td>BANKN (CHAR 18)</td><td>Formatted account number</td></tr>
+<tr><td>IBAN</td><td>IBAN (CHAR 34)</td><td>Constructed or validated IBAN</td></tr>
+<tr><td>SWIFT</td><td>SWIFT (CHAR 11)</td><td>SWIFT/BIC code if found in BNKA</td></tr>
+<tr><td>BANK_NAME</td><td>BANKA (CHAR 60)</td><td>Bank name from BNKA (if bank exists)</td></tr>
+<tr><td>MESSAGES</td><td>Table of BAPIRET2</td><td>Detailed validation messages (E/W/I/S)</td></tr>
+</table>
+
+<h2><span class="sec-num">3</span> Business Rules</h2>
+
+<h3>BR-001 — Country Code Must Exist in T005</h3>
+<p><strong>Key Features Addressed:</strong> KF-001 (Bank Country Validation)</p>
+<p><strong>Rule:</strong> The bank country code supplied to the class must exist as an active record in table T005. If the country does not exist, the validation result is set to VALID = ABAP_FALSE and an error message of type 'E' is appended to the MESSAGES table: <em>"Bank country '&1' is not maintained in the system"</em>.</p>
+<p><strong>Implementation:</strong> Perform <code>SELECT SINGLE LNBLZ LNBKN FROM T005 WHERE LAND1 = iv_banks</code>. If <code>sy-subrc <> 0</code>, set <code>BANKS_VALID = ABAP_FALSE</code> and append message. If found, cache LNBLZ and LNBKN for use in BR-002 and BR-003.</p>
+
+<h3>BR-002 — Bank Key Length Per Country</h3>
+<p><strong>Key Features Addressed:</strong> KF-002 (Bank Key Validation)</p>
+<p><strong>Rule:</strong> The bank key must not exceed the country-specific length defined in <code>T005-LNBLZ</code>. Country-specific lengths observed in the live system:</p>
+<table class="data">
+<tr><th>Country</th><th>LNBLZ (Max Bank Key Length)</th><th>Format</th></tr>
+<tr><td>DE (Germany)</td><td>8</td><td>Numeric only</td></tr>
+<tr><td>US (United States)</td><td>9</td><td>Numeric only</td></tr>
+<tr><td>GB (United Kingdom)</td><td>6</td><td>Numeric only</td></tr>
+<tr><td>FR (France)</td><td>10</td><td>Numeric only</td></tr>
+<tr><td>IN (India)</td><td>15</td><td>Alphanumeric (IFSC code)</td></tr>
+</table>
+<p><strong>Implementation:</strong> If <code>strlen( iv_bankl ) > lv_lnblz</code>, set <code>BANKL_VALID = ABAP_FALSE</code> and append message: <em>"Bank key '&1' exceeds maximum length &2 for country &3"</em>. If <code>LNBLZ = '00'</code> (no length restriction), skip the length check.</p>
+
+<h3>BR-003 — Account Number Length Per Country</h3>
+<p><strong>Key Features Addressed:</strong> KF-003 (Account Number Validation)</p>
+<p><strong>Rule:</strong> The account number must not exceed the country-specific length defined in <code>T005-LNBKN</code>. Observed lengths:</p>
+<table class="data">
+<tr><th>Country</th><th>LNBKN (Max Account Number Length)</th></tr>
+<tr><td>DE (Germany)</td><td>14</td></tr>
+<tr><td>US (United States)</td><td>13</td></tr>
+<tr><td>GB (United Kingdom)</td><td>8</td></tr>
+<tr><td>FR (France)</td><td>11</td></tr>
+<tr><td>IN (India)</td><td>No restriction (LNBKN = 00)</td></tr>
+</table>
+<p><strong>Implementation:</strong> If <code>strlen( iv_bankn ) > lv_lnbkn</code> and <code>lv_lnbkn > 0</code>, set <code>BANKN_VALID = ABAP_FALSE</code> and append message: <em>"Account number '&1' exceeds maximum length &2 for country &3"</em>.</p>
+
+<h3>BR-004 — Bank Key Must Exist in Bank Directory</h3>
+<p><strong>Key Features Addressed:</strong> KF-002 (Bank Key Validation)</p>
+<p><strong>Rule:</strong> The bank key is looked up in table BNKA using the composite key BANKS + BANKL. If not found, a <strong>warning</strong> (type 'W') is issued — not an error — because some organisations permit vendor bank details for banks not yet loaded into BNKA. The caller decides whether to treat the warning as a hard stop. If found, the bank name (BANKA) and SWIFT code are populated in the result.</p>
+<p><strong>Implementation:</strong> <code>SELECT SINGLE BANKA SWIFT FROM BNKA WHERE BANKS = iv_banks AND BANKL = iv_bankl</code>. If <code>sy-subrc <> 0</code>, append warning: <em>"Bank key '&1' in country '&2' not found in bank directory"</em>.</p>
+
+<h3>BR-005 — Account Number Must Not Be Empty</h3>
+<p><strong>Key Features Addressed:</strong> KF-003 (Account Number Validation)</p>
+<p><strong>Rule:</strong> A blank or initial account number is always rejected. An error message is appended: <em>"Account number must not be empty"</em>.</p>
+
+<h3>BR-006 — IBAN Mod-97 Check Digit Validation</h3>
+<p><strong>Key Features Addressed:</strong> KF-004 (IBAN Construction and Validation)</p>
+<p><strong>Rule:</strong> When constructing or validating an IBAN, the ISO 13616 Mod-97 algorithm is applied: move the first 4 characters to the end, convert letters to digits (A=10, B=11, … Z=35), compute modulo 97, and verify the result equals 1. If the check fails, set <code>IBAN_VALID = ABAP_FALSE</code> and append error: <em>"IBAN check digit validation failed for '&1'"</em>.</p>
+
+<h3>BR-007 — Formatting Normalisation Rules</h3>
+<p><strong>Key Features Addressed:</strong> KF-005 (Bank Detail Formatting)</p>
+<p><strong>Rule:</strong> Before any validation, the input values are normalised:</p>
+<ul>
+  <li>Leading and trailing whitespace is removed from all input fields.</li>
+  <li>Bank country is converted to uppercase.</li>
+  <li>Hyphens, dashes, and embedded spaces are removed from bank key and account number.</li>
+  <li>For countries with numeric-only bank keys: left-pad with zeros to the country-required length.</li>
+  <li>For countries with numeric-only account numbers: left-pad with zeros to the country-required length.</li>
+</ul>
+<p>The formatted values are always returned in the result, even if validation fails, so the caller can see what the class normalised.</p>
+
+<h2><span class="sec-num">4</span> Process Flow</h2>
+
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792739308291" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 822.40625 1897.921875" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792739308291{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792739308291 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792739308291 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792739308291 .error-icon{fill:#552222;}#mermaid-1792739308291 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792739308291 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792739308291 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792739308291 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792739308291 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792739308291 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792739308291 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792739308291 .marker{fill:#666;stroke:#666;}#mermaid-1792739308291 .marker.cross{stroke:#666;}#mermaid-1792739308291 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792739308291 p{margin:0;}#mermaid-1792739308291 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792739308291 .cluster-label text{fill:#333;}#mermaid-1792739308291 .cluster-label span{color:#333;}#mermaid-1792739308291 .cluster-label span p{background-color:transparent;}#mermaid-1792739308291 .label text,#mermaid-1792739308291 span{fill:#000000;color:#000000;}#mermaid-1792739308291 .node rect,#mermaid-1792739308291 .node circle,#mermaid-1792739308291 .node ellipse,#mermaid-1792739308291 .node polygon,#mermaid-1792739308291 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792739308291 .rough-node .label text,#mermaid-1792739308291 .node .label text,#mermaid-1792739308291 .image-shape .label,#mermaid-1792739308291 .icon-shape .label{text-anchor:middle;}#mermaid-1792739308291 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792739308291 .rough-node .label,#mermaid-1792739308291 .node .label,#mermaid-1792739308291 .image-shape .label,#mermaid-1792739308291 .icon-shape .label{text-align:center;}#mermaid-1792739308291 .node.clickable{cursor:pointer;}#mermaid-1792739308291 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792739308291 .arrowheadPath{fill:#333333;}#mermaid-1792739308291 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792739308291 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792739308291 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792739308291 .edgeLabel p{background-color:white;}#mermaid-1792739308291 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792739308291 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792739308291 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792739308291 .cluster text{fill:#333;}#mermaid-1792739308291 .cluster span{color:#333;}#mermaid-1792739308291 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792739308291 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792739308291 rect.text{fill:none;stroke-width:0;}#mermaid-1792739308291 .icon-shape,#mermaid-1792739308291 .image-shape{background-color:white;text-align:center;}#mermaid-1792739308291 .icon-shape p,#mermaid-1792739308291 .image-shape p{background-color:white;padding:2px;}#mermaid-1792739308291 .icon-shape .label rect,#mermaid-1792739308291 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792739308291 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792739308291 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792739308291 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792739308291_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739308291_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739308291_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792739308291_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792739308291_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739308291_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M416.277,134L416.277,138.167C416.277,142.333,416.277,150.667,416.277,158.333C416.277,166,416.277,173,416.277,176.5L416.277,180" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6NDE2LjI3NzM0Mzc1LCJ5IjoxMzR9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5IjoxNTl9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5IjoxODR9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M416.277,310L416.277,314.167C416.277,318.333,416.277,326.667,416.277,334.333C416.277,342,416.277,349,416.277,352.5L416.277,356" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6NDE2LjI3NzM0Mzc1LCJ5IjozMTB9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5IjozMzV9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5IjozNjB9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M416.277,486L416.277,490.167C416.277,494.333,416.277,502.667,416.277,510.333C416.277,518,416.277,525,416.277,528.5L416.277,532" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6NDE2LjI3NzM0Mzc1LCJ5Ijo0ODZ9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5Ijo1MTF9LHsieCI6NDE2LjI3NzM0Mzc1LCJ5Ijo1MzZ9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M465.078,621.293L503.324,635.593C541.57,649.893,618.062,678.494,656.309,709.46C694.555,740.427,694.555,773.76,694.555,805.094C694.555,836.427,694.555,865.76,694.555,897.094C694.555,928.427,694.555,961.76,694.555,995.094C694.555,1028.427,694.555,1061.76,694.555,1100.746C694.555,1139.732,694.555,1184.37,694.555,1231.008C694.555,1277.646,694.555,1326.284,694.555,1358.103C694.555,1389.922,694.555,1404.922,694.555,1412.422L694.555,1419.922" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6NDY1LjA3Nzg3ODM5MjQwMTAzLCJ5Ijo2MjEuMjkzMjE1MzU3NTk5fSx7IngiOjY5NC41NTQ2ODc1LCJ5Ijo3MDcuMDkzNzV9LHsieCI6Njk0LjU1NDY4NzUsInkiOjgwNy4wOTM3NX0seyJ4Ijo2OTQuNTU0Njg3NSwieSI6ODk1LjA5Mzc1fSx7IngiOjY5NC41NTQ2ODc1LCJ5Ijo5OTUuMDkzNzV9LHsieCI6Njk0LjU1NDY4NzUsInkiOjEwOTUuMDkzNzV9LHsieCI6Njk0LjU1NDY4NzUsInkiOjEyMjkuMDA3ODEyNX0seyJ4Ijo2OTQuNTU0Njg3NSwieSI6MTM3NC45MjE4NzV9LHsieCI6Njk0LjU1NDY4NzUsInkiOjE0MjMuOTIxODc1fV0=" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M378.219,632.035L361.795,644.545C345.371,657.055,312.523,682.074,296.1,700.084C279.676,718.094,279.676,729.094,279.676,734.594L279.676,740.094" id="L_D_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_F_0" data-points="W3sieCI6Mzc4LjIxODg4ODEwMDM4Nzk3LCJ5Ijo2MzIuMDM1Mjk0MzUwMzg4fSx7IngiOjI3OS42NzU3ODEyNSwieSI6NzA3LjA5Mzc1fSx7IngiOjI3OS42NzU3ODEyNSwieSI6NzQ0LjA5Mzc1fV0=" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M279.676,870.094L279.676,874.26C279.676,878.427,279.676,886.76,279.676,894.427C279.676,902.094,279.676,909.094,279.676,912.594L279.676,916.094" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6Mjc5LjY3NTc4MTI1LCJ5Ijo4NzAuMDkzNzV9LHsieCI6Mjc5LjY3NTc4MTI1LCJ5Ijo4OTUuMDkzNzV9LHsieCI6Mjc5LjY3NTc4MTI1LCJ5Ijo5MjAuMDkzNzV9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M279.676,1070.094L279.676,1074.26C279.676,1078.427,279.676,1086.76,279.676,1094.427C279.676,1102.094,279.676,1109.094,279.676,1112.594L279.676,1116.094" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6Mjc5LjY3NTc4MTI1LCJ5IjoxMDcwLjA5Mzc1fSx7IngiOjI3OS42NzU3ODEyNSwieSI6MTA5NS4wOTM3NX0seyJ4IjoyNzkuNjc1NzgxMjUsInkiOjExMjAuMDkzNzV9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M226.021,1284.267L211.351,1299.376C196.681,1314.486,167.34,1344.704,152.67,1365.313C138,1385.922,138,1396.922,138,1402.422L138,1407.922" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6MjI2LjAyMTI5NjQ3MTk3NTQ2LCJ5IjoxMjg0LjI2NzM5MDIyMTk3NTZ9LHsieCI6MTM4LCJ5IjoxMzc0LjkyMTg3NX0seyJ4IjoxMzgsInkiOjE0MTEuOTIxODc1fV0=" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M333.33,1284.267L348,1299.376C362.671,1314.486,392.011,1344.704,406.681,1371.313C421.352,1397.922,421.352,1420.922,421.352,1432.422L421.352,1443.922" id="L_H_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_J_0" data-points="W3sieCI6MzMzLjMzMDI2NjAyODAyNDU0LCJ5IjoxMjg0LjI2NzM5MDIyMTk3NTZ9LHsieCI6NDIxLjM1MTU2MjUsInkiOjEzNzQuOTIxODc1fSx7IngiOjQyMS4zNTE1NjI1LCJ5IjoxNDQ3LjkyMTg3NX1d" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M138,1537.922L138,1542.089C138,1546.255,138,1554.589,162.939,1568.613C187.877,1582.637,237.754,1602.352,262.693,1612.209L287.632,1622.067" id="L_I_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_K_0" data-points="W3sieCI6MTM4LCJ5IjoxNTM3LjkyMTg3NX0seyJ4IjoxMzgsInkiOjE1NjIuOTIxODc1fSx7IngiOjI5MS4zNTE1NjI1LCJ5IjoxNjIzLjUzNjk0NTcyMTU1M31d" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M421.352,1501.922L421.352,1512.089C421.352,1522.255,421.352,1542.589,421.352,1556.255C421.352,1569.922,421.352,1576.922,421.352,1580.422L421.352,1583.922" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6NDIxLjM1MTU2MjUsInkiOjE1MDEuOTIxODc1fSx7IngiOjQyMS4zNTE1NjI1LCJ5IjoxNTYyLjkyMTg3NX0seyJ4Ijo0MjEuMzUxNTYyNSwieSI6MTU4Ny45MjE4NzV9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M694.555,1525.922L694.555,1532.089C694.555,1538.255,694.555,1550.589,671.304,1566.287C648.054,1581.985,601.553,1601.048,578.303,1610.579L555.053,1620.111" id="L_E_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_K_0" data-points="W3sieCI6Njk0LjU1NDY4NzUsInkiOjE1MjUuOTIxODc1fSx7IngiOjY5NC41NTQ2ODc1LCJ5IjoxNTYyLjkyMTg3NX0seyJ4Ijo1NTEuMzUxNTYyNSwieSI6MTYyMS42MjgxOTQ3MDI2MDIzfV0=" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path><path d="M421.352,1761.922L421.352,1766.089C421.352,1770.255,421.352,1778.589,421.352,1786.255C421.352,1793.922,421.352,1800.922,421.352,1804.422L421.352,1807.922" id="L_K_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_L_0" data-points="W3sieCI6NDIxLjM1MTU2MjUsInkiOjE3NjEuOTIxODc1fSx7IngiOjQyMS4zNTE1NjI1LCJ5IjoxNzg2LjkyMTg3NX0seyJ4Ijo0MjEuMzUxNTYyNSwieSI6MTgxMS45MjE4NzV9XQ==" marker-end="url(#mermaid-1792739308291_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(694.5546875, 995.09375)"><g class="label" data-id="L_D_E_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(279.67578125, 707.09375)"><g class="label" data-id="L_D_F_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_G_H_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(138, 1374.921875)"><g class="label" data-id="L_H_I_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(421.3515625, 1374.921875)"><g class="label" data-id="L_H_J_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_K_L_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(416.27734375, 71)"><rect class="basic label-container" style="" x="-130" y="-63" width="260" height="126"></rect><g class="label" style="" transform="translate(-100, -48)"><rect></rect><foreignObject width="200" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Caller invokes VALIDATE method<br>Input: BANKS, BANKL, BANKN, optional IBAN</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(416.27734375, 247)"><rect class="basic label-container" style="" x="-130" y="-63" width="260" height="126"></rect><g class="label" style="" transform="translate(-100, -48)"><rect></rect><foreignObject width="200" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Step 1: Normalise &amp; Format<br>(Trim, uppercase, strip hyphens,<br>left-pad zeros)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(416.27734375, 423)"><rect class="basic label-container" style="" x="-130" y="-63" width="260" height="126"></rect><g class="label" style="" transform="translate(-100, -48)"><rect></rect><foreignObject width="200" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Step 2: Validate Bank Country<br>(T005 lookup → LNBLZ, LNBKN)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-5" transform="translate(416.27734375, 603.046875)"><polygon points="67.046875,0 134.09375,-67.046875 67.046875,-134.09375 0,-67.046875" class="label-container" transform="translate(-66.546875, 67.046875)"></polygon><g class="label" style="" transform="translate(-28.046875, -24)"><rect></rect><foreignObject width="56.09375" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Country<br>found?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-7" transform="translate(694.5546875, 1474.921875)"><rect class="basic label-container" style="" x="-119.8515625" y="-51" width="239.703125" height="102"></rect><g class="label" style="" transform="translate(-89.8515625, -36)"><rect></rect><foreignObject width="179.703125" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Set BANKS_VALID = FALSE<br>Append error message<br>Set VALID = FALSE</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-9" transform="translate(279.67578125, 807.09375)"><rect class="basic label-container" style="" x="-121.5234375" y="-63" width="243.046875" height="126"></rect><g class="label" style="" transform="translate(-91.5234375, -48)"><rect></rect><foreignObject width="183.046875" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Step 3: Validate Bank Key<br>(Length check vs LNBLZ,<br>character check,<br>BNKA existence check)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-11" transform="translate(279.67578125, 995.09375)"><rect class="basic label-container" style="" x="-130" y="-75" width="260" height="150"></rect><g class="label" style="" transform="translate(-100, -60)"><rect></rect><foreignObject width="200" height="120"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Step 4: Validate Account Number<br>(Length check vs LNBKN,<br>non-blank check,<br>character check)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-13" transform="translate(279.67578125, 1229.0078125)"><polygon points="108.9140625,0 217.828125,-108.9140625 108.9140625,-217.828125 0,-108.9140625" class="label-container" transform="translate(-108.4140625, 108.9140625)"></polygon><g class="label" style="" transform="translate(-57.9140625, -36)"><rect></rect><foreignObject width="115.828125" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>IBAN-mandatory<br>country or<br>IBAN supplied?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-15" transform="translate(138, 1474.921875)"><rect class="basic label-container" style="" x="-130" y="-63" width="260" height="126"></rect><g class="label" style="" transform="translate(-100, -48)"><rect></rect><foreignObject width="200" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Step 5: Construct/Validate IBAN<br>(ISO 13616 Mod-97,<br>TIBAN cross-reference)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-17" transform="translate(421.3515625, 1474.921875)"><rect class="basic label-container" style="" x="-103.3515625" y="-27" width="206.703125" height="54"></rect><g class="label" style="" transform="translate(-73.3515625, -12)"><rect></rect><foreignObject width="146.703125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Skip IBAN processing</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-19" transform="translate(421.3515625, 1674.921875)"><rect class="basic label-container" style="" x="-130" y="-87" width="260" height="174"></rect><g class="label" style="" transform="translate(-100, -72)"><rect></rect><foreignObject width="200" height="144"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Step 6: Assemble Result<br>(Merge all flags, formatted values,<br>enriched bank name / SWIFT,<br>messages)</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-25" transform="translate(421.3515625, 1850.921875)"><rect class="basic label-container" style="" x="-116.0703125" y="-39" width="232.140625" height="78"></rect><g class="label" style="" transform="translate(-86.0703125, -24)"><rect></rect><foreignObject width="172.140625" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Return Validation Result<br>to Caller</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h2><span class="sec-num">5</span> Data Model</h2>
+
+<h3>5.1 SAP Tables Read</h3>
+<table class="data">
+<tr><th>Table</th><th>Description</th><th>Fields Used</th><th>Purpose</th></tr>
+<tr><td>T005</td><td>Country master</td><td>LAND1, LNBLZ, LNBKN</td><td>Country-specific bank key and account number length rules</td></tr>
+<tr><td>BNKA</td><td>Bank master</td><td>BANKS, BANKL, BANKA, SWIFT, ORT01, STRAS</td><td>Bank existence check, bank name and SWIFT enrichment</td></tr>
+<tr><td>TIBAN</td><td>IBAN directory</td><td>BANKS, BANKL, BANKN, IBAN</td><td>IBAN cross-reference validation</td></tr>
+<tr><td>LFBK</td><td>Vendor bank details</td><td>LIFNR, BANKS, BANKL, BANKN, BKONT, KOINH</td><td>Reference — consuming programs read vendor bank data from LFBK and pass it to this class</td></tr>
+</table>
+
+<h3>5.2 Class Interface</h3>
+
+<p><strong>Class name:</strong> <code>ZCL_VENDOR_BANK_VALIDATOR</code></p>
+
+<h3>Public Methods</h3>
+<table class="data">
+<tr><th>Method</th><th>Parameters</th><th>Direction</th><th>Type</th><th>Description</th></tr>
+<tr><td rowspan="5">VALIDATE</td><td>IV_BANKS</td><td>Importing</td><td>BANKS (CHAR 3)</td><td>Bank country code</td></tr>
+<tr><td>IV_BANKL</td><td>Importing</td><td>BANKK (CHAR 15)</td><td>Bank key / routing number</td></tr>
+<tr><td>IV_BANKN</td><td>Importing</td><td>BANKN (CHAR 18)</td><td>Bank account number</td></tr>
+<tr><td>IV_IBAN</td><td>Importing (optional)</td><td>IBAN (CHAR 34)</td><td>Pre-existing IBAN to validate (optional)</td></tr>
+<tr><td>RS_RESULT</td><td>Returning</td><td>ZS_BANK_VALIDATION_RESULT</td><td>Structured validation result (see KF-006)</td></tr>
+<tr><td rowspan="3">FORMAT</td><td>IV_BANKS</td><td>Importing</td><td>BANKS (CHAR 3)</td><td>Bank country code</td></tr>
+<tr><td>IV_BANKL</td><td>Changing</td><td>BANKK (CHAR 15)</td><td>Bank key — formatted in place</td></tr>
+<tr><td>IV_BANKN</td><td>Changing</td><td>BANKN (CHAR 18)</td><td>Account number — formatted in place</td></tr>
+<tr><td rowspan="3">CHECK_IBAN</td><td>IV_IBAN</td><td>Importing</td><td>IBAN (CHAR 34)</td><td>IBAN to validate</td></tr>
+<tr><td>RV_VALID</td><td>Returning</td><td>ABAP_BOOL</td><td>ABAP_TRUE if IBAN check digits are correct</td></tr>
+<tr><td>ET_MESSAGES</td><td>Exporting</td><td>BAPIRET2_T</td><td>Validation messages</td></tr>
+<tr><td rowspan="4">CONSTRUCT_IBAN</td><td>IV_BANKS</td><td>Importing</td><td>BANKS (CHAR 3)</td><td>Bank country code</td></tr>
+<tr><td>IV_BANKL</td><td>Importing</td><td>BANKK (CHAR 15)</td><td>Bank key</td></tr>
+<tr><td>IV_BANKN</td><td>Importing</td><td>BANKN (CHAR 18)</td><td>Account number</td></tr>
+<tr><td>RV_IBAN</td><td>Returning</td><td>IBAN (CHAR 34)</td><td>Constructed IBAN (empty if construction fails)</td></tr>
+</table>
+
+<h3>5.3 Custom Structure: ZS_BANK_VALIDATION_RESULT</h3>
+<table class="data">
+<tr><th>Component</th><th>Data Element / Type</th><th>Length</th><th>Description</th></tr>
+<tr><td>VALID</td><td>ABAP_BOOL</td><td>1</td><td>Overall validation passed (X = yes)</td></tr>
+<tr><td>BANKS_VALID</td><td>ABAP_BOOL</td><td>1</td><td>Country validation passed</td></tr>
+<tr><td>BANKL_VALID</td><td>ABAP_BOOL</td><td>1</td><td>Bank key validation passed</td></tr>
+<tr><td>BANKN_VALID</td><td>ABAP_BOOL</td><td>1</td><td>Account number validation passed</td></tr>
+<tr><td>IBAN_VALID</td><td>ABAP_BOOL</td><td>1</td><td>IBAN validation passed</td></tr>
+<tr><td>BANKS_FORMATTED</td><td>BANKS</td><td>3</td><td>Normalised bank country</td></tr>
+<tr><td>BANKL_FORMATTED</td><td>BANKK</td><td>15</td><td>Formatted bank key</td></tr>
+<tr><td>BANKN_FORMATTED</td><td>BANKN</td><td>18</td><td>Formatted account number</td></tr>
+<tr><td>IBAN</td><td>IBAN</td><td>34</td><td>IBAN (constructed or validated)</td></tr>
+<tr><td>SWIFT</td><td>SWIFT</td><td>11</td><td>SWIFT/BIC from bank directory</td></tr>
+<tr><td>BANK_NAME</td><td>BANKA</td><td>60</td><td>Bank name from BNKA</td></tr>
+<tr><td>BANK_CITY</td><td>ORT01_GP</td><td>35</td><td>Bank city from BNKA</td></tr>
+<tr><td>MESSAGES</td><td>BAPIRET2_T</td><td>Table</td><td>All validation messages (E/W/I/S)</td></tr>
+</table>
+
+<h2><span class="sec-num">6</span> Assumptions</h2>
+<ul>
+  <li>Table <strong>T005</strong> (Country master) is fully maintained with correct LNBLZ and LNBKN values for all countries where vendor payments are processed.</li>
+  <li>Table <strong>BNKA</strong> (Bank directory) is kept current — either loaded from an external bank data provider (e.g. Accuity, SIX) or manually maintained by the Treasury / Banking team.</li>
+  <li>Table <strong>TIBAN</strong> is maintained for vendors where IBAN validation or cross-referencing is required.</li>
+  <li>The class is called with a single set of bank details per invocation. Bulk / mass validation is the responsibility of the consuming program, which loops over vendor records (LFBK) and calls the class for each row.</li>
+  <li>The IBAN construction logic covers the European SEPA countries and common international formats. Countries with non-standard BBAN structures may require future extension.</li>
+  <li>Character-type rules (numeric-only vs. alphanumeric) for each country are configured as constants within the class. If new countries are onboarded, these constants must be extended.</li>
+  <li>The target system is SAP ECC 7.40 (SAP_BASIS 740). The class uses ECC 7.40-compatible ABAP syntax only — no RAP, no CDS, no AMDP, no typed enums.</li>
+</ul>
+
+<h2><span class="sec-num">7</span> Dependencies</h2>
+<table class="data">
+<tr><th>Dependency</th><th>Description</th><th>Impact</th></tr>
+<tr><td>Country master (T005)</td><td>Must contain LNBLZ and LNBKN for all payment-relevant countries</td><td>Missing country data causes the class to reject valid bank details</td></tr>
+<tr><td>Bank directory (BNKA)</td><td>Must be loaded and current</td><td>Missing bank records produce warnings — tolerable but degrades enrichment (no SWIFT, no bank name)</td></tr>
+<tr><td>BAPI_BANK_GETDETAIL</td><td>Standard BAPI in function group 1011 — available on the connected system. The class may optionally delegate bank existence checks to this BAPI instead of direct BNKA reads.</td><td>If using BAPI delegation, the BAPI must be available and callable by the service user</td></tr>
+<tr><td>Consuming programs</td><td>Any program that reads LFBK, performs data migration, or runs payment proposals can call this class</td><td>The class does not maintain data — it only validates and formats</td></tr>
+</table>
+
+<h2><span class="sec-num">8</span> Security</h2>
+
+<h3>Authorization Requirements</h3>
+<p>The utility class performs <strong>read-only</strong> operations against configuration and master data tables. No write operations are performed. Authorization checks are the responsibility of the <strong>calling program</strong>, not this utility class.</p>
+
+<table class="data">
+<tr><th>Role</th><th>Authorization Object</th><th>Fields</th><th>Notes</th></tr>
+<tr><td>Vendor Master Viewer</td><td>F_LFA1_BUK</td><td>BUKRS, ACTVT (03 = Display)</td><td>Required by the calling program to read LFBK vendor bank details</td></tr>
+<tr><td>Bank Master Viewer</td><td>F_BNKA_BUK</td><td>BUKRS, ACTVT (03 = Display)</td><td>Required to read BNKA bank directory. The utility class reads BNKA — the caller must ensure this authorization is held.</td></tr>
+<tr><td>Payment Administrator</td><td>F_REGU_BUK</td><td>BUKRS, ACTVT</td><td>Not required by this class, but relevant for consuming programs that process payments after validation</td></tr>
+</table>
+
+<div class="callout">
+<strong>Note:</strong> The utility class itself does not perform AUTHORITY-CHECK statements. It is a pure validation/formatting service. The responsibility for authorization enforcement lies with the calling program before invoking the class.
+</div>
+
+<h2><span class="sec-num">9</span> Test Design</h2>
+
+<h3>Functional Tests — Positive Cases</h3>
+<table class="data">
+<tr><th>#</th><th>Test Name</th><th>Input</th><th>Expected Result</th><th>Features Covered</th></tr>
+<tr><td>T-001</td><td>Valid German bank details</td><td>BANKS=DE, BANKL=30080000, BANKN=1234321</td><td>VALID=X, all sub-flags=X, BANKL_FORMATTED=30080000 (8 digits, zero-padded), bank name populated from BNKA</td><td>KF-001, KF-002, KF-003, KF-005</td></tr>
+<tr><td>T-002</td><td>Valid French bank details</td><td>BANKS=FR, BANKL=3000200650, BANKN=11111111111</td><td>VALID=X, BANKL length ≤ 10, BANKN length ≤ 11</td><td>KF-001, KF-002, KF-003</td></tr>
+<tr><td>T-003</td><td>Valid US bank details</td><td>BANKS=US, BANKL=021000021, BANKN=1234567890123</td><td>VALID=X, BANKL length ≤ 9, BANKN length ≤ 13</td><td>KF-001, KF-002, KF-003</td></tr>
+<tr><td>T-004</td><td>Valid Indian bank (alphanumeric IFSC)</td><td>BANKS=IN, BANKL=SBIN0001234, BANKN=1234567890</td><td>VALID=X, alphanumeric bank key accepted, LNBKN=00 → no account length restriction</td><td>KF-001, KF-002, KF-003</td></tr>
+<tr><td>T-005</td><td>Valid IBAN check digit</td><td>IBAN=AE750350000000123456789</td><td>IBAN_VALID=X, Mod-97 check passes</td><td>KF-004</td></tr>
+<tr><td>T-006</td><td>IBAN construction from components</td><td>BANKS=AE, BANKL=60351010, BANKN=0123456789</td><td>Constructed IBAN matches TIBAN record AE750350000000123456789</td><td>KF-004</td></tr>
+<tr><td>T-007</td><td>Formatting with leading spaces</td><td>BANKS='  de  ', BANKL='  1234  ', BANKN='  567  '</td><td>BANKS_FORMATTED=DE, BANKL trimmed and zero-padded, BANKN trimmed and zero-padded</td><td>KF-005</td></tr>
+</table>
+
+<h3>Functional Tests — Negative Cases</h3>
+<table class="data">
+<tr><th>#</th><th>Test Name</th><th>Input</th><th>Expected Result</th><th>Rules Covered</th></tr>
+<tr><td>T-008</td><td>Invalid country code</td><td>BANKS=ZZ, BANKL=12345, BANKN=67890</td><td>VALID=FALSE, BANKS_VALID=FALSE, error message "Bank country 'ZZ' is not maintained"</td><td>BR-001</td></tr>
+<tr><td>T-009</td><td>Bank key too long for DE</td><td>BANKS=DE, BANKL=123456789 (9 digits), BANKN=1234</td><td>VALID=FALSE, BANKL_VALID=FALSE, error "exceeds maximum length 8 for country DE"</td><td>BR-002</td></tr>
+<tr><td>T-010</td><td>Account number too long for GB</td><td>BANKS=GB, BANKL=123456, BANKN=123456789 (9 digits)</td><td>VALID=FALSE, BANKN_VALID=FALSE, error "exceeds maximum length 8 for country GB"</td><td>BR-003</td></tr>
+<tr><td>T-011</td><td>Bank key not in BNKA</td><td>BANKS=DE, BANKL=99999999, BANKN=1234</td><td>VALID=TRUE (warning only), BANKL_VALID=TRUE, warning message "not found in bank directory"</td><td>BR-004</td></tr>
+<tr><td>T-012</td><td>Empty account number</td><td>BANKS=DE, BANKL=30080000, BANKN='' (blank)</td><td>VALID=FALSE, BANKN_VALID=FALSE, error "Account number must not be empty"</td><td>BR-005</td></tr>
+<tr><td>T-013</td><td>Invalid IBAN check digit</td><td>IBAN=DE00300800001234321 (wrong check digits)</td><td>IBAN_VALID=FALSE, error "IBAN check digit validation failed"</td><td>BR-006</td></tr>
+<tr><td>T-014</td><td>Non-numeric bank key for DE</td><td>BANKS=DE, BANKL=ABCD1234, BANKN=5678</td><td>VALID=FALSE, BANKL_VALID=FALSE, error "Bank key must be numeric for country DE"</td><td>BR-002</td></tr>
+<tr><td>T-015</td><td>All fields empty</td><td>BANKS='', BANKL='', BANKN=''</td><td>VALID=FALSE, all sub-flags FALSE, multiple error messages</td><td>BR-001, BR-005</td></tr>
+</table>
+
+<h3>Boundary / Edge Cases</h3>
+<table class="data">
+<tr><th>#</th><th>Test Name</th><th>Input</th><th>Expected Result</th><th>Notes</th></tr>
+<tr><td>T-016</td><td>Bank key at exact max length</td><td>BANKS=DE, BANKL=12345678 (exactly 8)</td><td>BANKL_VALID=TRUE — boundary length accepted</td><td>Boundary for BR-002</td></tr>
+<tr><td>T-017</td><td>Account with embedded hyphens</td><td>BANKS=US, BANKL=021000021, BANKN=123-456-7890</td><td>Hyphens stripped, BANKN_FORMATTED=1234567890, validated as 10 digits ≤ 13</td><td>BR-007 formatting</td></tr>
+<tr><td>T-018</td><td>Country with no length restriction (IN)</td><td>BANKS=IN, BANKL=SBIN0001234, BANKN=12345678901234567 (17 chars)</td><td>BANKN_VALID=TRUE — LNBKN=00 means no restriction</td><td>Boundary for BR-003</td></tr>
+<tr><td>T-019</td><td>Lowercase country code</td><td>BANKS='de', BANKL=30080000, BANKN=1234</td><td>BANKS_FORMATTED=DE, validation proceeds normally</td><td>BR-007 normalisation</td></tr>
+</table>
+
+<h2><span class="sec-num">10</span> Appendix — Live System Data Samples</h2>
+
+<h3>A. Bank Directory Sample (BNKA)</h3>
+<p>10 records from the connected ECC system (client 800) confirming table availability and data patterns:</p>
+<table class="data">
+<tr><th>Country</th><th>Bank Key</th><th>Bank Name</th><th>SWIFT</th><th>City</th><th>Street</th></tr>
+<tr><td>AD</td><td>AD1</td><td>th goa main</td><td></td><td></td><td></td></tr>
+<tr><td>AE</td><td>9345</td><td>SBI</td><td></td><td></td><td></td></tr>
+<tr><td>AR</td><td>1200</td><td>Banco Citibank</td><td></td><td></td><td>Sarmiento 244</td></tr>
+<tr><td>AR</td><td>20050000</td><td>Citibank</td><td></td><td>Buenos Aires</td><td>Florida 280</td></tr>
+<tr><td>AT</td><td>10010</td><td>Deutsche Bank</td><td></td><td>Wien</td><td>Uferstraße 122</td></tr>
+</table>
+
+<h3>B. Vendor Bank Details Sample (LFBK)</h3>
+<table class="data">
+<tr><th>Vendor</th><th>Country</th><th>Bank Key</th><th>Account Number</th><th>Control Key</th></tr>
+<tr><td>0000000001</td><td>DE</td><td>56565656</td><td>88888888</td><td></td></tr>
+<tr><td>0000000010</td><td>FR</td><td>3000200650</td><td>11111111111</td><td>11</td></tr>
+<tr><td>0000000025</td><td>DK</td><td>1234</td><td>12345678</td><td></td></tr>
+<tr><td>0000000100</td><td>DE</td><td>30080000</td><td>1234321</td><td></td></tr>
+<tr><td>0000000200</td><td>DE</td><td>23022200</td><td>98765896</td><td></td></tr>
+</table>
+
+<h3>C. Country-Specific Length Rules (T005)</h3>
+<table class="data">
+<tr><th>Country</th><th>Bank Key Max Length (LNBLZ)</th><th>Account No. Max Length (LNBKN)</th></tr>
+<tr><td>DE</td><td>8</td><td>14</td></tr>
+<tr><td>FR</td><td>10</td><td>11</td></tr>
+<tr><td>GB</td><td>6</td><td>8</td></tr>
+<tr><td>IN</td><td>15</td><td>No restriction (00)</td></tr>
+<tr><td>US</td><td>9</td><td>13</td></tr>
+</table>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
