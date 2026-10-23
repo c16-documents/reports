@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS Overdue PO By Vendor Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>FS Overdue PO By Vendor Report</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>FS Overdue PO By Vendor Report</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+
+<h2><span class="sec-num">1</span> Document Control</h2>
+
+<table class="data">
+<tr><th>Field</th><th>Value</th></tr>
+<tr><td>Document Title</td><td>Functional Specification — Overdue Purchase Orders by Vendor Report</td></tr>
+<tr><td>WRICEF ID</td><td>FS-MM-RPT-001</td></tr>
+<tr><td>Object Type</td><td>Report (ABAP Executable Program)</td></tr>
+<tr><td>Proposed Program Name</td><td>Z_MM_OVERDUE_PO_VENDOR</td></tr>
+<tr><td>Module</td><td>MM — Materials Management (Purchasing)</td></tr>
+<tr><td>SAP System</td><td>ECC 6.0 (SAP_BASIS 740), Client 800</td></tr>
+<tr><td>Author</td><td>C16 Platform</td></tr>
+<tr><td>Version</td><td>1.0</td></tr>
+<tr><td>Date</td><td>23 October 2026</td></tr>
+<tr><td>Status</td><td>Draft</td></tr>
+</table>
+
+<h3>Revision History</h3>
+<table class="data">
+<tr><th>Version</th><th>Date</th><th>Author</th><th>Change Description</th></tr>
+<tr><td>1.0</td><td>23-Oct-2026</td><td>C16 Platform</td><td>Initial draft</td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Business Purpose &amp; Scope</h2>
+
+<h3>2.1 Business Problem</h3>
+<p>Procurement and accounts-payable teams need visibility into purchase orders where vendor deliveries are overdue — i.e., the scheduled delivery date has passed but the ordered quantity has not been fully received. Without a consolidated view, buyers must manually check individual PO schedule lines in ME2M or ME2N, making it difficult to prioritise follow-ups, measure vendor reliability, and escalate chronic late deliveries.</p>
+
+<h3>2.2 Business Objective</h3>
+<p>Provide a single ALV report that:</p>
+<ul>
+<li>Lists all open (non-deleted) PO line items whose delivery date has passed without full goods receipt, for a user-specified company code</li>
+<li>Groups and sorts results by vendor so the buyer can see which suppliers have the most overdue lines</li>
+<li>Calculates the number of overdue days per schedule line and the outstanding quantity still expected</li>
+<li>Allows optional filtering by purchasing organisation, purchasing group, vendor, PO number, plant, PO date range, and a user-defined overdue-days threshold</li>
+<li>Enables the user to download, sort, filter, and total within the ALV grid</li>
+</ul>
+
+<h3>2.3 Scope</h3>
+<table class="data">
+<tr><th>In Scope</th><th>Out of Scope</th></tr>
+<tr><td>Standard purchase orders (BSTYP = 'F')</td><td>Contracts, scheduling agreements, RFQs</td></tr>
+<tr><td>Open items only (delivery-complete flag ELIKZ ≠ 'X')</td><td>Fully delivered / closed POs</td></tr>
+<tr><td>Non-deleted POs and line items (LOEKZ = '')</td><td>Deleted POs</td></tr>
+<tr><td>ALV grid output with standard toolbar</td><td>Email/workflow notifications</td></tr>
+<tr><td>ECC 6.0 / SAP_BASIS 740 compatibility</td><td>S/4HANA-specific features (RAP, CDS)</td></tr>
+</table>
+
+<h3>2.4 Key Stakeholders</h3>
+<table class="data">
+<tr><th>Role</th><th>Interest</th></tr>
+<tr><td>Buyer / Purchasing Agent</td><td>Follow up on late deliveries, vendor expediting</td></tr>
+<tr><td>Purchasing Manager</td><td>Vendor performance monitoring, escalation decisions</td></tr>
+<tr><td>Supply Chain / Logistics</td><td>Production impact assessment of late materials</td></tr>
+<tr><td>Accounts Payable</td><td>Anticipate upcoming invoice matching for overdue GR</td></tr>
+</table>
+
+<h2><span class="sec-num">3</span> Functional Requirements</h2>
+
+<h3>3.1 Selection Screen</h3>
+<p>The user enters filter criteria on a single selection screen before executing the report. All fields except Company Code are optional.</p>
+
+<table class="data">
+<tr><th>#</th><th>Field Label</th><th>Technical Field</th><th>Type</th><th>Input Control</th><th>Mandatory</th><th>Default</th></tr>
+<tr><td>1</td><td>Company Code</td><td>EKKO-BUKRS</td><td>PARAMETER</td><td>Single value with F4 help</td><td>Yes</td><td>—</td></tr>
+<tr><td>2</td><td>Purchasing Organisation</td><td>EKKO-EKORG</td><td>SELECT-OPTIONS</td><td>Multiple values / ranges</td><td>No</td><td>—</td></tr>
+<tr><td>3</td><td>Purchasing Group</td><td>EKKO-EKGRP</td><td>SELECT-OPTIONS</td><td>Multiple values / ranges</td><td>No</td><td>—</td></tr>
+<tr><td>4</td><td>Vendor</td><td>EKKO-LIFNR</td><td>SELECT-OPTIONS</td><td>Multiple values / ranges</td><td>No</td><td>—</td></tr>
+<tr><td>5</td><td>Purchase Order Number</td><td>EKKO-EBELN</td><td>SELECT-OPTIONS</td><td>Multiple values / ranges</td><td>No</td><td>—</td></tr>
+<tr><td>6</td><td>Plant</td><td>EKPO-WERKS</td><td>SELECT-OPTIONS</td><td>Multiple values / ranges</td><td>No</td><td>—</td></tr>
+<tr><td>7</td><td>PO Date (from/to)</td><td>EKKO-BEDAT</td><td>SELECT-OPTIONS</td><td>Date range</td><td>No</td><td>—</td></tr>
+<tr><td>8</td><td>Minimum Overdue Days</td><td>User-defined</td><td>PARAMETER</td><td>Numeric ≥ 1</td><td>No</td><td>1</td></tr>
+</table>
+
+<div class="callout">
+<strong>Validation:</strong> If the user enters a Minimum Overdue Days value less than 1, display error message "Minimum overdue days must be at least 1" and prevent execution.
+</div>
+
+<h3>3.2 Processing Logic (Business Rules)</h3>
+
+<h3>3.2.1 Rule 1 — Identify Open PO Items</h3>
+<p>Select all purchase order line items that satisfy ALL of the following conditions:</p>
+<ul>
+<li>Document category is a standard PO: <code>EKKO-BSTYP = 'F'</code></li>
+<li>PO header is not deleted: <code>EKKO-LOEKZ = ''</code></li>
+<li>PO item is not deleted: <code>EKPO-LOEKZ = ''</code></li>
+<li>PO item delivery is not complete: <code>EKPO-ELIKZ ≠ 'X'</code></li>
+<li>PO matches the user's company code: <code>EKKO-BUKRS = P_BUKRS</code></li>
+<li>PO matches any optional filters entered (EKORG, EKGRP, LIFNR, EBELN, WERKS, BEDAT range)</li>
+</ul>
+
+<h3>3.2.2 Rule 2 — Determine Delivery Due Date</h3>
+<p>For each selected PO item, read the schedule line delivery date from <code>EKET-EINDT</code> (delivery date at schedule-line level). If a PO item has multiple schedule lines, each schedule line is evaluated individually — one PO item may produce multiple output rows.</p>
+
+<h3>3.2.3 Rule 3 — Calculate Overdue Status</h3>
+<p>A schedule line is <strong>overdue</strong> when:</p>
+<ul>
+<li>The delivery date (<code>EKET-EINDT</code>) is earlier than today's date (<code>SY-DATUM</code>), AND</li>
+<li>The delivered quantity (<code>EKET-WEMNG</code>) is less than the scheduled quantity (<code>EKET-MENGE</code>)</li>
+</ul>
+<p>Calculate:</p>
+<ul>
+<li><strong>Overdue Days</strong> = <code>SY-DATUM − EKET-EINDT</code> (number of calendar days)</li>
+<li><strong>Outstanding Quantity</strong> = <code>EKET-MENGE − EKET-WEMNG</code></li>
+</ul>
+<p>Exclude schedule lines where Overdue Days is less than the user-specified Minimum Overdue Days threshold.</p>
+
+<h3>3.2.4 Rule 4 — Enrich with Vendor &amp; PO Details</h3>
+<p>For each qualifying schedule line, retrieve:</p>
+<ul>
+<li>Vendor name from <code>LFA1-NAME1</code> (joined via <code>EKKO-LIFNR = LFA1-LIFNR</code>)</li>
+<li>Vendor city from <code>LFA1-ORT01</code></li>
+<li>Material number from <code>EKPO-MATNR</code></li>
+<li>Short text from <code>EKPO-TXZ01</code></li>
+<li>PO net value from <code>EKPO-NETWR</code> (for informational context)</li>
+<li>Order unit from <code>EKPO-MEINS</code></li>
+</ul>
+
+<h3>3.2.5 Rule 5 — Sort and Group</h3>
+<p>The output is sorted by:</p>
+<ol>
+<li><strong>Vendor Number</strong> (ascending) — primary sort with subtotals</li>
+<li><strong>Overdue Days</strong> (descending) — most overdue lines appear first within each vendor</li>
+<li><strong>PO Number / Item / Schedule Line</strong> (ascending)</li>
+</ol>
+
+<h3>3.3 Output Layout</h3>
+<p>The report displays results in a full-screen ALV grid (CL_SALV_TABLE) with the standard toolbar (export, filter, sort, print). The output table contains the following columns:</p>
+
+<table class="data">
+<tr><th>#</th><th>Column Header</th><th>Source Field</th><th>Data Type</th><th>Width</th><th>Notes</th></tr>
+<tr><td>1</td><td>Vendor</td><td>EKKO-LIFNR</td><td>CHAR 10</td><td>10</td><td>Subtotal break</td></tr>
+<tr><td>2</td><td>Vendor Name</td><td>LFA1-NAME1</td><td>CHAR 35</td><td>30</td><td>—</td></tr>
+<tr><td>3</td><td>City</td><td>LFA1-ORT01</td><td>CHAR 35</td><td>20</td><td>—</td></tr>
+<tr><td>4</td><td>PO Number</td><td>EKKO-EBELN</td><td>CHAR 10</td><td>10</td><td>—</td></tr>
+<tr><td>5</td><td>PO Item</td><td>EKPO-EBELP</td><td>NUMC 5</td><td>5</td><td>—</td></tr>
+<tr><td>6</td><td>Schedule Line</td><td>EKET-ETENR</td><td>NUMC 4</td><td>5</td><td>—</td></tr>
+<tr><td>7</td><td>Material</td><td>EKPO-MATNR</td><td>CHAR 18</td><td>18</td><td>—</td></tr>
+<tr><td>8</td><td>Description</td><td>EKPO-TXZ01</td><td>CHAR 40</td><td>30</td><td>Short text</td></tr>
+<tr><td>9</td><td>Plant</td><td>EKPO-WERKS</td><td>CHAR 4</td><td>5</td><td>—</td></tr>
+<tr><td>10</td><td>PO Date</td><td>EKKO-BEDAT</td><td>DATS</td><td>10</td><td>—</td></tr>
+<tr><td>11</td><td>Delivery Date</td><td>EKET-EINDT</td><td>DATS</td><td>10</td><td>—</td></tr>
+<tr><td>12</td><td>Overdue Days</td><td>Calculated</td><td>INT</td><td>6</td><td>SY-DATUM − EINDT</td></tr>
+<tr><td>13</td><td>Scheduled Qty</td><td>EKET-MENGE</td><td>QUAN 13,3</td><td>13</td><td>—</td></tr>
+<tr><td>14</td><td>Delivered Qty</td><td>EKET-WEMNG</td><td>QUAN 13,3</td><td>13</td><td>—</td></tr>
+<tr><td>15</td><td>Outstanding Qty</td><td>Calculated</td><td>QUAN 13,3</td><td>13</td><td>MENGE − WEMNG</td></tr>
+<tr><td>16</td><td>Order Unit</td><td>EKPO-MEINS</td><td>UNIT 3</td><td>4</td><td>—</td></tr>
+<tr><td>17</td><td>Net Value</td><td>EKPO-NETWR</td><td>CURR 13,2</td><td>15</td><td>PO item value</td></tr>
+<tr><td>18</td><td>Currency</td><td>EKKO-WAERS</td><td>CUKY 5</td><td>5</td><td>—</td></tr>
+<tr><td>19</td><td>Purch. Org.</td><td>EKKO-EKORG</td><td>CHAR 4</td><td>5</td><td>—</td></tr>
+<tr><td>20</td><td>Purch. Group</td><td>EKKO-EKGRP</td><td>CHAR 3</td><td>5</td><td>—</td></tr>
+</table>
+
+<h3>3.4 Colour-Coding (Row Highlighting)</h3>
+<p>To draw attention to critically overdue items, rows are colour-coded based on the Overdue Days value:</p>
+
+<table class="data">
+<tr><th>Overdue Days</th><th>Colour</th><th>Meaning</th></tr>
+<tr><td>1 – 30 days</td><td>Yellow</td><td>Mildly overdue — monitor</td></tr>
+<tr><td>31 – 60 days</td><td>Orange</td><td>Significantly overdue — follow up</td></tr>
+<tr><td>61+ days</td><td>Red</td><td>Critically overdue — escalate</td></tr>
+</table>
+
+<h3>3.5 Header / Totals</h3>
+<ul>
+<li>The ALV title bar displays: <strong>"Overdue Purchase Orders — Company Code: &lt;BUKRS&gt;"</strong></li>
+<li>Subtotals on the Vendor field for: Outstanding Qty, Net Value</li>
+<li>Grand totals at bottom for: Outstanding Qty, Net Value (per currency)</li>
+<li>Record count shown in the ALV status bar</li>
+</ul>
+
+<h2><span class="sec-num">4</span> Data Sources</h2>
+
+<h3>4.1 SAP Tables Read</h3>
+<table class="data">
+<tr><th>Table</th><th>Description</th><th>Key Fields Used</th><th>Purpose</th></tr>
+<tr><td>EKKO</td><td>Purchasing Document Header</td><td>EBELN, BUKRS, BSTYP, LIFNR, EKORG, EKGRP, BEDAT, LOEKZ, WAERS</td><td>PO header selection &amp; filters</td></tr>
+<tr><td>EKPO</td><td>Purchasing Document Item</td><td>EBELN, EBELP, MATNR, TXZ01, WERKS, NETWR, MEINS, ELIKZ, LOEKZ</td><td>PO line-item details &amp; delivery-complete check</td></tr>
+<tr><td>EKET</td><td>Scheduling Agreement Schedule Lines</td><td>EBELN, EBELP, ETENR, EINDT, MENGE, WEMNG</td><td>Delivery date &amp; quantity comparison</td></tr>
+<tr><td>LFA1</td><td>Vendor Master (General Section)</td><td>LIFNR, NAME1, ORT01</td><td>Vendor name &amp; city enrichment</td></tr>
+<tr><td>T001</td><td>Company Codes</td><td>BUKRS, BUTXT</td><td>F4 help &amp; header display</td></tr>
+</table>
+
+<h3>4.2 Join Relationships</h3>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792738440899" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 558.328125 278" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792738440899{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792738440899 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792738440899 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792738440899 .error-icon{fill:#552222;}#mermaid-1792738440899 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792738440899 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792738440899 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792738440899 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792738440899 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792738440899 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792738440899 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792738440899 .marker{fill:#666;stroke:#666;}#mermaid-1792738440899 .marker.cross{stroke:#666;}#mermaid-1792738440899 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792738440899 p{margin:0;}#mermaid-1792738440899 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792738440899 .cluster-label text{fill:#333;}#mermaid-1792738440899 .cluster-label span{color:#333;}#mermaid-1792738440899 .cluster-label span p{background-color:transparent;}#mermaid-1792738440899 .label text,#mermaid-1792738440899 span{fill:#000000;color:#000000;}#mermaid-1792738440899 .node rect,#mermaid-1792738440899 .node circle,#mermaid-1792738440899 .node ellipse,#mermaid-1792738440899 .node polygon,#mermaid-1792738440899 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792738440899 .rough-node .label text,#mermaid-1792738440899 .node .label text,#mermaid-1792738440899 .image-shape .label,#mermaid-1792738440899 .icon-shape .label{text-anchor:middle;}#mermaid-1792738440899 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792738440899 .rough-node .label,#mermaid-1792738440899 .node .label,#mermaid-1792738440899 .image-shape .label,#mermaid-1792738440899 .icon-shape .label{text-align:center;}#mermaid-1792738440899 .node.clickable{cursor:pointer;}#mermaid-1792738440899 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792738440899 .arrowheadPath{fill:#333333;}#mermaid-1792738440899 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792738440899 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792738440899 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792738440899 .edgeLabel p{background-color:white;}#mermaid-1792738440899 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792738440899 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792738440899 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792738440899 .cluster text{fill:#333;}#mermaid-1792738440899 .cluster span{color:#333;}#mermaid-1792738440899 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792738440899 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792738440899 rect.text{fill:none;stroke-width:0;}#mermaid-1792738440899 .icon-shape,#mermaid-1792738440899 .image-shape{background-color:white;text-align:center;}#mermaid-1792738440899 .icon-shape p,#mermaid-1792738440899 .image-shape p{background-color:white;padding:2px;}#mermaid-1792738440899 .icon-shape .label rect,#mermaid-1792738440899 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792738440899 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792738440899 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792738440899 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792738440899_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792738440899_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792738440899_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792738440899_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792738440899_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792738440899_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M82,112L93.935,99.167C105.87,86.333,129.74,60.667,148.979,47.833C168.219,35,182.828,35,190.133,35L197.438,35" id="L_EKKO_EKPO_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_EKKO_EKPO_0" data-points="W3sieCI6ODIuMDAwMzAwNDgwNzY5MjMsInkiOjExMn0seyJ4IjoxNTMuNjA5Mzc1LCJ5IjozNX0seyJ4IjoyMDEuNDM3NSwieSI6MzV9XQ==" marker-end="url(#mermaid-1792738440899_flowchart-v2-pointEnd)"></path><path d="M298.922,35L311.902,35C324.883,35,350.844,35,376.138,35C401.432,35,426.06,35,438.374,35L450.688,35" id="L_EKPO_EKET_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_EKPO_EKET_0" data-points="W3sieCI6Mjk4LjkyMTg3NSwieSI6MzV9LHsieCI6Mzc2LjgwNDY4NzUsInkiOjM1fSx7IngiOjQ1NC42ODc1LCJ5IjozNX1d" marker-end="url(#mermaid-1792738440899_flowchart-v2-pointEnd)"></path><path d="M105.781,139L113.753,139C121.724,139,137.667,139,153.346,139C169.026,139,184.443,139,192.151,139L199.859,139" id="L_EKKO_LFA1_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_EKKO_LFA1_0" data-points="W3sieCI6MTA1Ljc4MTI1LCJ5IjoxMzl9LHsieCI6MTUzLjYwOTM3NSwieSI6MTM5fSx7IngiOjIwMy44NTkzNzUsInkiOjEzOX1d" marker-end="url(#mermaid-1792738440899_flowchart-v2-pointEnd)"></path><path d="M82,166L93.935,178.833C105.87,191.667,129.74,217.333,149.231,230.167C168.721,243,183.833,243,191.389,243L198.945,243" id="L_EKKO_T001_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_EKKO_T001_0" data-points="W3sieCI6ODIuMDAwMzAwNDgwNzY5MjMsInkiOjE2Nn0seyJ4IjoxNTMuNjA5Mzc1LCJ5IjoyNDN9LHsieCI6MjAyLjk0NTMxMjUsInkiOjI0M31d" marker-end="url(#mermaid-1792738440899_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(153.609375, 35)"><g class="label" data-id="L_EKKO_EKPO_0" transform="translate(-22.2578125, -12)"><foreignObject width="44.515625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>EBELN</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(376.8046875, 35)"><g class="label" data-id="L_EKPO_EKET_0" transform="translate(-52.8828125, -12)"><foreignObject width="105.765625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>EBELN + EBELP</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(153.609375, 139)"><g class="label" data-id="L_EKKO_LFA1_0" transform="translate(-20.2421875, -12)"><foreignObject width="40.484375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>LIFNR</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(153.609375, 243)"><g class="label" data-id="L_EKKO_T001_0" transform="translate(-22.828125, -12)"><foreignObject width="45.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>BUKRS</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-EKKO-0" transform="translate(56.890625, 139)"><rect class="basic label-container" style="" x="-48.890625" y="-27" width="97.78125" height="54"></rect><g class="label" style="" transform="translate(-18.890625, -12)"><rect></rect><foreignObject width="37.78125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>EKKO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-EKPO-1" transform="translate(250.1796875, 35)"><rect class="basic label-container" style="" x="-48.7421875" y="-27" width="97.484375" height="54"></rect><g class="label" style="" transform="translate(-18.7421875, -12)"><rect></rect><foreignObject width="37.484375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>EKPO</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-EKET-3" transform="translate(502.5078125, 35)"><rect class="basic label-container" style="" x="-47.8203125" y="-27" width="95.640625" height="54"></rect><g class="label" style="" transform="translate(-17.8203125, -12)"><rect></rect><foreignObject width="35.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>EKET</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-LFA1-5" transform="translate(250.1796875, 139)"><rect class="basic label-container" style="" x="-46.3203125" y="-27" width="92.640625" height="54"></rect><g class="label" style="" transform="translate(-16.3203125, -12)"><rect></rect><foreignObject width="32.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>LFA1</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-T001-7" transform="translate(250.1796875, 243)"><rect class="basic label-container" style="" x="-47.234375" y="-27" width="94.46875" height="54"></rect><g class="label" style="" transform="translate(-17.234375, -12)"><rect></rect><foreignObject width="34.46875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>T001</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h2><span class="sec-num">5</span> Authorization Requirements</h2>
+
+<table class="data">
+<tr><th>Authorization Object</th><th>Field</th><th>Value</th><th>Purpose</th></tr>
+<tr><td>M_BEST_BSA</td><td>BSART</td><td>* (all PO types)</td><td>Access to purchasing documents by doc type</td></tr>
+<tr><td>M_BEST_EKG</td><td>EKGRP</td><td>User's purchasing groups</td><td>Access to purchasing documents by purchasing group</td></tr>
+<tr><td>M_BEST_EKO</td><td>EKORG</td><td>User's purchasing organisations</td><td>Access to purchasing documents by purchasing org</td></tr>
+<tr><td>M_BEST_WRK</td><td>WERKS</td><td>User's plants</td><td>Access to purchasing documents by plant</td></tr>
+<tr><td>F_BKPF_BUK</td><td>BUKRS</td><td>User's company codes</td><td>Access to financial documents by company code</td></tr>
+</table>
+
+<div class="callout tip">
+<strong>Note:</strong> Authorization checks should verify at minimum that the user has display access (ACTVT = '03') to purchasing documents for the entered company code. If authorization fails, display an appropriate message and prevent data retrieval.
+</div>
+
+<h2><span class="sec-num">6</span> Messages</h2>
+
+<table class="data">
+<tr><th>Msg #</th><th>Type</th><th>Trigger</th><th>Text</th></tr>
+<tr><td>M01</td><td>E (Error)</td><td>Minimum Overdue Days &lt; 1</td><td>"Minimum overdue days must be at least 1."</td></tr>
+<tr><td>M02</td><td>I (Info)</td><td>No overdue POs found</td><td>"No overdue purchase orders found for company code &amp;1 with the given selection criteria."</td></tr>
+<tr><td>M03</td><td>S (Success)</td><td>Report displayed</td><td>"&amp;1 overdue schedule line(s) found across &amp;2 vendor(s)."</td></tr>
+<tr><td>M04</td><td>E (Error)</td><td>Authorization check failed</td><td>"You are not authorized to display purchasing data for company code &amp;1."</td></tr>
+</table>
+
+<h2><span class="sec-num">7</span> Error &amp; Edge-Case Handling</h2>
+
+<table class="data">
+<tr><th>Scenario</th><th>Expected Behaviour</th></tr>
+<tr><td>No data matches the selection criteria</td><td>Display info message M02. Do not show an empty ALV — return to selection screen.</td></tr>
+<tr><td>PO item has no schedule lines in EKET</td><td>Skip the item (no delivery date to evaluate).</td></tr>
+<tr><td>EKET-EINDT is initial (00000000)</td><td>Skip the schedule line — a blank delivery date cannot be evaluated for overdue status.</td></tr>
+<tr><td>EKET-MENGE = 0 and WEMNG = 0</td><td>Skip the schedule line — no ordered quantity means nothing is overdue.</td></tr>
+<tr><td>EKET-WEMNG &gt; EKET-MENGE (over-delivery)</td><td>Skip the schedule line — the item is already fulfilled (outstanding qty would be negative).</td></tr>
+<tr><td>Vendor not found in LFA1</td><td>Show LIFNR with blank NAME1 and ORT01 — do not skip the line.</td></tr>
+<tr><td>Company code not found in T001</td><td>Show error on selection screen — invalid company code.</td></tr>
+</table>
+
+<h2><span class="sec-num">8</span> Non-Functional Requirements</h2>
+
+<table class="data">
+<tr><th>Requirement</th><th>Target</th></tr>
+<tr><td>Performance</td><td>Report should execute within 30 seconds for up to 50,000 PO items. Use indexed access via BUKRS on EKKO and FOR ALL ENTRIES for EKET/LFA1 lookups.</td></tr>
+<tr><td>Compatibility</td><td>ECC 6.0 / SAP_BASIS 740 — no AMDP, no RAP, no CDS. CL_SALV_TABLE for ALV.</td></tr>
+<tr><td>Concurrency</td><td>Read-only report — no locking required.</td></tr>
+<tr><td>Transportability</td><td>Must be deployable via standard transport request to Q/P systems.</td></tr>
+<tr><td>Language</td><td>All user-visible texts are translatable (text elements or message class).</td></tr>
+</table>
+
+<h2><span class="sec-num">9</span> Test Scenarios (Acceptance Criteria)</h2>
+
+<table class="data">
+<tr><th>#</th><th>Scenario</th><th>Inputs</th><th>Expected Result</th><th>Type</th></tr>
+<tr><td>TS-01</td><td>Basic positive — overdue POs exist</td><td>Company code with known overdue POs (e.g. 1000). Min overdue days = 1.</td><td>ALV displays overdue lines grouped by vendor, sorted by overdue days descending. Subtotals per vendor. Colour coding applied.</td><td>Positive</td></tr>
+<tr><td>TS-02</td><td>No overdue POs</td><td>Company code where all deliveries are on time, or a future PO date range.</td><td>Info message M02 displayed. No ALV shown. User returns to selection screen.</td><td>Negative</td></tr>
+<tr><td>TS-03</td><td>Vendor filter</td><td>Company code 1000 + specific vendor number.</td><td>Only POs for the specified vendor appear.</td><td>Positive</td></tr>
+<tr><td>TS-04</td><td>Minimum overdue days threshold</td><td>Company code 1000, Min overdue days = 30.</td><td>Only schedule lines overdue by ≥ 30 days appear. Lines overdue 1–29 days are excluded.</td><td>Boundary</td></tr>
+<tr><td>TS-05</td><td>Min overdue days = 0</td><td>P_DAYS = 0</td><td>Error message M01. Report does not execute.</td><td>Negative</td></tr>
+<tr><td>TS-06</td><td>PO with multiple schedule lines</td><td>PO with 3 schedule lines: 1 overdue, 1 on time, 1 fully delivered.</td><td>Only the 1 overdue schedule line appears. The on-time and delivered lines are excluded.</td><td>Edge case</td></tr>
+<tr><td>TS-07</td><td>Over-delivered schedule line</td><td>PO where WEMNG &gt; MENGE on a schedule line.</td><td>Schedule line is skipped — does not appear in output.</td><td>Edge case</td></tr>
+<tr><td>TS-08</td><td>Multiple company codes in system</td><td>Run for 1000 (EUR), then 1010 (INR).</td><td>Each run shows only POs for the entered company code. Currency column reflects the correct currency.</td><td>Positive</td></tr>
+<tr><td>TS-09</td><td>Colour coding verification</td><td>Company code with POs overdue by 5, 45, and 90 days.</td><td>5-day row = yellow, 45-day row = orange, 90-day row = red.</td><td>Positive</td></tr>
+<tr><td>TS-10</td><td>ALV export</td><td>Execute report, then export to Excel via ALV toolbar.</td><td>Excel download completes with all columns and data intact.</td><td>Positive</td></tr>
+</table>
+
+<h2><span class="sec-num">10</span> Transaction Code &amp; Execution</h2>
+
+<table class="data">
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Program Name</td><td>Z_MM_OVERDUE_PO_VENDOR</td></tr>
+<tr><td>Execution</td><td>Via SA38 / SE38 (no custom T-code initially; can be assigned later)</td></tr>
+<tr><td>Package</td><td>To be determined at Technical Specification stage</td></tr>
+<tr><td>Transport</td><td>To be determined at Technical Specification stage</td></tr>
+<tr><td>Comparable SAP Standard</td><td>ME2M (PO per material), ME2N (PO per PO number) — this report adds overdue-days calculation and vendor-centric grouping not available in standard</td></tr>
+</table>
+
+<h2><span class="sec-num">11</span> Open Items &amp; Assumptions</h2>
+
+<h3>Assumptions</h3>
+<ul>
+<li>The report evaluates overdue status as of the current system date (SY-DATUM). There is no requirement to evaluate as of a historical date.</li>
+<li>Delivery date is taken from the PO schedule line (EKET-EINDT), not from inbound delivery or shipping notification dates.</li>
+<li>Net value (EKPO-NETWR) is shown for informational context only; it represents the full item value, not the outstanding value. Outstanding value calculation (proportional to outstanding qty) is not in scope for this version.</li>
+<li>Only standard purchase orders (BSTYP = 'F') are in scope. Contracts and scheduling agreements follow different fulfilment patterns.</li>
+<li>The system has reliable schedule-line data in EKET for POs (SAP standard — maintained automatically by ME21N/ME22N).</li>
+</ul>
+
+<h3>Open Items</h3>
+<table class="data">
+<tr><th>#</th><th>Item</th><th>Decision Needed By</th><th>Impact</th></tr>
+<tr><td>O-01</td><td>Should the report also calculate outstanding value (proportional NETWR based on outstanding qty / scheduled qty)?</td><td>Business owner</td><td>Adds a calculated column; requires division-by-zero guard for MENGE = 0</td></tr>
+<tr><td>O-02</td><td>Should a custom transaction code be created for this report?</td><td>Basis / Change Management</td><td>Easier navigation for end users</td></tr>
+<tr><td>O-03</td><td>Should the report include a "Send Reminder" button that triggers a workflow or email to the vendor contact?</td><td>Business owner</td><td>Significant scope increase — would be a separate WRICEF</td></tr>
+<tr><td>O-04</td><td>Are there company-code-specific overdue thresholds (e.g. 1000 uses 7 days, 1010 uses 14 days) or is a single user-entered threshold sufficient?</td><td>Business owner</td><td>Would require a custom config table if company-specific</td></tr>
+</table>
+
+<h2><span class="sec-num">12</span> Appendix — Company Codes Available</h2>
+<p>The following company codes are configured in the target system and can be used for testing:</p>
+
+<table class="data">
+<tr><th>Company Code</th><th>Description</th><th>Currency</th><th>Country</th></tr>
+<tr><td>0001</td><td>SAP A.G.</td><td>EUR</td><td>DE</td></tr>
+<tr><td>0005</td><td>BestRun Germany new GL</td><td>EUR</td><td>DE</td></tr>
+<tr><td>0006</td><td>BestRun US INC New GL</td><td>USD</td><td>US</td></tr>
+<tr><td>1000</td><td>BestRun Germany</td><td>EUR</td><td>DE</td></tr>
+<tr><td>1002</td><td>BestRun Singapore</td><td>SGD</td><td>SG</td></tr>
+<tr><td>1010</td><td>BestRun INDIA 1010</td><td>INR</td><td>IN</td></tr>
+</table>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
