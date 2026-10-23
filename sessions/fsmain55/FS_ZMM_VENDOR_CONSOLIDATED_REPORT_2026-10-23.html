@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS ZMM VENDOR CONSOLIDATED REPORT 2026 10 23</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>FS ZMM VENDOR CONSOLIDATED REPORT 2026 10 23</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>FS ZMM VENDOR CONSOLIDATED REPORT 2026 10 23</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<h2><span class="sec-num">1</span> Document Control</h2>
+<table class="data">
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Object Name</td><td>ZMM_VENDOR_CONSOLIDATED_REPORT</td></tr>
+<tr><td>Object Type</td><td>Executable Report (PROG) – ALV Grid output</td></tr>
+<tr><td>Title</td><td>Vendor Consolidated Master Data Report</td></tr>
+<tr><td>Module</td><td>MM / Vendor Master (with FI and BP views)</td></tr>
+<tr><td>Package / Owner (current system)</td><td>$TMP / VINOD (created 24.03.2026)</td></tr>
+<tr><td>Target System</td><td>SAP ECC – SAP_BASIS 740, client 800</td></tr>
+<tr><td>Document Type</td><td>Functional Specification, reverse-engineered from the program source (9,830 lines)</td></tr>
+<tr><td>Version / Date</td><td>1.0 – 23.10.2026 (Draft for business review)</td></tr>
+</table>
+
+<h3>1.1 Change History (taken from the program header)</h3>
+<table class="data">
+<tr><th>#</th><th>Date</th><th>Change</th><th>Developer</th><th>Functional</th><th>ChaRM</th><th>Transport(s)</th></tr>
+<tr><td>1</td><td>02.04.2024</td><td>Add MSME Certificate Number field</td><td>Ragunath Loganathan (RA20350211)</td><td>Jasmin</td><td>4000004597</td><td>WS1K997027</td></tr>
+<tr><td>2</td><td>21.05.2024</td><td>Add Group Customer field</td><td>Polabathina Bhavani (PO20312220)</td><td>Manoranjan</td><td>4000005275</td><td>WS1K9A014E</td></tr>
+<tr><td>3</td><td>24.06.2024</td><td>Remove unwanted code (error)</td><td>Polabathina Bhavani (PO20312220)</td><td>Manoranjan</td><td>4000005596</td><td>WS1K9A02YZ</td></tr>
+<tr><td>4</td><td>03.07.2024</td><td>Production issue – data not fetching</td><td>Polabathina Bhavani (PO20312220)</td><td>Manoranjan</td><td>4000005680</td><td>WS1K9A03GW, WS1K9A04RP</td></tr>
+<tr><td>5</td><td>03.07.2024 / 03.09.2024 / 11.10.2024</td><td>New input fields; restrict to the 24 vendor account groups; add one more account group; blacklisted-vendor logic for the secondary inputs</td><td>Polabathina Bhavani (PO20312220)</td><td>Manoranjan</td><td>4000006028, 4000006474</td><td>WS1K9A05EB, WS1K9A06LT, WS1K9A07DO, WS1K9A08IU, WS1K9A09D0</td></tr>
+<tr><td>6</td><td>02.05.2025</td><td>Add BEE Level field</td><td>Jeevan Sagar (IN20546163)</td><td>Bijay</td><td>4000008627</td><td>WS1K9A0HO1</td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Business Purpose</h2>
+<p>The report gives Procurement, Vendor Master Data and Compliance teams one consolidated view of vendor master data. The data would otherwise be spread across several transactions (XK03/MK03/FK03, BP, address maintenance and custom compliance tables). For each vendor it combines:</p>
+<ul>
+<li>General vendor data (name, city, account group, created on/by, search term, VAT and tax numbers, industry, authorisation group, telephone, train station)</li>
+<li>The customer-specific vendor attributes held in LFA1 (PO/Non-PO vendor, high-risk vendor code, risk category, e-invoice flag)</li>
+<li>Address data (country, street lines 1–4, postal code, region, e-mail, and the "peol SPOC ID" held in the address remark)</li>
+<li>Commercial data (payment terms from company code data, order currency from purchasing data)</li>
+<li>Business Partner relationships (Group Vendor / Group Customer from BP relationships)</li>
+<li>Compliance attributes: blocked status, blacklisting (ZVENDOR_BLOCK), MSME certificate number (ZMM_VENDOR_MSME) and BEE level (ZMM_VENDOR_BEE)</li>
+</ul>
+<p>By default the report covers only the vendor account groups in scope for the business. These are kept in the TVARVC selection variable <b>ZMM_VEND_ACC_GROUP</b> (24 groups originally, plus one added under ChaRM 4000006474).</p>
+
+<h2><span class="sec-num">3</span> Scope</h2>
+<table class="data">
+<tr><th>In Scope</th><th>Out of Scope</th></tr>
+<tr><td>Read-only reporting on vendor master, address, BP relationship and custom compliance data</td><td>Any change to master data (the report has no update logic)</td></tr>
+<tr><td>Restriction to the account groups maintained in TVARVC ZMM_VEND_ACC_GROUP</td><td>Vendor transactional data (POs, invoices, open items)</td></tr>
+<tr><td>Online execution with ALV grid output (export via standard ALV functions)</td><td>Custom e-mail, file or spool distribution</td></tr>
+</table>
+
+<h2><span class="sec-num">4</span> Selection Screen</h2>
+<p>Block B1 (frame title TEXT-000) has four primary range selections and five <b>secondary</b> listbox filters. <b>Only one secondary filter may be used per run</b> (see §5).</p>
+<table class="data">
+<tr><th>#</th><th>Kind</th><th>Technical Name</th><th>Reference / Type</th><th>Label (business)</th><th>Mandatory</th><th>Values / Meaning</th></tr>
+<tr><td>1</td><td>Select-option</td><td>S_KTOKK</td><td>LFA1-KTOKK</td><td>Vendor Account Group</td><td>No</td><td>If blank, filled from TVARVC ZMM_VEND_ACC_GROUP</td></tr>
+<tr><td>2</td><td>Select-option</td><td>S_ERDAT</td><td>LFA1-ERDAT</td><td>Created On</td><td>No</td><td>Date range of vendor creation</td></tr>
+<tr><td>3</td><td>Select-option</td><td>S_GVEND</td><td>BUT050-PARTNER2</td><td>Group Vendor</td><td>No</td><td>BP relationship partner 2 (group partner)</td></tr>
+<tr><td>4</td><td>Select-option</td><td>S_LIFNR</td><td>LFA1-LIFNR</td><td>Vendor</td><td>No</td><td>Vendor number range</td></tr>
+<tr><td>5</td><td>Parameter (listbox)</td><td>P_STATUS</td><td>CHAR20</td><td>Status</td><td>No</td><td>1 = ACTIVE, 2 = INACTIVE</td></tr>
+<tr><td>6</td><td>Parameter (listbox)</td><td>P_BLACK</td><td>CHAR20</td><td>Blacklisted</td><td>No</td><td>1 = Yes, 2 = No</td></tr>
+<tr><td>7</td><td>Parameter (listbox)</td><td>P_BEGRU</td><td>LFA1-BEGRU</td><td>Authorisation Group HRV1</td><td>No</td><td>Yes = BEGRU = 'HRV1'; No = BEGRU ≠ 'HRV1'</td></tr>
+<tr><td>8</td><td>Parameter (listbox)</td><td>P_BEGRU1</td><td>LFA1-BEGRU</td><td>Authorisation Group RPTY</td><td>No</td><td>Yes = BEGRU = 'RPTY'; No = BEGRU ≠ 'RPTY'</td></tr>
+<tr><td>9</td><td>Parameter (listbox)</td><td>P_BRSCH</td><td>LFA1-BRSCH</td><td>Industry 0041</td><td>No</td><td>Yes = BRSCH = '0041'; No = BRSCH ≠ '0041'</td></tr>
+</table>
+<div class="callout">The business meaning of authorisation groups HRV1 and RPTY and industry key 0041 is not documented in the source; the code only hard-codes these values. <b>Business to confirm:</b> what they stand for (e.g. high-risk vendor, related party) so that proper screen texts can be maintained.</div>
+<p>The listbox values are populated at AT SELECTION-SCREEN OUTPUT via function module VRM_SET_VALUES. At START-OF-SELECTION the keys 1/2 are converted to ACTIVE/INACTIVE or Yes/No.</p>
+
+<h2><span class="sec-num">5</span> Validation of Selection Criteria</h2>
+<table class="data">
+<tr><th>#</th><th>Rule</th><th>Message (type)</th></tr>
+<tr><td>V1</td><td>No more than one of P_STATUS, P_BLACK, P_BEGRU, P_BEGRU1 and P_BRSCH may be filled</td><td>"Please select only one input from last 5 secondary fields" (E)</td></tr>
+<tr><td>V2</td><td>When account groups are taken from TVARVC, the variable ZMM_VEND_ACC_GROUP must exist and have entries</td><td>"No data available in ZMM_VEND_ACC_GROUP variant" (E)</td></tr>
+<tr><td>V3</td><td>No vendor matches the selection</td><td>"No Data" / "No Data Found" / " No data found" (E)</td></tr>
+</table>
+
+<h2><span class="sec-num">6</span> Data Sources</h2>
+<table class="data">
+<tr><th>Table</th><th>Type</th><th>Purpose</th><th>Key / Join</th></tr>
+<tr><td>TVARVC</td><td>Standard (config)</td><td>Vendor account groups in scope (variable ZMM_VEND_ACC_GROUP)</td><td>NAME</td></tr>
+<tr><td>LFA1</td><td>Standard – vendor general data (incl. customer append fields PO_NONPOVENDOR, RISK_CODE, RISK_CATG, ZZEINVOICE)</td><td>Driving table</td><td>KTOKK, ERDAT, LIFNR, BRSCH, BEGRU, SPERR/SPERM/SPERQ</td></tr>
+<tr><td>CVI_VEND_LINK</td><td>Standard – vendor ↔ BP link</td><td>Get the BP GUID for each vendor</td><td>VENDOR = LFA1-LIFNR</td></tr>
+<tr><td>BUT000</td><td>Standard – BP general data</td><td>BP number for the GUID</td><td>PARTNER_GUID</td></tr>
+<tr><td>BUT050</td><td>Standard – BP relationships</td><td>Group Vendor / Group Customer</td><td>PARTNER1 / PARTNER2</td></tr>
+<tr><td>KNA1</td><td>Standard – customer general data</td><td>Group-customer data in the Group Vendor flow</td><td>KUNNR = BUT050-PARTNER1</td></tr>
+<tr><td>ADRC</td><td>Standard – addresses</td><td>Country, street 1–4, postal code, region</td><td>ADDRNUMBER = LFA1-ADRNR</td></tr>
+<tr><td>ADR6</td><td>Standard – e-mail addresses</td><td>Vendor mail ID</td><td>ADDRNUMBER = LFA1-ADRNR</td></tr>
+<tr><td>ADRCT</td><td>Standard – address remarks</td><td>"peol SPOC ID" (from REMARK)</td><td>ADDRNUMBER = LFA1-ADRNR</td></tr>
+<tr><td>LFB1</td><td>Standard – vendor company code</td><td>Payment terms (ZTERM)</td><td>LIFNR (no BUKRS restriction)</td></tr>
+<tr><td>LFM1</td><td>Standard – vendor purchasing org</td><td>Order currency (WAERS)</td><td>LIFNR (no EKORG restriction)</td></tr>
+<tr><td>ZVENDOR_BLOCK</td><td>Custom</td><td>Blacklist flag (VFLAG = 'X')</td><td>LIFNR</td></tr>
+<tr><td>ZMM_VENDOR_MSME</td><td>Custom</td><td>MSME certificate number</td><td>LIFNR</td></tr>
+<tr><td>ZMM_VENDOR_BEE</td><td>Custom</td><td>BEE level</td><td>LIFNR</td></tr>
+</table>
+
+<h2><span class="sec-num">7</span> Processing Logic</h2>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792743530890" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 521.89453125 2175.34375" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792743530890{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792743530890 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792743530890 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792743530890 .error-icon{fill:#552222;}#mermaid-1792743530890 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792743530890 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792743530890 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792743530890 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792743530890 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792743530890 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792743530890 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792743530890 .marker{fill:#666;stroke:#666;}#mermaid-1792743530890 .marker.cross{stroke:#666;}#mermaid-1792743530890 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792743530890 p{margin:0;}#mermaid-1792743530890 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792743530890 .cluster-label text{fill:#333;}#mermaid-1792743530890 .cluster-label span{color:#333;}#mermaid-1792743530890 .cluster-label span p{background-color:transparent;}#mermaid-1792743530890 .label text,#mermaid-1792743530890 span{fill:#000000;color:#000000;}#mermaid-1792743530890 .node rect,#mermaid-1792743530890 .node circle,#mermaid-1792743530890 .node ellipse,#mermaid-1792743530890 .node polygon,#mermaid-1792743530890 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792743530890 .rough-node .label text,#mermaid-1792743530890 .node .label text,#mermaid-1792743530890 .image-shape .label,#mermaid-1792743530890 .icon-shape .label{text-anchor:middle;}#mermaid-1792743530890 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792743530890 .rough-node .label,#mermaid-1792743530890 .node .label,#mermaid-1792743530890 .image-shape .label,#mermaid-1792743530890 .icon-shape .label{text-align:center;}#mermaid-1792743530890 .node.clickable{cursor:pointer;}#mermaid-1792743530890 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792743530890 .arrowheadPath{fill:#333333;}#mermaid-1792743530890 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792743530890 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792743530890 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792743530890 .edgeLabel p{background-color:white;}#mermaid-1792743530890 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792743530890 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792743530890 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792743530890 .cluster text{fill:#333;}#mermaid-1792743530890 .cluster span{color:#333;}#mermaid-1792743530890 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792743530890 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792743530890 rect.text{fill:none;stroke-width:0;}#mermaid-1792743530890 .icon-shape,#mermaid-1792743530890 .image-shape{background-color:white;text-align:center;}#mermaid-1792743530890 .icon-shape p,#mermaid-1792743530890 .image-shape p{background-color:white;padding:2px;}#mermaid-1792743530890 .icon-shape .label rect,#mermaid-1792743530890 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792743530890 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792743530890 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792743530890 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792743530890_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792743530890_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792743530890_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792743530890_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792743530890_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792743530890_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M177.844,62L177.844,66.167C177.844,70.333,177.844,78.667,177.844,86.333C177.844,94,177.844,101,177.844,104.5L177.844,108" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MTc3Ljg0Mzc1LCJ5Ijo2Mn0seyJ4IjoxNzcuODQzNzUsInkiOjg3fSx7IngiOjE3Ny44NDM3NSwieSI6MTEyfV0=" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M124.193,336.35L114.696,351.458C105.199,366.566,86.205,396.783,76.708,431.567C67.211,466.352,67.211,505.703,67.211,525.379L67.211,545.055" id="L_B_E1_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_E1_0" data-points="W3sieCI6MTI0LjE5MzM2NDMyNTgxOTczLCJ5IjozMzYuMzQ5NjE0MzI1ODE5NzR9LHsieCI6NjcuMjEwOTM3NSwieSI6NDI3fSx7IngiOjY3LjIxMDkzNzUsInkiOjU0OS4wNTQ2ODc1fV0=" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M231.494,336.35L240.991,351.458C250.488,366.566,269.482,396.783,278.979,417.392C288.477,438,288.477,449,288.477,454.5L288.477,460" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6MjMxLjQ5NDEzNTY3NDE4MDI4LCJ5IjozMzYuMzQ5NjE0MzI1ODE5NzR9LHsieCI6Mjg4LjQ3NjU2MjUsInkiOjQyN30seyJ4IjoyODguNDc2NTYyNSwieSI6NDY0fV0=" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M330.122,646.463L337.876,659.571C345.629,672.679,361.135,698.894,368.888,717.502C376.641,736.109,376.641,747.109,376.641,752.609L376.641,758.109" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6MzMwLjEyMjQ5Njc3ODY2ODg1LCJ5Ijo2NDYuNDYzNDQwNzIxMzMxMn0seyJ4IjozNzYuNjQwNjI1LCJ5Ijo3MjUuMTA5Mzc1fSx7IngiOjM3Ni42NDA2MjUsInkiOjc2Mi4xMDkzNzV9XQ==" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M246.831,646.463L239.078,659.571C231.325,672.679,215.819,698.894,208.066,726.668C200.313,754.443,200.313,783.776,200.313,811.109C200.313,838.443,200.313,863.776,205.513,880.218C210.713,896.659,221.114,904.209,226.314,907.985L231.515,911.76" id="L_C_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_F_0" data-points="W3sieCI6MjQ2LjgzMDYyODIyMTMzMTE4LCJ5Ijo2NDYuNDYzNDQwNzIxMzMxMn0seyJ4IjoyMDAuMzEyNSwieSI6NzI1LjEwOTM3NX0seyJ4IjoyMDAuMzEyNSwieSI6ODEzLjEwOTM3NX0seyJ4IjoyMDAuMzEyNSwieSI6ODg5LjEwOTM3NX0seyJ4IjoyMzQuNzUxNTg2OTE0MDYyNSwieSI6OTE0LjEwOTM3NX1d" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M376.641,864.109L376.641,868.276C376.641,872.443,376.641,880.776,371.44,888.718C366.24,896.659,355.839,904.209,350.639,907.985L345.439,911.76" id="L_D_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_F_0" data-points="W3sieCI6Mzc2LjY0MDYyNSwieSI6ODY0LjEwOTM3NX0seyJ4IjozNzYuNjQwNjI1LCJ5Ijo4ODkuMTA5Mzc1fSx7IngiOjM0Mi4yMDE1MzgwODU5Mzc1LCJ5Ijo5MTQuMTA5Mzc1fV0=" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M288.477,992.109L288.477,996.276C288.477,1000.443,288.477,1008.776,288.477,1016.443C288.477,1024.109,288.477,1031.109,288.477,1034.609L288.477,1038.109" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6Mjg4LjQ3NjU2MjUsInkiOjk5Mi4xMDkzNzV9LHsieCI6Mjg4LjQ3NjU2MjUsInkiOjEwMTcuMTA5Mzc1fSx7IngiOjI4OC40NzY1NjI1LCJ5IjoxMDQyLjEwOTM3NX1d" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M334.528,1274.058L341.386,1287.9C348.244,1301.742,361.96,1329.426,368.818,1348.767C375.676,1368.109,375.676,1379.109,375.676,1384.609L375.676,1390.109" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6MzM0LjUyNzk1ODMzNTQ5NzcsInkiOjEyNzQuMDU3OTc5MTY0NTAyM30seyJ4IjozNzUuNjc1NzgxMjUsInkiOjEzNTcuMTA5Mzc1fSx7IngiOjM3NS42NzU3ODEyNSwieSI6MTM5NC4xMDkzNzV9XQ==" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M242.425,1274.058L235.567,1287.9C228.709,1301.742,214.993,1329.426,208.135,1357.934C201.277,1386.443,201.277,1415.776,201.277,1443.109C201.277,1470.443,201.277,1495.776,204.112,1512.083C206.946,1528.391,212.615,1535.672,215.45,1539.313L218.284,1542.953" id="L_G_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_I_0" data-points="W3sieCI6MjQyLjQyNTE2NjY2NDUwMjI5LCJ5IjoxMjc0LjA1Nzk3OTE2NDUwMjN9LHsieCI6MjAxLjI3NzM0Mzc1LCJ5IjoxMzU3LjEwOTM3NX0seyJ4IjoyMDEuMjc3MzQzNzUsInkiOjE0NDUuMTA5Mzc1fSx7IngiOjIwMS4yNzczNDM3NSwieSI6MTUyMS4xMDkzNzV9LHsieCI6MjIwLjc0MTQ1NTA3ODEyNSwieSI6MTU0Ni4xMDkzNzV9XQ==" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M375.676,1496.109L375.676,1500.276C375.676,1504.443,375.676,1512.776,372.841,1520.583C370.007,1528.391,364.338,1535.672,361.503,1539.313L358.669,1542.953" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6Mzc1LjY3NTc4MTI1LCJ5IjoxNDk2LjEwOTM3NX0seyJ4IjozNzUuNjc1NzgxMjUsInkiOjE1MjEuMTA5Mzc1fSx7IngiOjM1Ni4yMTE2Njk5MjE4NzUsInkiOjE1NDYuMTA5Mzc1fV0=" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M288.477,1720.109L288.477,1724.276C288.477,1728.443,288.477,1736.776,288.477,1744.443C288.477,1752.109,288.477,1759.109,288.477,1762.609L288.477,1766.109" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6Mjg4LjQ3NjU2MjUsInkiOjE3MjAuMTA5Mzc1fSx7IngiOjI4OC40NzY1NjI1LCJ5IjoxNzQ1LjEwOTM3NX0seyJ4IjoyODguNDc2NTYyNSwieSI6MTc3MC4xMDkzNzV9XQ==" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M288.477,1848.109L288.477,1852.276C288.477,1856.443,288.477,1864.776,288.477,1872.443C288.477,1880.109,288.477,1887.109,288.477,1890.609L288.477,1894.109" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6Mjg4LjQ3NjU2MjUsInkiOjE4NDguMTA5Mzc1fSx7IngiOjI4OC40NzY1NjI1LCJ5IjoxODczLjEwOTM3NX0seyJ4IjoyODguNDc2NTYyNSwieSI6MTg5OC4xMDkzNzV9XQ==" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M251.396,2002.263L237.745,2014.61C224.094,2026.957,196.791,2051.65,183.14,2069.497C169.488,2087.344,169.488,2098.344,169.488,2103.844L169.488,2109.344" id="L_K_E2_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_E2_0" data-points="W3sieCI6MjUxLjM5NjE3ODYzNDIyNDU1LCJ5IjoyMDAyLjI2MzM2NjEzNDIyNDV9LHsieCI6MTY5LjQ4ODI4MTI1LCJ5IjoyMDc2LjM0Mzc1fSx7IngiOjE2OS40ODgyODEyNSwieSI6MjExMy4zNDM3NX1d" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path><path d="M325.557,2002.263L339.208,2014.61C352.86,2026.957,380.162,2051.65,393.814,2069.497C407.465,2087.344,407.465,2098.344,407.465,2103.844L407.465,2109.344" id="L_K_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_L_0" data-points="W3sieCI6MzI1LjU1Njk0NjM2NTc3NTQ1LCJ5IjoyMDAyLjI2MzM2NjEzNDIyNDV9LHsieCI6NDA3LjQ2NDg0Mzc1LCJ5IjoyMDc2LjM0Mzc1fSx7IngiOjQwNy40NjQ4NDM3NSwieSI6MjExMy4zNDM3NX1d" marker-end="url(#mermaid-1792743530890_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(67.2109375, 427)"><g class="label" data-id="L_B_E1_0" transform="translate(-11.8046875, -12)"><foreignObject width="23.609375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>fail</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(288.4765625, 427)"><g class="label" data-id="L_B_C_0" transform="translate(-8.328125, -12)"><foreignObject width="16.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>ok</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(376.640625, 725.109375)"><g class="label" data-id="L_C_D_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(200.3125, 813.109375)"><g class="label" data-id="L_C_F_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_F_G_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(375.67578125, 1357.109375)"><g class="label" data-id="L_G_H_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(201.27734375, 1445.109375)"><g class="label" data-id="L_G_I_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_J_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(169.48828125, 2076.34375)"><g class="label" data-id="L_K_E2_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(407.46484375, 2076.34375)"><g class="label" data-id="L_K_L_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(177.84375, 35)"><rect class="basic label-container" style="" x="-88.828125" y="-27" width="177.65625" height="54"></rect><g class="label" style="" transform="translate(-58.828125, -12)"><rect></rect><foreignObject width="117.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Selection screen</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(177.84375, 251)"><polygon points="139,0 278,-139 139,-278 0,-139" class="label-container" transform="translate(-138.5, 139)"></polygon><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Validate: max 1 secondary filter</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E1-3" transform="translate(67.2109375, 576.0546875)"><rect class="basic label-container" style="" x="-59.2109375" y="-27" width="118.421875" height="54"></rect><g class="label" style="" transform="translate(-29.2109375, -12)"><rect></rect><foreignObject width="58.421875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Error V1</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-5" transform="translate(288.4765625, 576.0546875)"><polygon points="112.0546875,0 224.109375,-112.0546875 112.0546875,-224.109375 0,-112.0546875" class="label-container" transform="translate(-111.5546875, 112.0546875)"></polygon><g class="label" style="" transform="translate(-85.0546875, -12)"><rect></rect><foreignObject width="170.109375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Account group entered?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-7" transform="translate(376.640625, 813.109375)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Load account groups from TVARVC ZMM_VEND_ACC_GROUP</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-9" transform="translate(288.4765625, 953.109375)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Select LFA1 with primary + secondary filter</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-13" transform="translate(288.4765625, 1181.109375)"><polygon points="139,0 278,-139 139,-278 0,-139" class="label-container" transform="translate(-138.5, 139)"></polygon><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Group Vendor S_GVEND entered?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-15" transform="translate(375.67578125, 1445.109375)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>BUT050 PARTNER2 in S_GVEND - related PARTNER1 - KNA1 / LFA1</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-17" transform="translate(288.4765625, 1633.109375)"><rect class="basic label-container" style="" x="-130" y="-87" width="260" height="174"></rect><g class="label" style="" transform="translate(-100, -72)"><rect></rect><foreignObject width="200" height="144"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Enrich: CVI_VEND_LINK - BUT000 - BUT050, ADRC, ADR6, ADRCT, LFB1, LFM1, ZVENDOR_BLOCK, ZMM_VENDOR_MSME, ZMM_VENDOR_BEE</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-21" transform="translate(288.4765625, 1809.109375)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Derive Status and Blacklisted</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-23" transform="translate(288.4765625, 1968.7265625)"><polygon points="70.6171875,0 141.234375,-70.6171875 70.6171875,-141.234375 0,-70.6171875" class="label-container" transform="translate(-70.1171875, 70.6171875)"></polygon><g class="label" style="" transform="translate(-43.6171875, -12)"><rect></rect><foreignObject width="87.234375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Rows found?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E2-25" transform="translate(169.48828125, 2140.34375)"><rect class="basic label-container" style="" x="-81.546875" y="-27" width="163.09375" height="54"></rect><g class="label" style="" transform="translate(-51.546875, -12)"><rect></rect><foreignObject width="103.09375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Error: No Data</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-27" transform="translate(407.46484375, 2140.34375)"><rect class="basic label-container" style="" x="-106.4296875" y="-27" width="212.859375" height="54"></rect><g class="label" style="" transform="translate(-76.4296875, -12)"><rect></rect><foreignObject width="152.859375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>ALV grid - 39 columns</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h3>7.1 Step 1 – Account group scope</h3>
+<p>If Vendor Account Group (S_KTOKK) is left blank, the program reads all TVARVC entries for variable ZMM_VEND_ACC_GROUP into S_KTOKK, so only the in-scope groups are reported. If the variable is missing, it stops with error V2.</p>
+
+<h3>7.2 Step 2 – Vendor selection (LFA1)</h3>
+<p>Vendors are read from LFA1 for the account groups in scope, with the additional restriction from whichever primary or secondary filter was entered:</p>
+<table class="data">
+<tr><th>Filter</th><th>Additional LFA1 condition</th></tr>
+<tr><td>S_ERDAT</td><td>ERDAT within range</td></tr>
+<tr><td>S_LIFNR</td><td>LIFNR within range</td></tr>
+<tr><td>P_STATUS = INACTIVE</td><td>SPERR = 'X' OR SPERM = 'X' OR SPERQ = '03' OR SPERQ = '99'</td></tr>
+<tr><td>P_STATUS = ACTIVE</td><td>SPERR ≠ 'X' AND SPERM ≠ 'X' AND SPERQ ≠ '99'</td></tr>
+<tr><td>P_BLACK = Yes / No</td><td>Vendor is / is not flagged VFLAG = 'X' in ZVENDOR_BLOCK</td></tr>
+<tr><td>P_BEGRU = Yes / No</td><td>BEGRU = / ≠ 'HRV1'</td></tr>
+<tr><td>P_BEGRU1 = Yes / No</td><td>BEGRU = / ≠ 'RPTY'</td></tr>
+<tr><td>P_BRSCH = Yes / No</td><td>BRSCH = / ≠ '0041'</td></tr>
+</table>
+
+<h3>7.3 Step 3 – Group Vendor flow (S_GVEND entered)</h3>
+<p>The program reads BUT050 relationships where PARTNER2 is in S_GVEND, then all relationships of those group partners. It takes the related PARTNER1 numbers, reads them as customers (KNA1, KTOKD in S_KTOKK) and as vendors (LFA1, KTOKK in S_KTOKK), and applies the chosen secondary filter. Each related partner appears in the output as the vendor row, with the group partner shown as Group Vendor.</p>
+
+<h3>7.4 Step 4 – Enrichment, for each vendor</h3>
+<ul>
+<li><b>BP / Group:</b> vendor → CVI_VEND_LINK (BP GUID) → BUT000 (BP number) → BUT050 (PARTNER1 = BP) gives Group Vendor (PARTNER2) and Group Customer.</li>
+<li><b>Address:</b> ADRC by LFA1-ADRNR gives country, street, supplements 1–3, postal code and region. ADR6 gives the e-mail. ADRCT-REMARK gives the "peol SPOC ID".</li>
+<li><b>Commercial:</b> LFB1-ZTERM gives payment terms and LFM1-WAERS gives currency (first record found).</li>
+<li><b>Compliance:</b> ZMM_VENDOR_MSME gives the MSME certificate number and ZMM_VENDOR_BEE gives the BEE level.</li>
+</ul>
+
+<h3>7.5 Step 5 – Derived fields</h3>
+<table class="data">
+<tr><th>Output field</th><th>Rule</th></tr>
+<tr><td>Status</td><td>'BLOCKED' if LFA1-SPERR = 'X' or SPERM = 'X' or SPERQ = '03' or SPERQ = '99'; otherwise blank</td></tr>
+<tr><td>Blacklisted</td><td>'BLACKLISTED' if ZVENDOR_BLOCK-VFLAG = 'X' for the vendor; otherwise blank</td></tr>
+</table>
+
+<h3>7.6 Step 6 – Output</h3>
+<p>If at least one row was built, the ALV grid is shown. If not, the program stops with error V3.</p>
+
+<h2><span class="sec-num">8</span> Report Output (ALV Layout)</h2>
+<p>Output is a full-screen ALV grid (REUSE_ALV_GRID_DISPLAY) with standard functions: sort, filter, export to spreadsheet and layout change. It has 39 columns, in this order:</p>
+<table class="data">
+<tr><th>Pos</th><th>Field</th><th>Column Header</th><th>Source</th></tr>
+<tr><td>1</td><td>LIFNR</td><td>Vendor</td><td>LFA1</td></tr>
+<tr><td>2</td><td>PARTNER2</td><td>Group Vendor</td><td>BUT050</td></tr>
+<tr><td>3</td><td>PARTNER1</td><td>Group Customer</td><td>BUT050</td></tr>
+<tr><td>4</td><td>COUNTRY</td><td>Country</td><td>ADRC</td></tr>
+<tr><td>5</td><td>ZTERM</td><td>Payment Terms</td><td>LFB1</td></tr>
+<tr><td>6</td><td>WAERS</td><td>Currency</td><td>LFM1</td></tr>
+<tr><td>7</td><td>NAME1</td><td>Name</td><td>LFA1</td></tr>
+<tr><td>8</td><td>ORT01</td><td>City</td><td>LFA1</td></tr>
+<tr><td>9</td><td>KTOKK</td><td>Group</td><td>LFA1</td></tr>
+<tr><td>10</td><td>ERDAT</td><td>Date</td><td>LFA1</td></tr>
+<tr><td>11</td><td>ERNAM</td><td>Created By</td><td>LFA1</td></tr>
+<tr><td>12</td><td>STATUS</td><td>Status</td><td>Derived</td></tr>
+<tr><td>13</td><td>BLACKLISTED</td><td>Blacklisted</td><td>Derived (ZVENDOR_BLOCK)</td></tr>
+<tr><td>14</td><td>SORTL</td><td>Search Term</td><td>LFA1</td></tr>
+<tr><td>15</td><td>STCEG</td><td>VAT Registration No.</td><td>LFA1</td></tr>
+<tr><td>16</td><td>PO_NONPOVENDOR</td><td>Po/NonPo Vendor</td><td>LFA1 (append)</td></tr>
+<tr><td>17</td><td>RISK_CODE</td><td>High Risk Vendor Code</td><td>LFA1 (append)</td></tr>
+<tr><td>18</td><td>RISK_CATG</td><td>Risk Category</td><td>LFA1 (append)</td></tr>
+<tr><td>19</td><td>SMTP_ADDR</td><td>Vendor Mail ID</td><td>ADR6</td></tr>
+<tr><td>20</td><td>REMARK</td><td>peol SPOC ID</td><td>ADRCT</td></tr>
+<tr><td>21</td><td>TELF1</td><td>Telephone 1</td><td>LFA1</td></tr>
+<tr><td>22</td><td>TELF2</td><td>Telephone 2</td><td>LFA1</td></tr>
+<tr><td>23</td><td>STREET</td><td>Street</td><td>ADRC</td></tr>
+<tr><td>24</td><td>STR_SUPPL1</td><td>Street 2</td><td>ADRC</td></tr>
+<tr><td>25</td><td>STR_SUPPL2</td><td>Street 3</td><td>ADRC</td></tr>
+<tr><td>26</td><td>STR_SUPPL3</td><td>Street 4</td><td>ADRC</td></tr>
+<tr><td>27</td><td>POST_CODE1</td><td>Postal Code</td><td>ADRC</td></tr>
+<tr><td>28</td><td>REGION</td><td>Region</td><td>ADRC</td></tr>
+<tr><td>29</td><td>BAHNS</td><td>Train station</td><td>LFA1</td></tr>
+<tr><td>30</td><td>STCD1</td><td>Tax Number 1</td><td>LFA1</td></tr>
+<tr><td>31</td><td>STCD2</td><td>Tax Number 2</td><td>LFA1</td></tr>
+<tr><td>32</td><td>STCD3</td><td>Tax Number 3</td><td>LFA1</td></tr>
+<tr><td>33</td><td>STCD4</td><td>Tax Number 4</td><td>LFA1</td></tr>
+<tr><td>34</td><td>STCD5</td><td>Tax Number 5</td><td>LFA1</td></tr>
+<tr><td>35</td><td>BRSCH</td><td>Industry key</td><td>LFA1</td></tr>
+<tr><td>36</td><td>ZZEINVOICE</td><td>E-Invoice Vendor</td><td>LFA1 (append)</td></tr>
+<tr><td>37</td><td>BEGRU</td><td>Authorization Group</td><td>LFA1</td></tr>
+<tr><td>38</td><td>MSME_CERT_NUM</td><td>MSME Certificate Number</td><td>ZMM_VENDOR_MSME</td></tr>
+<tr><td>39</td><td>BEE_LEVEL</td><td>BEE Level</td><td>ZMM_VENDOR_BEE</td></tr>
+</table>
+
+<h2><span class="sec-num">9</span> Authorisation</h2>
+<div class="callout warning"><b>SECURITY:</b> The program has <b>no AUTHORITY-CHECK statements</b>. Anyone who can run it sees vendor master data, including tax numbers, bank-adjacent compliance data and blacklist status, for every account group in scope. <b>Recommendation:</b> add checks on F_LFA1_GRP (account group, activity 03), F_LFA1_BEK (authorisation group LFA1-BEGRU, activity 03), and optionally F_LFA1_BUK / M_LFM1_EKO for the company-code and purchasing data. Assign a dedicated transaction code with S_TCODE.</div>
+
+<h2><span class="sec-num">10</span> Messages</h2>
+<table class="data">
+<tr><th>Text</th><th>Type</th><th>When</th></tr>
+<tr><td>Please select only one input from last 5 secondary fields</td><td>E</td><td>More than one secondary filter filled</td></tr>
+<tr><td>No data available in ZMM_VEND_ACC_GROUP variant</td><td>E</td><td>TVARVC variable missing or empty</td></tr>
+<tr><td>No Data / No Data Found / No data found</td><td>E</td><td>No vendors for the selection</td></tr>
+</table>
+<p>All messages are hard-coded literals. They should be moved to a message class so they can be translated.</p>
+
+<h2><span class="sec-num">11</span> Functional Observations and Gaps (for business decision)</h2>
+<table class="data">
+<tr><th>#</th><th>Observation</th><th>Impact</th><th>Recommendation</th></tr>
+<tr><td>G1</td><td>The ACTIVE filter excludes SPERQ = '99' but not SPERQ = '03'. Status "BLOCKED" and the INACTIVE filter both treat '03' as blocked.</td><td>Vendors with quality block '03' appear under "Active" while their row shows "BLOCKED" (contradictory result)</td><td>Make the ACTIVE filter the exact inverse of the INACTIVE rule</td></tr>
+<tr><td>G2</td><td>LFB1 and LFM1 are read without a company code or purchasing organisation, and the first record is used</td><td>Payment terms and currency are arbitrary for vendors extended to several company codes or purchasing orgs</td><td>Add optional company code / purchasing org selection, or output one row per org</td></tr>
+<tr><td>G3</td><td>Only the first e-mail (ADR6) and first remark (ADRCT) are shown</td><td>Other e-mail addresses are not visible</td><td>Confirm with business: use the standard (flagged) address, or concatenate</td></tr>
+<tr><td>G4</td><td>The single-filter check runs at START-OF-SELECTION inside LOOP AT SCREEN, so screen-field disabling has no effect</td><td>User gets an error after pressing Execute instead of on the screen</td><td>Move the check to AT SELECTION-SCREEN</td></tr>
+<tr><td>G5</td><td>Values HRV1, RPTY and 0041 are hard-coded</td><td>A configuration change needs a code change</td><td>Move them to TVARVC, like the account groups</td></tr>
+<tr><td>G6</td><td>No authorisation checks (see §9)</td><td>Audit / data-protection exposure</td><td>Add authorisation objects</td></tr>
+<tr><td>G7</td><td>The same logic is copied into about 46 filter branches (≈9,800 lines)</td><td>High maintenance effort; changes like G1 must be made in many places and can become inconsistent</td><td>Refactor into one parameterised selection with a range per filter</td></tr>
+<tr><td>G8</td><td>Not every combination of a primary filter (e.g. Account Group, Group Vendor) with a secondary filter has its own branch</td><td>Some combinations may give no result or ignore a filter</td><td>Business to confirm the required combinations; cover them in UAT</td></tr>
+</table>
+
+<h2><span class="sec-num">12</span> Technical Notes / Code Quality</h2>
+<ul>
+<li>Uses classic TABLES and TYPE-POOLS statements, REUSE_ALV_GRID_DISPLAY (SLIS) and VRM_SET_VALUES. These are classic APIs (Level B) and remain compatible on ECC and on S/4HANA on-premise.</li>
+<li>Reads LFA1 directly. On S/4HANA, LFA1 is still a transparent table filled through CVI from the Business Partner, but LFA1 fields such as SPERQ should be checked during conversion.</li>
+<li>Already uses CVI_VEND_LINK / BUT000 / BUT050, so it is BP-aware.</li>
+<li>In the program, the custom data elements for append fields and Z-table fields are commented out and replaced with CHAR20. Labels therefore come only from the field catalog texts.</li>
+</ul>
+
+<h2><span class="sec-num">13</span> Test Scenarios</h2>
+<table class="data">
+<tr><th>#</th><th>Scenario</th><th>Input</th><th>Expected Result</th></tr>
+<tr><td>T1</td><td>Default run</td><td>All fields blank</td><td>All vendors in TVARVC ZMM_VEND_ACC_GROUP account groups; 39 ALV columns</td></tr>
+<tr><td>T2</td><td>Missing variant</td><td>Blank, with TVARVC variable removed</td><td>Error V2</td></tr>
+<tr><td>T3</td><td>Two secondary filters</td><td>P_STATUS = Active + P_BLACK = Yes</td><td>Error V1</td></tr>
+<tr><td>T4</td><td>Inactive vendors</td><td>P_STATUS = Inactive</td><td>Only vendors with SPERR/SPERM = X or SPERQ 03/99; Status = BLOCKED</td></tr>
+<tr><td>T5</td><td>Active vendors (gap G1)</td><td>P_STATUS = Active</td><td>No vendor shown with Status = BLOCKED (currently fails for SPERQ = '03')</td></tr>
+<tr><td>T6</td><td>Blacklisted</td><td>P_BLACK = Yes</td><td>Only vendors with ZVENDOR_BLOCK-VFLAG = X; Blacklisted = BLACKLISTED</td></tr>
+<tr><td>T7</td><td>Authorisation group / industry</td><td>P_BEGRU / P_BEGRU1 / P_BRSCH = Yes, then No</td><td>BEGRU = HRV1 / RPTY, BRSCH = 0041, and their inverse</td></tr>
+<tr><td>T8</td><td>Vendor range + created on</td><td>S_LIFNR or S_ERDAT with P_BLACK = No</td><td>Vendors in range that are not blacklisted</td></tr>
+<tr><td>T9</td><td>Group Vendor</td><td>S_GVEND = known group BP + P_BRSCH = Yes</td><td>Related partners with industry 0041; Group Vendor column filled</td></tr>
+<tr><td>T10</td><td>Compliance fields</td><td>Vendor with MSME and BEE records</td><td>MSME Certificate Number and BEE Level filled</td></tr>
+<tr><td>T11</td><td>No data</td><td>S_LIFNR = non-existent vendor</td><td>Error "No Data"</td></tr>
+<tr><td>T12</td><td>Multi-company-code vendor (gap G2)</td><td>Vendor in 2+ company codes</td><td>Business to confirm which payment terms are expected</td></tr>
+</table>
+
+<h2><span class="sec-num">14</span> Open Points for Sign-off</h2>
+<ol>
+<li>Business meaning and screen texts for HRV1, RPTY and industry 0041 (§4).</li>
+<li>Decision on gaps G1–G8 (§11), especially the Active/Inactive rule and org-level data.</li>
+<li>Authorisation concept and transaction code assignment (§9).</li>
+<li>The program currently sits in $TMP on this system. Assign a transportable package before any change.</li>
+</ol>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
