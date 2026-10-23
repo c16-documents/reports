@@ -1,0 +1,316 @@
+<h2><span class="sec-num">1</span> Document Control</h2>
+<table class="data">
+<tr><th>Attribute</th><th>Value</th></tr>
+<tr><td>Document Type</td><td>Functional Specification (FS)</td></tr>
+<tr><td>Object ID (proposed)</td><td>Z_MM_OVERDUE_PO_VENDOR</td></tr>
+<tr><td>Object Title</td><td>Overdue Purchase Orders by Vendor</td></tr>
+<tr><td>WRICEF Type</td><td>R – Report</td></tr>
+<tr><td>Module</td><td>MM – Purchasing (P2P)</td></tr>
+<tr><td>Target System</td><td>SAP ECC 6.0, SAP_BASIS 740, client 800</td></tr>
+<tr><td>Transaction Code (proposed)</td><td>ZMM_OVDPO</td></tr>
+<tr><td>Version</td><td>1.0 – Draft for review</td></tr>
+<tr><td>Date</td><td>23 October 2026</td></tr>
+<tr><td>Priority / Complexity</td><td>Medium / Medium</td></tr>
+</table>
+
+<h3>1.1 Revision History</h3>
+<table class="data">
+<tr><th>Version</th><th>Date</th><th>Author</th><th>Description</th></tr>
+<tr><td>1.0</td><td>23-Oct-2026</td><td>C16 (draft)</td><td>First draft, written from the business requirement</td></tr>
+<tr><td>—</td><td>—</td><td>—</td><td>Business review / sign-off (pending)</td></tr>
+</table>
+
+<h3>1.2 Approvals</h3>
+<table class="data">
+<tr><th>Role</th><th>Name</th><th>Date</th><th>Signature</th></tr>
+<tr><td>Business Process Owner (Procurement)</td><td>TBD</td><td></td><td></td></tr>
+<tr><td>Functional Lead MM</td><td>TBD</td><td></td><td></td></tr>
+<tr><td>Technical Lead ABAP</td><td>TBD</td><td></td><td></td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Business Requirement</h2>
+<h3>2.1 Requirement Statement</h3>
+<p>Procurement needs a report that lists <strong>overdue purchase orders grouped by vendor</strong> for one <strong>company code</strong>. Users enter their criteria on a selection screen. The result appears in an interactive ALV grid, so buyers and supply-chain managers can see which vendors are late, by how many days, and how much open value is affected. They can then expedite or escalate.</p>
+
+<h3>2.2 Business Objectives</h3>
+<ul>
+<li>See all late deliveries for each vendor and company code in one place.</li>
+<li>Rank vendors by overdue open value and by days late, so expediting effort goes where it matters most.</li>
+<li>Replace manual work in ME2M / ME2L and spreadsheet consolidation.</li>
+<li>Support vendor-performance discussions with objective ageing buckets.</li>
+</ul>
+
+<h3>2.3 Scope</h3>
+<table class="data">
+<tr><th>In Scope</th><th>Out of Scope</th></tr>
+<tr><td>Standard purchase orders (document category F)</td><td>Contracts, scheduling agreements, RFQs (BSTYP K / L / A)</td></tr>
+<tr><td>Overdue checks at schedule-line level (delivery date vs key date)</td><td>Invoice / payment overdue status (handled by AP ageing)</td></tr>
+<tr><td>One company code per run (mandatory)</td><td>Cross-company-code consolidation in a single run</td></tr>
+<tr><td>Display in ALV, with export to Excel through standard ALV functions</td><td>Automatic vendor e-mails or reminder output (possible later phase)</td></tr>
+<tr><td>Online and background execution (with a layout variant)</td><td>Changing POs (the report is read-only)</td></tr>
+</table>
+
+<h3>2.4 Users &amp; Frequency</h3>
+<table class="data">
+<tr><th>User Group</th><th>Usage</th><th>Frequency</th></tr>
+<tr><td>Buyers / Purchasing Group</td><td>Daily expediting list</td><td>Daily (online)</td></tr>
+<tr><td>Procurement Manager</td><td>Vendor escalation, KPI review</td><td>Weekly</td></tr>
+<tr><td>Supply Chain Planning</td><td>Material-availability risk</td><td>Ad hoc</td></tr>
+</table>
+
+<h2><span class="sec-num">3</span> Definitions &amp; Business Rules</h2>
+<h3>3.1 Definition of "Overdue"</h3>
+<div class="callout">A PO schedule line is <strong>overdue</strong> if <strong>all</strong> of these are true:
+<ol>
+<li>Header: <code>EKKO-BUKRS = P_BUKRS</code>, <code>EKKO-BSTYP = 'F'</code>, <code>EKKO-LOEKZ = space</code>.</li>
+<li>Item: <code>EKPO-LOEKZ = space</code> (not deleted or blocked) and <code>EKPO-ELIKZ = space</code> (delivery not completed).</li>
+<li>Schedule line: <code>EKET-EINDT &lt; P_KEYDT</code> (delivery date before the key date; default key date = today). Lines where <code>EINDT</code> is initial (00000000) are skipped.</li>
+<li>Open quantity &gt; 0, where <code>Open Qty = EKET-MENGE − EKET-WEMNG</code>.</li>
+<li>Days overdue ≥ <code>P_MINDAY</code> (default 1).</li>
+</ol></div>
+
+<h3>3.2 Calculated Fields</h3>
+<table class="data">
+<tr><th>Field</th><th>Formula</th><th>Rule</th></tr>
+<tr><td>Open Quantity</td><td>EKET-MENGE − EKET-WEMNG</td><td>Only rows with a result &gt; 0 are kept</td></tr>
+<tr><td>Days Overdue</td><td>P_KEYDT − EKET-EINDT</td><td>Integer; if the result is negative, set to 0 and exclude</td></tr>
+<tr><td>Open Value</td><td>Open Qty × EKPO-NETPR / EKPO-PEINH</td><td>If PEINH = 0, use 1. Result in the PO currency (EKKO-WAERS). Use a wide packed type (P LENGTH 15 DECIMALS 2) to avoid overflow</td></tr>
+<tr><td>Ageing Bucket</td><td>Based on Days Overdue</td><td>1–30 · 31–60 · 61–90 · &gt;90 days</td></tr>
+<tr><td>Traffic Light</td><td>Based on Ageing Bucket</td><td>Yellow 1–30 · Orange 31–60 · Red &gt;60</td></tr>
+</table>
+
+<h3>3.3 Key Business Rules</h3>
+<ul>
+<li><strong>BR-01 Currency:</strong> Open values are never totalled across currencies. Vendor subtotals are built per vendor <em>and</em> per currency (EKKO-WAERS).</li>
+<li><strong>BR-02 Granularity:</strong> The detail level is the schedule line (EBELN / EBELP / ETENR). One PO item can have several overdue schedule lines.</li>
+<li><strong>BR-03 Vendor:</strong> The vendor is EKKO-LIFNR. The name comes from LFA1-NAME1. Vendors with a central posting block (LFA1-SPERR) or purchasing block (LFA1-SPERM) are still listed, with a "Blocked" indicator.</li>
+<li><strong>BR-04 Number formats:</strong> EBELN and LIFNR are 10 characters and MATNR is 18 characters (ECC). They are shown with conversion exits (leading zeros suppressed).</li>
+<li><strong>BR-05 Read-only:</strong> The report changes no data.</li>
+</ul>
+
+<h2><span class="sec-num">4</span> Selection Screen</h2>
+<h3>4.1 Block 1 – Organisational Data</h3>
+<table class="data">
+<tr><th>Technical Name</th><th>Label</th><th>Type / Reference</th><th>Kind</th><th>Mandatory</th><th>Default</th></tr>
+<tr><td>P_BUKRS</td><td>Company Code</td><td>EKKO-BUKRS (BUKRS, CHAR 4)</td><td>Parameter</td><td>Yes</td><td>User parameter BUK</td></tr>
+<tr><td>S_EKORG</td><td>Purchasing Organization</td><td>EKKO-EKORG (EKORG, CHAR 4)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_EKGRP</td><td>Purchasing Group</td><td>EKKO-EKGRP (BKGRP, CHAR 3)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_WERKS</td><td>Plant</td><td>EKPO-WERKS (EWERK, CHAR 4)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+</table>
+
+<h3>4.2 Block 2 – Document / Vendor Data</h3>
+<table class="data">
+<tr><th>Technical Name</th><th>Label</th><th>Type / Reference</th><th>Kind</th><th>Mandatory</th><th>Default</th></tr>
+<tr><td>S_LIFNR</td><td>Vendor</td><td>EKKO-LIFNR (ELIFN, CHAR 10)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_EBELN</td><td>Purchasing Document</td><td>EKKO-EBELN (EBELN, CHAR 10)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_BSART</td><td>PO Document Type</td><td>EKKO-BSART (ESART, CHAR 4)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_MATNR</td><td>Material</td><td>EKPO-MATNR (MATNR, CHAR 18)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>S_BEDAT</td><td>PO Date</td><td>EKKO-BEDAT (EBDAT, DATS)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+</table>
+
+<h3>4.3 Block 3 – Overdue Criteria &amp; Output</h3>
+<table class="data">
+<tr><th>Technical Name</th><th>Label</th><th>Type / Reference</th><th>Kind</th><th>Mandatory</th><th>Default</th></tr>
+<tr><td>S_EINDT</td><td>Delivery Date</td><td>EKET-EINDT (EINDT, DATS)</td><td>Select-option</td><td>No</td><td>—</td></tr>
+<tr><td>P_KEYDT</td><td>Key Date (overdue as of)</td><td>SY-DATUM (DATS)</td><td>Parameter</td><td>Yes</td><td>Today</td></tr>
+<tr><td>P_MINDAY</td><td>Minimum Days Overdue</td><td>INT4 (0–9999)</td><td>Parameter</td><td>No</td><td>1</td></tr>
+<tr><td>P_DETAIL / P_SUMM</td><td>Output: Detail (schedule lines) / Vendor Summary</td><td>Radio-button group</td><td>Radio</td><td>—</td><td>Detail</td></tr>
+<tr><td>P_VARI</td><td>ALV Layout</td><td>SLIS_VARI / DISVARIANT-VARIANT</td><td>Parameter (F4 help)</td><td>No</td><td>User default layout</td></tr>
+</table>
+<div class="callout tip">Each organisational or master-data field uses its DDIC type (CHAR keys are never typed as dates). Only P_KEYDT, S_BEDAT and S_EINDT are date fields.</div>
+
+<h3>4.4 Validation of Selection Criteria</h3>
+<table class="data">
+<tr><th>#</th><th>Check</th><th>Event</th><th>Message Type</th><th>Message Text</th></tr>
+<tr><td>V1</td><td>P_BUKRS exists in T001</td><td>AT SELECTION-SCREEN ON P_BUKRS</td><td>E</td><td>Company code &amp;1 does not exist</td></tr>
+<tr><td>V2</td><td>User is authorised for at least one purchasing org in S_EKORG (M_BEST_EKO)</td><td>AT SELECTION-SCREEN</td><td>E</td><td>No authorization for purchasing organization &amp;1</td></tr>
+<tr><td>V3</td><td>P_KEYDT is not initial</td><td>AT SELECTION-SCREEN ON P_KEYDT</td><td>E</td><td>Enter a valid key date</td></tr>
+<tr><td>V4</td><td>P_MINDAY ≥ 0</td><td>AT SELECTION-SCREEN ON P_MINDAY</td><td>E</td><td>Minimum days overdue cannot be negative</td></tr>
+<tr><td>V5</td><td>Upper bound of S_EINDT is ≤ P_KEYDT</td><td>AT SELECTION-SCREEN</td><td>W</td><td>Delivery dates after the key date are never overdue</td></tr>
+<tr><td>V6</td><td>P_VARI layout exists for the report</td><td>AT SELECTION-SCREEN ON P_VARI</td><td>E</td><td>Layout &amp;1 does not exist</td></tr>
+</table>
+
+<h2><span class="sec-num">5</span> Data Sources</h2>
+<h3>5.1 SAP Tables Read (verified against the target dictionary)</h3>
+<table class="data">
+<tr><th>Table</th><th>Description</th><th>Key Fields Used</th><th>Fields Read</th></tr>
+<tr><td>EKKO</td><td>Purchasing Document Header</td><td>EBELN</td><td>EBELN, BUKRS, BSTYP, BSART, LOEKZ, LIFNR, EKORG, EKGRP, BEDAT, WAERS, ZTERM</td></tr>
+<tr><td>EKPO</td><td>Purchasing Document Item</td><td>EBELN, EBELP</td><td>EBELP, LOEKZ, ELIKZ, MATNR, TXZ01, WERKS, LGORT, MENGE, MEINS, NETPR, PEINH, NETWR, MATKL</td></tr>
+<tr><td>EKET</td><td>Schedule Lines</td><td>EBELN, EBELP, ETENR</td><td>ETENR, EINDT, MENGE, WEMNG</td></tr>
+<tr><td>LFA1</td><td>Vendor Master (General)</td><td>LIFNR</td><td>NAME1, ORT01, LAND1, SPERR, SPERM</td></tr>
+<tr><td>T001</td><td>Company Codes</td><td>BUKRS</td><td>BUTXT, WAERS (validation and header text)</td></tr>
+<tr><td>T024</td><td>Purchasing Groups</td><td>EKGRP</td><td>EKNAM (buyer name, optional column)</td></tr>
+</table>
+
+<h3>5.2 Company Codes in the Target System (sample from T001)</h3>
+<table class="data">
+<tr><th>BUKRS</th><th>Name</th><th>Currency</th><th>Country</th></tr>
+<tr><td>1000</td><td>BestRun Germany</td><td>EUR</td><td>DE</td></tr>
+<tr><td>1010</td><td>BestRun INDIA 1010</td><td>INR</td><td>IN</td></tr>
+<tr><td>1710</td><td>BestRun INDIA</td><td>INR</td><td>IN</td></tr>
+<tr><td>2000</td><td>BestRun UK</td><td>GBP</td><td>GB</td></tr>
+<tr><td>2200</td><td>BestRun France</td><td>EUR</td><td>FR</td></tr>
+<tr><td>0006</td><td>BestRun US INC New GL</td><td>USD</td><td>US</td></tr>
+</table>
+<p>The company codes use different local currencies (EUR, INR, GBP, USD, SGD). This is why rule BR-01 (no blending of currencies) is required.</p>
+
+<h3>5.3 Entity Relationships</h3>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792751362665" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="erDiagram" style="max-width:100%;height:auto;" viewBox="0 0 596 655" role="graphics-document document" aria-roledescription="er"><style>#mermaid-1792751362665{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792751362665 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792751362665 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792751362665 .error-icon{fill:#552222;}#mermaid-1792751362665 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792751362665 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792751362665 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792751362665 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792751362665 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792751362665 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792751362665 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792751362665 .marker{fill:#666;stroke:#666;}#mermaid-1792751362665 .marker.cross{stroke:#666;}#mermaid-1792751362665 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792751362665 p{margin:0;}#mermaid-1792751362665 .entityBox{fill:#eee;stroke:#999;}#mermaid-1792751362665 .relationshipLabelBox{fill:hsl(-160, 0%, 93.3333333333%);opacity:0.7;background-color:hsl(-160, 0%, 93.3333333333%);}#mermaid-1792751362665 .relationshipLabelBox rect{opacity:0.5;}#mermaid-1792751362665 .labelBkg{background-color:rgba(237.9999999999, 237.9999999999, 237.9999999999, 0.5);}#mermaid-1792751362665 .edgeLabel .label{fill:#999;font-size:14px;}#mermaid-1792751362665 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792751362665 .edge-pattern-dashed{stroke-dasharray:8,8;}#mermaid-1792751362665 .node rect,#mermaid-1792751362665 .node circle,#mermaid-1792751362665 .node ellipse,#mermaid-1792751362665 .node polygon{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792751362665 .relationshipLine{stroke:#666;stroke-width:1;fill:none;}#mermaid-1792751362665 .marker{fill:none!important;stroke:#666!important;stroke-width:1;}#mermaid-1792751362665 .edgeLabel{background-color:white;}#mermaid-1792751362665 .edgeLabel .label rect{fill:white;}#mermaid-1792751362665 .edgeLabel .label text{fill:#000000;}#mermaid-1792751362665 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><defs><marker id="mermaid-1792751362665_er-onlyOneStart" class="marker onlyOne er" refX="0" refY="9" markerWidth="18" markerHeight="18" orient="auto"><path d="M9,0 L9,18 M15,0 L15,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-onlyOneEnd" class="marker onlyOne er" refX="18" refY="9" markerWidth="18" markerHeight="18" orient="auto"><path d="M3,0 L3,18 M9,0 L9,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-zeroOrOneStart" class="marker zeroOrOne er" refX="0" refY="9" markerWidth="30" markerHeight="18" orient="auto"><circle fill="white" cx="21" cy="9" r="6"></circle><path d="M9,0 L9,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-zeroOrOneEnd" class="marker zeroOrOne er" refX="30" refY="9" markerWidth="30" markerHeight="18" orient="auto"><circle fill="white" cx="9" cy="9" r="6"></circle><path d="M21,0 L21,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-oneOrMoreStart" class="marker oneOrMore er" refX="18" refY="18" markerWidth="45" markerHeight="36" orient="auto"><path d="M0,18 Q 18,0 36,18 Q 18,36 0,18 M42,9 L42,27"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-oneOrMoreEnd" class="marker oneOrMore er" refX="27" refY="18" markerWidth="45" markerHeight="36" orient="auto"><path d="M3,9 L3,27 M9,18 Q27,0 45,18 Q27,36 9,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-zeroOrMoreStart" class="marker zeroOrMore er" refX="18" refY="18" markerWidth="57" markerHeight="36" orient="auto"><circle fill="white" cx="48" cy="18" r="6"></circle><path d="M0,18 Q18,0 36,18 Q18,36 0,18"></path></marker></defs><defs><marker id="mermaid-1792751362665_er-zeroOrMoreEnd" class="marker zeroOrMore er" refX="39" refY="18" markerWidth="57" markerHeight="36" orient="auto"><circle fill="white" cx="9" cy="18" r="6"></circle><path d="M21,18 Q39,0 57,18 Q39,36 21,18"></path></marker></defs><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M58,92L58,100.417C58,108.833,58,125.667,89.667,146.288C121.333,166.91,184.667,191.319,216.333,203.524L248,215.729" id="id_entity-T001-0_entity-EKKO-1_0" class=" edge-thickness-normal edge-pattern-solid relationshipLine" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="id_entity-T001-0_entity-EKKO-1_0" data-points="W3sieCI6NTgsInkiOjkyfSx7IngiOjU4LCJ5IjoxNDIuNX0seyJ4IjoyNDgsInkiOjIxNS43MjkxNjY2NjY2NjY2Nn1d" marker-start="url(#mermaid-1792751362665_er-onlyOneStart)" marker-end="url(#mermaid-1792751362665_er-zeroOrMoreEnd)"></path><path d="M298,92L298,100.417C298,108.833,298,125.667,298,142.5C298,159.333,298,176.167,298,184.583L298,193" id="id_entity-LFA1-2_entity-EKKO-1_1" class=" edge-thickness-normal edge-pattern-solid relationshipLine" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="id_entity-LFA1-2_entity-EKKO-1_1" data-points="W3sieCI6Mjk4LCJ5Ijo5Mn0seyJ4IjoyOTgsInkiOjE0Mi41fSx7IngiOjI5OCwieSI6MTkzfV0=" marker-start="url(#mermaid-1792751362665_er-onlyOneStart)" marker-end="url(#mermaid-1792751362665_er-zeroOrMoreEnd)"></path><path d="M298,277L298,285.417C298,293.833,298,310.667,298,327.5C298,344.333,298,361.167,298,369.583L298,378" id="id_entity-EKKO-1_entity-EKPO-3_2" class=" edge-thickness-normal edge-pattern-solid relationshipLine" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="id_entity-EKKO-1_entity-EKPO-3_2" data-points="W3sieCI6Mjk4LCJ5IjoyNzd9LHsieCI6Mjk4LCJ5IjozMjcuNX0seyJ4IjoyOTgsInkiOjM3OH1d" marker-start="url(#mermaid-1792751362665_er-onlyOneStart)" marker-end="url(#mermaid-1792751362665_er-oneOrMoreEnd)"></path><path d="M298,462L298,470.417C298,478.833,298,495.667,298,512.5C298,529.333,298,546.167,298,554.583L298,563" id="id_entity-EKPO-3_entity-EKET-4_3" class=" edge-thickness-normal edge-pattern-solid relationshipLine" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="id_entity-EKPO-3_entity-EKET-4_3" data-points="W3sieCI6Mjk4LCJ5Ijo0NjJ9LHsieCI6Mjk4LCJ5Ijo1MTIuNX0seyJ4IjoyOTgsInkiOjU2M31d" marker-start="url(#mermaid-1792751362665_er-onlyOneStart)" marker-end="url(#mermaid-1792751362665_er-oneOrMoreEnd)"></path><path d="M538,92L538,100.417C538,108.833,538,125.667,506.333,146.288C474.667,166.91,411.333,191.319,379.667,203.524L348,215.729" id="id_entity-T024-5_entity-EKKO-1_4" class=" edge-thickness-normal edge-pattern-solid relationshipLine" style="undefined;;;undefined" data-edge="true" data-et="edge" data-id="id_entity-T024-5_entity-EKKO-1_4" data-points="W3sieCI6NTM4LCJ5Ijo5Mn0seyJ4Ijo1MzgsInkiOjE0Mi41fSx7IngiOjM0OCwieSI6MjE1LjcyOTE2NjY2NjY2NjY2fV0=" marker-start="url(#mermaid-1792751362665_er-onlyOneStart)" marker-end="url(#mermaid-1792751362665_er-zeroOrMoreEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel" transform="translate(58, 142.5)"><g class="label" data-id="id_entity-T001-0_entity-EKKO-1_0" transform="translate(-19.9765625, -10.5)"><foreignObject width="39.953125" height="21"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>BUKRS</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(298, 142.5)"><g class="label" data-id="id_entity-LFA1-2_entity-EKKO-1_1" transform="translate(-17.7109375, -10.5)"><foreignObject width="35.421875" height="21"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>LIFNR</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(298, 327.5)"><g class="label" data-id="id_entity-EKKO-1_entity-EKPO-3_2" transform="translate(-19.4765625, -10.5)"><foreignObject width="38.953125" height="21"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>EBELN</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(298, 512.5)"><g class="label" data-id="id_entity-EKPO-3_entity-EKET-4_3" transform="translate(-42.0546875, -10.5)"><foreignObject width="84.109375" height="21"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>EBELN+EBELP</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(538, 142.5)"><g class="label" data-id="id_entity-T024-5_entity-EKKO-1_4" transform="translate(-20.4921875, -10.5)"><foreignObject width="40.984375" height="21"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>EKGRP</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default " id="entity-T001-0" transform="translate(58, 50)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-17.234375, -12)"><rect></rect><foreignObject width="34.46875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>T001</p></span></div></foreignObject></g></g><g class="node default " id="entity-EKKO-1" transform="translate(298, 235)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-18.890625, -12)"><rect></rect><foreignObject width="37.78125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>EKKO</p></span></div></foreignObject></g></g><g class="node default " id="entity-LFA1-2" transform="translate(298, 50)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-16.3203125, -12)"><rect></rect><foreignObject width="32.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>LFA1</p></span></div></foreignObject></g></g><g class="node default " id="entity-EKPO-3" transform="translate(298, 420)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-18.7421875, -12)"><rect></rect><foreignObject width="37.484375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>EKPO</p></span></div></foreignObject></g></g><g class="node default " id="entity-EKET-4" transform="translate(298, 605)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-17.8203125, -12)"><rect></rect><foreignObject width="35.640625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>EKET</p></span></div></foreignObject></g></g><g class="node default " id="entity-T024-5" transform="translate(538, 50)"><rect class="basic label-container" style="" x="-50" y="-42" width="100" height="84"></rect><g class="label" style="" transform="translate(-17.234375, -12)"><rect></rect><foreignObject width="34.46875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 100px; text-align: center;"><span class="nodeLabel "><p>T024</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h2><span class="sec-num">6</span> Processing Logic</h2>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792751262779" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 741 1684.984375" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792751262779{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792751262779 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792751262779 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792751262779 .error-icon{fill:#552222;}#mermaid-1792751262779 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792751262779 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792751262779 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792751262779 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792751262779 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792751262779 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792751262779 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792751262779 .marker{fill:#666;stroke:#666;}#mermaid-1792751262779 .marker.cross{stroke:#666;}#mermaid-1792751262779 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792751262779 p{margin:0;}#mermaid-1792751262779 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792751262779 .cluster-label text{fill:#333;}#mermaid-1792751262779 .cluster-label span{color:#333;}#mermaid-1792751262779 .cluster-label span p{background-color:transparent;}#mermaid-1792751262779 .label text,#mermaid-1792751262779 span{fill:#000000;color:#000000;}#mermaid-1792751262779 .node rect,#mermaid-1792751262779 .node circle,#mermaid-1792751262779 .node ellipse,#mermaid-1792751262779 .node polygon,#mermaid-1792751262779 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792751262779 .rough-node .label text,#mermaid-1792751262779 .node .label text,#mermaid-1792751262779 .image-shape .label,#mermaid-1792751262779 .icon-shape .label{text-anchor:middle;}#mermaid-1792751262779 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792751262779 .rough-node .label,#mermaid-1792751262779 .node .label,#mermaid-1792751262779 .image-shape .label,#mermaid-1792751262779 .icon-shape .label{text-align:center;}#mermaid-1792751262779 .node.clickable{cursor:pointer;}#mermaid-1792751262779 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792751262779 .arrowheadPath{fill:#333333;}#mermaid-1792751262779 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792751262779 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792751262779 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792751262779 .edgeLabel p{background-color:white;}#mermaid-1792751262779 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792751262779 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792751262779 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792751262779 .cluster text{fill:#333;}#mermaid-1792751262779 .cluster span{color:#333;}#mermaid-1792751262779 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792751262779 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792751262779 rect.text{fill:none;stroke-width:0;}#mermaid-1792751262779 .icon-shape,#mermaid-1792751262779 .image-shape{background-color:white;text-align:center;}#mermaid-1792751262779 .icon-shape p,#mermaid-1792751262779 .image-shape p{background-color:white;padding:2px;}#mermaid-1792751262779 .icon-shape .label rect,#mermaid-1792751262779 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792751262779 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792751262779 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792751262779 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792751262779_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792751262779_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792751262779_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792751262779_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792751262779_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792751262779_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M286.799,62L285.382,68.167C283.966,74.333,281.133,86.667,280.459,99.975C279.786,113.284,281.27,127.569,282.013,134.711L282.755,141.853" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6Mjg2Ljc5ODc2NzA4OTg0Mzc1LCJ5Ijo2Mn0seyJ4IjoyNzguMzAwNzgxMjUsInkiOjk5fSx7IngiOjI4My4xNjg2NDQ2MzQzNjc2LCJ5IjoxNDUuODMxMzU1MzY1NjMyNDJ9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M302.831,145.831L303.643,138.026C304.454,130.221,306.077,114.61,305.621,101.288C305.165,87.966,302.631,76.932,301.364,71.415L300.097,65.898" id="L_B_A_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_A_0" data-points="W3sieCI6MzAyLjgzMTM1NTM2NTYzMjQsInkiOjE0NS44MzEzNTUzNjU2MzI0Mn0seyJ4IjozMDcuNjk5MjE4NzUsInkiOjk5fSx7IngiOjI5OS4yMDEyMzI5MTAxNTYyNSwieSI6NjJ9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M293,344.828L293,350.995C293,357.161,293,369.495,293,381.161C293,392.828,293,403.828,293,409.328L293,414.828" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6MjkzLCJ5IjozNDQuODI4MTI1fSx7IngiOjI5MywieSI6MzgxLjgyODEyNX0seyJ4IjoyOTMsInkiOjQxOC44MjgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M293,520.828L293,524.995C293,529.161,293,537.495,293,545.161C293,552.828,293,559.828,293,563.328L293,566.828" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6MjkzLCJ5Ijo1MjAuODI4MTI1fSx7IngiOjI5MywieSI6NTQ1LjgyODEyNX0seyJ4IjoyOTMsInkiOjU3MC44MjgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M293,672.828L293,676.995C293,681.161,293,689.495,293,697.161C293,704.828,293,711.828,293,715.328L293,718.828" id="L_D_E_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_E_0" data-points="W3sieCI6MjkzLCJ5Ijo2NzIuODI4MTI1fSx7IngiOjI5MywieSI6Njk3LjgyODEyNX0seyJ4IjoyOTMsInkiOjcyMi44MjgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M255.176,808.957L235.647,821.428C216.117,833.899,177.059,858.84,157.529,878.811C138,898.781,138,913.781,138,921.281L138,928.781" id="L_E_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_F_0" data-points="W3sieCI6MjU1LjE3NjE2NjYwMDAxODQ2LCJ5Ijo4MDguOTU3NDE2NjAwMDE4NH0seyJ4IjoxMzgsInkiOjg4My43ODEyNX0seyJ4IjoxMzgsInkiOjkzMi43ODEyNX1d" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M330.824,808.957L350.353,821.428C369.883,833.899,408.941,858.84,428.471,876.811C448,894.781,448,905.781,448,911.281L448,916.781" id="L_E_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E_G_0" data-points="W3sieCI6MzMwLjgyMzgzMzM5OTk4MTU0LCJ5Ijo4MDguOTU3NDE2NjAwMDE4NH0seyJ4Ijo0NDgsInkiOjg4My43ODEyNX0seyJ4Ijo0NDgsInkiOjkyMC43ODEyNX1d" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M448,1022.781L448,1026.948C448,1031.115,448,1039.448,448,1047.115C448,1054.781,448,1061.781,448,1065.281L448,1068.781" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6NDQ4LCJ5IjoxMDIyLjc4MTI1fSx7IngiOjQ0OCwieSI6MTA0Ny43ODEyNX0seyJ4Ijo0NDgsInkiOjEwNzIuNzgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M448,1150.781L448,1154.948C448,1159.115,448,1167.448,448,1175.115C448,1182.781,448,1189.781,448,1193.281L448,1196.781" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6NDQ4LCJ5IjoxMTUwLjc4MTI1fSx7IngiOjQ0OCwieSI6MTE3NS43ODEyNX0seyJ4Ijo0NDgsInkiOjEyMDAuNzgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M448,1302.781L448,1306.948C448,1311.115,448,1319.448,448,1327.115C448,1334.781,448,1341.781,448,1345.281L448,1348.781" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6NDQ4LCJ5IjoxMzAyLjc4MTI1fSx7IngiOjQ0OCwieSI6MTMyNy43ODEyNX0seyJ4Ijo0NDgsInkiOjEzNTIuNzgxMjV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M404.837,1457.821L386.197,1471.182C367.558,1484.542,330.279,1511.263,311.639,1530.124C293,1548.984,293,1559.984,293,1565.484L293,1570.984" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6NDA0LjgzNjk5ODMyNjUzMTgsInkiOjE0NTcuODIxMzczMzI2NTMxOH0seyJ4IjoyOTMsInkiOjE1MzcuOTg0Mzc1fSx7IngiOjI5MywieSI6MTU3NC45ODQzNzV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path><path d="M491.163,1457.821L509.803,1471.182C528.442,1484.542,565.721,1511.263,584.361,1530.124C603,1548.984,603,1559.984,603,1565.484L603,1570.984" id="L_J_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_L_0" data-points="W3sieCI6NDkxLjE2MzAwMTY3MzQ2ODIsInkiOjE0NTcuODIxMzczMzI2NTMxOH0seyJ4Ijo2MDMsInkiOjE1MzcuOTg0Mzc1fSx7IngiOjYwMywieSI6MTU3NC45ODQzNzV9XQ==" marker-end="url(#mermaid-1792751262779_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(307.22776, 103.53572)"><g class="label" data-id="L_B_A_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(293, 381.828125)"><g class="label" data-id="L_B_C_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_C_D_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_E_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(138, 883.78125)"><g class="label" data-id="L_E_F_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(448, 883.78125)"><g class="label" data-id="L_E_G_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_G_H_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_J_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(293, 1537.984375)"><g class="label" data-id="L_J_K_0" transform="translate(-21.2890625, -12)"><foreignObject width="42.578125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Detail</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(603, 1537.984375)"><g class="label" data-id="L_J_L_0" transform="translate(-32.7578125, -12)"><foreignObject width="65.515625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Summary</p></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(293, 35)"><rect class="basic label-container" style="" x="-109.890625" y="-27" width="219.78125" height="54"></rect><g class="label" style="" transform="translate(-79.890625, -12)"><rect></rect><foreignObject width="159.78125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Selection screen input</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(293, 240.4140625)"><polygon points="104.4140625,0 208.828125,-104.4140625 104.4140625,-208.828125 0,-104.4140625" class="label-container" transform="translate(-103.9140625, 104.4140625)"></polygon><g class="label" style="" transform="translate(-77.4140625, -12)"><rect></rect><foreignObject width="154.828125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Validations V1-V6 OK?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-5" transform="translate(293, 469.828125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Read EKKO + EKPO + EKET for the company code, filtered by selection</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-7" transform="translate(293, 621.828125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Keep lines with EINDT before key date and open qty above 0</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E-9" transform="translate(293, 784.8046875)"><polygon points="61.9765625,0 123.953125,-61.9765625 61.9765625,-123.953125 0,-61.9765625" class="label-container" transform="translate(-61.4765625, 61.9765625)"></polygon><g class="label" style="" transform="translate(-34.9765625, -12)"><rect></rect><foreignObject width="69.953125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Any rows?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-11" transform="translate(138, 971.78125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Message: no overdue POs found</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-13" transform="translate(448, 971.78125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Authorization filter: purchasing org, group, plant, doc type</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-15" transform="translate(448, 1111.78125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Read vendor names from LFA1 for distinct LIFNR</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-17" transform="translate(448, 1251.78125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Calculate days overdue, open value, ageing bucket, traffic light</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-19" transform="translate(448, 1426.8828125)"><polygon points="74.1015625,0 148.203125,-74.1015625 74.1015625,-148.203125 0,-74.1015625" class="label-container" transform="translate(-73.6015625, 74.1015625)"></polygon><g class="label" style="" transform="translate(-47.1015625, -12)"><rect></rect><foreignObject width="94.203125" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Output mode</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-21" transform="translate(293, 1625.984375)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>ALV schedule-line list, sorted by vendor, subtotals per vendor and currency</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-23" transform="translate(603, 1625.984375)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Aggregate per vendor and currency, then show ALV summary</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+
+<h3>6.1 Step-by-Step Logic</h3>
+<ol>
+<li><strong>Initialisation:</strong> Set P_KEYDT = SY-DATUM, P_MINDAY = 1, read the default ALV layout, and set frame titles.</li>
+<li><strong>Data selection (single DB round trip):</strong> Use an INNER JOIN EKKO → EKPO (EBELN) → EKET (EBELN, EBELP) with these conditions: <code>EKKO-BUKRS = P_BUKRS</code>, <code>BSTYP = 'F'</code>, <code>EKKO-LOEKZ = space</code>, <code>EKPO-LOEKZ = space</code>, <code>EKPO-ELIKZ = space</code>, <code>EKET-EINDT &lt; P_KEYDT</code>, <code>EKET-EINDT &lt;&gt; '00000000'</code>, and all select-options. Select only the columns listed in §5.1 (no SELECT *).</li>
+<li><strong>Open-quantity filter:</strong> In ABAP, drop rows where MENGE − WEMNG ≤ 0.</li>
+<li><strong>Authorization filter:</strong> Remove rows the user is not allowed to display (see §8) and count them for the information message.</li>
+<li><strong>Vendor master:</strong> If the result is not empty, read LFA1 with FOR ALL ENTRIES on the distinct LIFNR values into a hashed table, then do key reads (no SELECT inside a LOOP).</li>
+<li><strong>Calculations:</strong> Calculate the fields in §3.2. Guard every division (PEINH = 0 → 1). Ignore negative day values.</li>
+<li><strong>Min-days filter:</strong> Drop rows where Days Overdue &lt; P_MINDAY.</li>
+<li><strong>Summary mode:</strong> Group by LIFNR + WAERS. Output: number of POs, number of schedule lines, total open value, maximum days overdue, average days overdue, and open value per ageing bucket.</li>
+<li><strong>Output:</strong> Show the result in CL_SALV_TABLE (see §7).</li>
+</ol>
+
+<h3>6.2 Performance Considerations</h3>
+<ul>
+<li>The company code is mandatory, so the header read is always restricted. EKET has no index on EINDT, so filtering on EINDT through the join is acceptable when BUKRS / EKORG are restricted.</li>
+<li>Expected volume: ≤ 50,000 schedule lines per company code. Recommend running in background for full company codes with no other restriction.</li>
+<li>Use FOR ALL ENTRIES only after an IS NOT INITIAL check on the driver table.</li>
+</ul>
+
+<h2><span class="sec-num">7</span> Output – ALV Layout</h2>
+<h3>7.1 Detail Mode (default)</h3>
+<table class="data">
+<tr><th>#</th><th>Column</th><th>Source</th><th>Sort / Subtotal</th><th>Notes</th></tr>
+<tr><td>1</td><td>Traffic Light</td><td>Calculated</td><td>—</td><td>Icon / colour by ageing bucket</td></tr>
+<tr><td>2</td><td>Vendor</td><td>EKKO-LIFNR</td><td>Sort 1, subtotal</td><td>Hotspot → XK03 (display vendor)</td></tr>
+<tr><td>3</td><td>Vendor Name</td><td>LFA1-NAME1</td><td>—</td><td></td></tr>
+<tr><td>4</td><td>Blocked</td><td>LFA1-SPERR / SPERM</td><td>—</td><td>Checkbox display</td></tr>
+<tr><td>5</td><td>Currency</td><td>EKKO-WAERS</td><td>Sort 2, subtotal</td><td>Reference for open value</td></tr>
+<tr><td>6</td><td>Purchasing Document</td><td>EKKO-EBELN</td><td>Sort 3</td><td>Hotspot → ME23N</td></tr>
+<tr><td>7</td><td>Item</td><td>EKPO-EBELP</td><td>Sort 4</td><td></td></tr>
+<tr><td>8</td><td>Schedule Line</td><td>EKET-ETENR</td><td>—</td><td></td></tr>
+<tr><td>9</td><td>Document Type</td><td>EKKO-BSART</td><td>—</td><td></td></tr>
+<tr><td>10</td><td>Purch. Org / Group</td><td>EKKO-EKORG / EKGRP</td><td>—</td><td></td></tr>
+<tr><td>11</td><td>Plant</td><td>EKPO-WERKS</td><td>—</td><td></td></tr>
+<tr><td>12</td><td>Material / Short Text</td><td>EKPO-MATNR / TXZ01</td><td>—</td><td></td></tr>
+<tr><td>13</td><td>PO Date</td><td>EKKO-BEDAT</td><td>—</td><td></td></tr>
+<tr><td>14</td><td>Delivery Date</td><td>EKET-EINDT</td><td>—</td><td></td></tr>
+<tr><td>15</td><td>Scheduled Qty</td><td>EKET-MENGE</td><td>—</td><td>Unit EKPO-MEINS</td></tr>
+<tr><td>16</td><td>Received Qty</td><td>EKET-WEMNG</td><td>—</td><td></td></tr>
+<tr><td>17</td><td>Open Qty</td><td>Calculated</td><td>—</td><td></td></tr>
+<tr><td>18</td><td>Net Price / Price Unit</td><td>EKPO-NETPR / PEINH</td><td>—</td><td></td></tr>
+<tr><td>19</td><td>Open Value</td><td>Calculated</td><td>Sum</td><td>Per currency only</td></tr>
+<tr><td>20</td><td>Days Overdue</td><td>Calculated</td><td>Max on subtotal</td><td></td></tr>
+<tr><td>21</td><td>Ageing Bucket</td><td>Calculated</td><td>—</td><td>Text 1–30 / 31–60 / 61–90 / &gt;90</td></tr>
+</table>
+
+<h3>7.2 Summary Mode</h3>
+<table class="data">
+<tr><th>Column</th><th>Description</th></tr>
+<tr><td>Vendor / Name / Currency</td><td>Grouping keys</td></tr>
+<tr><td>No. of POs / No. of Schedule Lines</td><td>Distinct EBELN count / row count</td></tr>
+<tr><td>Total Open Value</td><td>Sum of the open value (per currency)</td></tr>
+<tr><td>Value 1–30 / 31–60 / 61–90 / &gt;90</td><td>Open value per ageing bucket</td></tr>
+<tr><td>Max / Avg Days Overdue</td><td>Worst and average lateness</td></tr>
+</table>
+<p>Default sort in summary mode: Total Open Value, descending (the worst vendors appear first).</p>
+
+<h3>7.3 ALV Features</h3>
+<ul>
+<li>Standard toolbar (sort, filter, sum, Excel export, layout save) through <code>CL_SALV_TABLE</code> (classic SAP GUI ALV, compatible with SAP_BASIS 740).</li>
+<li>Column headers come from the DDIC data-element texts. Only the calculated columns have explicit short, medium and long texts.</li>
+<li>Header line: Company Code + Name (T001-BUTXT), Key Date, number of records.</li>
+<li>Hotspots: EBELN → ME23N, LIFNR → XK03 (display only).</li>
+<li>Saving user-specific and global layouts is allowed.</li>
+</ul>
+
+<h2><span class="sec-num">8</span> Authorization Requirements</h2>
+<table class="data">
+<tr><th>Auth Object</th><th>Field(s)</th><th>Value</th><th>Purpose</th></tr>
+<tr><td>S_TCODE</td><td>TCD</td><td>ZMM_OVDPO</td><td>Start the transaction</td></tr>
+<tr><td>M_BEST_EKO</td><td>EKORG, ACTVT</td><td>Purch. org, 03</td><td>Display POs per purchasing organization</td></tr>
+<tr><td>M_BEST_EKG</td><td>EKGRP, ACTVT</td><td>Purch. group, 03</td><td>Display POs per purchasing group</td></tr>
+<tr><td>M_BEST_WRK</td><td>WERKS, ACTVT</td><td>Plant, 03</td><td>Display POs per plant</td></tr>
+<tr><td>M_BEST_BSA</td><td>BSART, ACTVT</td><td>Doc type, 03</td><td>Display POs per document type</td></tr>
+</table>
+<p>Rows the user is not authorised for are removed without an error. At the end, an information message says how many rows were excluded.</p>
+
+<h2><span class="sec-num">9</span> Messages</h2>
+<table class="data">
+<tr><th>No.</th><th>Type</th><th>Text</th><th>When</th></tr>
+<tr><td>001</td><td>E</td><td>Company code &amp;1 does not exist</td><td>V1</td></tr>
+<tr><td>002</td><td>E</td><td>No authorization for purchasing organization &amp;1</td><td>V2</td></tr>
+<tr><td>003</td><td>E</td><td>Enter a valid key date</td><td>V3</td></tr>
+<tr><td>004</td><td>E</td><td>Minimum days overdue cannot be negative</td><td>V4</td></tr>
+<tr><td>005</td><td>W</td><td>Delivery dates after the key date are never overdue</td><td>V5</td></tr>
+<tr><td>006</td><td>S</td><td>No overdue purchase orders found for the selection</td><td>Empty result</td></tr>
+<tr><td>007</td><td>I</td><td>&amp;1 records hidden due to missing authorization</td><td>After the authorization filter</td></tr>
+<tr><td>008</td><td>E</td><td>Layout &amp;1 does not exist</td><td>V6</td></tr>
+</table>
+<p>Proposed message class: <strong>ZMM_OVDPO</strong>.</p>
+
+<h2><span class="sec-num">10</span> Error Handling</h2>
+<table class="data">
+<tr><th>Situation</th><th>Handling</th><th>What the User Sees</th></tr>
+<tr><td>No data selected</td><td>Exit before the ALV is built</td><td>Message 006 (status bar)</td></tr>
+<tr><td>ALV factory fails</td><td>CATCH cx_salv_msg</td><td>Error message, report ends</td></tr>
+<tr><td>Column config fails</td><td>CATCH cx_salv_not_found (does not stop the report)</td><td>Warning; ALV is still shown</td></tr>
+<tr><td>Arithmetic overflow / division</td><td>PEINH guard, wide packed type, TRY/CATCH cx_sy_arithmetic_error</td><td>Row flagged; processing continues</td></tr>
+<tr><td>Initial delivery date</td><td>Excluded at selection</td><td>Not listed (never shown as "infinitely overdue")</td></tr>
+</table>
+
+<h2><span class="sec-num">11</span> Technical Design Notes (for the TS)</h2>
+<ul>
+<li>One executable program with local classes (no FORM/PERFORM): <code>lcl_report</code> (orchestration), <code>lif_data_access</code> / <code>lcl_db_access</code> (SELECT seam), <code>lcl_alv</code> (display).</li>
+<li>START-OF-SELECTION stays thin and only orchestrates. The business logic is in methods that ABAP Unit can test (a fake data-access class supplies edge-case rows; CL_OSQL_TEST_ENVIRONMENT is not available on SAP_BASIS 740).</li>
+<li>Structure fields that receive table columns are typed <code>TYPE &lt;table&gt;-&lt;field&gt;</code>. Totals use P LENGTH 15 DECIMALS 2.</li>
+<li>Background run supported: the ALV prints as a spool list. The layout is taken from P_VARI.</li>
+</ul>
+
+<h2><span class="sec-num">12</span> Test Scenarios</h2>
+<table class="data">
+<tr><th>ID</th><th>Type</th><th>Scenario</th><th>Input</th><th>Expected Result</th></tr>
+<tr><td>T01</td><td>Positive</td><td>Overdue PO lines exist for the company code</td><td>P_BUKRS = 1000, key date = today</td><td>ALV lists overdue schedule lines, grouped by vendor with subtotals per currency</td></tr>
+<tr><td>T02</td><td>Positive</td><td>Summary mode</td><td>As T01 + P_SUMM</td><td>One row per vendor and currency, sorted by open value descending</td></tr>
+<tr><td>T03</td><td>Positive</td><td>Partially received line</td><td>Line with MENGE 100, WEMNG 40</td><td>Open Qty = 60; open value = 60 × NETPR / PEINH</td></tr>
+<tr><td>T04</td><td>Negative</td><td>Invalid company code</td><td>P_BUKRS = 9999</td><td>Error 001; report does not run</td></tr>
+<tr><td>T05</td><td>Negative</td><td>Fully delivered item</td><td>EKPO-ELIKZ = X</td><td>Line not listed</td></tr>
+<tr><td>T06</td><td>Negative</td><td>Deleted item</td><td>EKPO-LOEKZ = L</td><td>Line not listed</td></tr>
+<tr><td>T07</td><td>Boundary</td><td>Delivery date = key date</td><td>EINDT = P_KEYDT</td><td>Not overdue; not listed</td></tr>
+<tr><td>T08</td><td>Boundary</td><td>Ageing bucket edges</td><td>Days overdue 30 / 31 / 60 / 61 / 90 / 91</td><td>Correct bucket for each value</td></tr>
+<tr><td>T09</td><td>Boundary</td><td>Price unit 0</td><td>PEINH = 0</td><td>Treated as 1; no dump</td></tr>
+<tr><td>T10</td><td>Edge</td><td>Vendor with POs in two currencies</td><td>EUR + USD POs</td><td>Two separate subtotals; no blended total</td></tr>
+<tr><td>T11</td><td>Edge</td><td>No overdue data</td><td>Future key-date filter</td><td>Message 006</td></tr>
+<tr><td>T12</td><td>Authorization</td><td>User without M_BEST_EKO for one purchasing org</td><td>Restricted test user</td><td>Those rows are hidden; message 007</td></tr>
+<tr><td>T13</td><td>Reconciliation</td><td>Compare with standard</td><td>Same PO in ME2L / ME2M (selection parameter WE101)</td><td>Open quantities match the standard report</td></tr>
+<tr><td>T14</td><td>Performance</td><td>Full company code in background</td><td>P_BUKRS only</td><td>Finishes within agreed SLA (TBD, e.g. &lt; 5 min)</td></tr>
+</table>
+
+<h2><span class="sec-num">13</span> Assumptions, Dependencies &amp; Open Points</h2>
+<h3>13.1 Assumptions</h3>
+<ul>
+<li>"Overdue" means a late <em>delivery</em> (goods receipt), not a late invoice or payment.</li>
+<li>The schedule-line delivery date (EKET-EINDT) is the agreed due date. The statistical date (SLFDT) is not used.</li>
+<li>The goods-receipt quantity on the schedule line (EKET-WEMNG) is maintained reliably.</li>
+</ul>
+<h3>13.2 Open Points for Business Sign-off</h3>
+<table class="data">
+<tr><th>#</th><th>Question</th><th>Owner</th><th>Status</th></tr>
+<tr><td>OP-1</td><td>Include stock transport orders (document type UB) or exclude them by default?</td><td>Procurement</td><td>Open</td></tr>
+<tr><td>OP-2</td><td>Add a grace period (e.g. GR processing time EKPO-WEBAZ) before a line counts as overdue?</td><td>Procurement</td><td>Open</td></tr>
+<tr><td>OP-3</td><td>Should the open value also be converted to company-code currency, as an additional column?</td><td>Finance</td><td>Open</td></tr>
+<tr><td>OP-4</td><td>Performance SLA for background runs</td><td>IT / Basis</td><td>Open</td></tr>
+<tr><td>OP-5</td><td>Is vendor e-mail / reminder output needed in a later phase?</td><td>Procurement</td><td>Open</td></tr>
+</table>
+
+<h2><span class="sec-num">14</span> Standard SAP Alternatives Considered</h2>
+<table class="data">
+<tr><th>Standard Option</th><th>Gap</th></tr>
+<tr><td>ME2M / ME2L / ME2N with parameter WE101</td><td>No overdue-day calculation, no ageing buckets, no vendor summary with per-currency subtotals</td></tr>
+<tr><td>ME91F (Urging / reminders)</td><td>Focuses on output and reminders, not an analytical overview by vendor</td></tr>
+<tr><td>Vendor evaluation (ME61 / ME6H)</td><td>Gives scores, not an operational list of open late lines</td></tr>
+</table>
+<p>Conclusion: a custom report is justified. The design is read-only and uses standard tables only (classic Level B, compatible with ECC / SAP_BASIS 740 and S/4HANA on-premise).</p>
