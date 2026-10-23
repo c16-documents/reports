@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>FS ZCL VENDOR BANK VALIDATOR 2026 10 23</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<h2><span class="sec-num">1</span> Document Control</h2>
+<table class="data">
+<tr><th>Item</th><th>Value</th></tr>
+<tr><td>Document</td><td>Functional Specification: Vendor Bank Details Validation &amp; Formatting Utility</td></tr>
+<tr><td>Object (proposed)</td><td><code>ZCL_VENDOR_BANK_VALIDATOR</code> (global ABAP class). Exception class proposed: <code>ZCX_VENDOR_BANK_ERROR</code></td></tr>
+<tr><td>Object type</td><td>Reusable utility class (no UI, no transaction, no database writes)</td></tr>
+<tr><td>Module</td><td>FI-AP / MM vendor master (bank data)</td></tr>
+<tr><td>Target system</td><td>SAP ECC, SAP_BASIS 740, client 800. Design is compatible with SAP_BASIS 740 (no CDS-in-ABAP, AMDP, RAP or enums)</td></tr>
+<tr><td>Version / Date</td><td>1.0 Draft, 23-Oct-2026</td></tr>
+<tr><td>Status</td><td>Draft for business review</td></tr>
+</table>
+<div class="callout">No FS template is uploaded, so this document uses the standard C16 FS layout. The class name is a proposal. No custom class with this name exists yet: a search for <code>ZCL%BANK%</code> returned 14 unrelated objects, mostly OData DPC/MPC classes and training classes.</div>
+
+<h2><span class="sec-num">2</span> Business Background &amp; Objective</h2>
+<p>Several programs and interfaces create or check vendor bank details: vendor uploads, payment-run pre-checks, interface inbound validation and data-quality reports. Each one re-implements its own checks today, or skips them. The result is inconsistent bank data in the vendor master (table <code>LFBK</code>). That leads to rejected payment files and manual rework in Accounts Payable.</p>
+<p>The objective is <strong>one central, reusable class</strong> that any custom program can call to:</p>
+<ol>
+<li><strong>Validate</strong> a vendor's bank country, bank key and bank account number against the country rules configured in SAP (OY17 / table <code>T005</code>) and against the bank master (FI01 / table <code>BNKA</code>).</li>
+<li><strong>Format</strong> these values consistently: normalised for storage, masked for display, and as IBAN where the country supports it.</li>
+<li>Return <strong>clear, translatable messages</strong> that the caller can show, log or reject on.</li>
+</ol>
+
+<h2><span class="sec-num">3</span> Current-State Evidence (live system, client 800)</h2>
+<h3>3.1 Volume</h3>
+<table class="kpi-table">
+<tr><th>Vendor bank records (LFBK)</th><th>Countries in sample</th><th>Bank master hits for sample keys</th></tr>
+<tr><td>1,231</td><td>DE, FR, DK, IN</td><td>14 BNKA rows (same key under several countries)</td></tr>
+</table>
+<h3>3.2 Sample vendor bank records (LFBK, first 15 rows)</h3>
+<table class="data">
+<tr><th>Vendor</th><th>Bank Country</th><th>Bank Key</th><th>Bank Account</th><th>Control key</th><th>Observation</th></tr>
+<tr><td><em>(blank)</em></td><td><em>(blank)</em></td><td><em>(blank)</em></td><td><em>(blank)</em></td><td></td><td>Empty record: no vendor, no bank data</td></tr>
+<tr><td><em>(blank)</em></td><td>IN</td><td>B 111</td><td>8888777788787</td><td></td><td>No vendor. Bank key contains a gap and is not in BNKA</td></tr>
+<tr><td>0000000001</td><td>DE</td><td>56565656</td><td>88888888</td><td></td><td>Valid against DE rules; bank exists</td></tr>
+<tr><td>0000000008</td><td>DE</td><td>50000001</td><td>21214343</td><td></td><td>Valid; bank "Eurobank" exists</td></tr>
+<tr><td>0000000010</td><td>FR</td><td>3000200650</td><td>11111111111</td><td>11</td><td>Length rules OK; uses control key (RIB key)</td></tr>
+<tr><td>0000000025</td><td>DK</td><td>1234</td><td>12345678</td><td></td><td>Bank "Danske Bank A/S" exists; SWIFT DABADKKK</td></tr>
+<tr><td>0000000100</td><td>DE</td><td>30080000</td><td>1234321</td><td></td><td>Valid (7-digit account ≤ 14)</td></tr>
+<tr><td>0000000111</td><td>DE</td><td>23022200</td><td>1234567</td><td></td><td>Valid</td></tr>
+<tr><td>0000000200</td><td>DE</td><td>23022200</td><td>98765896</td><td></td><td>Valid</td></tr>
+<tr><td>0000000300</td><td>DE</td><td>20050000</td><td>8484636</td><td></td><td>Valid. Key 20050000 also exists under AR (Citibank)</td></tr>
+<tr><td>0000001000</td><td>DE</td><td>10050033</td><td>90010000</td><td></td><td>Valid (vendor has 2 bank records)</td></tr>
+<tr><td>0000001000</td><td>DE</td><td>19652993</td><td>10003299</td><td></td><td>Valid</td></tr>
+<tr><td>0000001001</td><td>DE</td><td>50020200</td><td>35471446</td><td></td><td>Valid</td></tr>
+<tr><td>0000001002</td><td>DE</td><td>23984899</td><td>12345678</td><td></td><td>Valid; account holder maintained</td></tr>
+<tr><td>0000001003</td><td>DE</td><td>23984899</td><td>564839</td><td></td><td>Valid</td></tr>
+</table>
+<h3>3.3 Country check rules configured (T005, OY17)</h3>
+<table class="data">
+<tr><th>Country</th><th>Bank Key type (BNKEY)</th><th>Bank key length / rule</th><th>Bank number length / rule</th><th>Account length / rule</th><th>Bank data flag (XPRBK)</th></tr>
+<tr><td>DE</td><td>1 – Bank number</td><td>00 / –</td><td>08 / 4</td><td>14 / 2</td><td>X</td></tr>
+<tr><td>AT</td><td>1 – Bank number</td><td>00 / –</td><td>05 / 4</td><td>11 / 2</td><td>X</td></tr>
+<tr><td>FR</td><td>1 – Bank number</td><td>00 / –</td><td>10 / 4</td><td>11 / 3</td><td></td></tr>
+<tr><td>IT</td><td>1 – Bank number</td><td>00 / –</td><td>10 / 4</td><td>12 / 5</td><td>X</td></tr>
+<tr><td>ES</td><td>1 – Bank number</td><td>00 / –</td><td>08 / 4</td><td>10 / 4</td><td>X</td></tr>
+<tr><td>GB</td><td>1 – Bank number</td><td>00 / –</td><td>06 / 1</td><td>08 / 1</td><td></td></tr>
+<tr><td>US</td><td>1 – Bank number</td><td>00 / –</td><td>09 / 4</td><td>13 / 0</td><td></td></tr>
+<tr><td>CA</td><td>1 – Bank number</td><td>10 / 5</td><td>10 / 5</td><td>10 / 5</td><td></td></tr>
+<tr><td>CH</td><td>1 – Bank number</td><td>07 / 2</td><td>07 / 2</td><td>18 / 5</td><td>X</td></tr>
+<tr><td>BE</td><td>4 – Assign externally</td><td>03 / 3</td><td>00 / –</td><td>14 / 3</td><td>X</td></tr>
+<tr><td>NL</td><td>4 – Assign externally</td><td>05 / 1</td><td>00 / –</td><td>10 / 4</td><td>X</td></tr>
+<tr><td>IN</td><td>4 – Assign externally</td><td>11 / 1</td><td>15 / 5</td><td>00 / –</td><td></td></tr>
+</table>
+<h3>3.4 Check-rule values (domain PR005)</h3>
+<table class="data">
+<tr><th>Rule</th><th>Meaning (DDIC text)</th><th>Utility behaviour</th></tr>
+<tr><td>1</td><td>Maximum value length, without gaps</td><td>len ≤ L; no blanks</td></tr>
+<tr><td>2</td><td>Maximum value length, numerical, without gaps</td><td>len ≤ L; digits only</td></tr>
+<tr><td>3</td><td>Length to be kept to exactly, without gaps</td><td>len = L; no blanks</td></tr>
+<tr><td>4</td><td>Length to be kept to exactly, numerical, without gaps</td><td>len = L; digits only</td></tr>
+<tr><td>5</td><td>Maximum value length</td><td>len ≤ L (blanks allowed)</td></tr>
+<tr><td>6</td><td>Maximum value length, numerical</td><td>len ≤ L; digits and blanks only</td></tr>
+<tr><td>7</td><td>Length to be kept to exactly</td><td>len = L</td></tr>
+<tr><td>8</td><td>Length to be kept to exactly, numerical</td><td>len = L; digits and blanks only</td></tr>
+<tr><td>9</td><td>Check against country-specific edit format</td><td>Delegate to the SAP standard check (see FR-07)</td></tr>
+<tr><td>0 / blank</td><td>No check (0 is "Deactivate check" for USA)</td><td>Skip the rule check (length L is still informative only)</td></tr>
+</table>
+<div class="callout warning"><strong>Findings that justify this utility:</strong> (1) There are LFBK records with no vendor number, one of them fully blank. (2) The IN record uses bank key <code>B 111</code>, which breaks the IN rule 1 ("without gaps") and has no BNKA entry. (3) The same bank key (e.g. <code>20050000</code>, <code>1234</code>) exists under several countries (DE/AR, DK/IN/UG). The bank key is only unique <strong>together with the bank country</strong>, so every lookup must use both.</div>
+
+<h2><span class="sec-num">4</span> Scope</h2>
+<h3>4.1 In scope</h3>
+<ul>
+<li>Validation of bank country (<code>BANKS</code>), bank key (<code>BANKL</code>), bank account (<code>BANKN</code>) and, optionally, bank control key (<code>BKONT</code>).</li>
+<li>Normalisation (storage format), display formatting (masked and full) and IBAN derivation.</li>
+<li>A single "validate all" call that returns every finding at once, so the caller does not stop at the first error.</li>
+<li>Read-only access to the configuration and master data in <code>T005</code>, <code>BNKA</code>, <code>TIBAN</code> and <code>LFBK</code>.</li>
+</ul>
+<h3>4.2 Out of scope</h3>
+<ul>
+<li>Creating or changing vendor master or bank master data. The class never writes to the database.</li>
+<li>Payment-medium formats (DMEE), house-bank data and customer bank data. The design could be extended to <code>KNBK</code> later.</li>
+<li>Any UI, selection screen or report. Callers own the presentation.</li>
+<li>External bank-directory or IBAN web-service lookups.</li>
+</ul>
+
+<h2><span class="sec-num">5</span> Data Objects Used (DDIC-verified)</h2>
+<table class="data">
+<tr><th>Table</th><th>Field</th><th>Data element</th><th>Label (DD04T)</th><th>Type / length</th><th>Use</th></tr>
+<tr><td>LFBK</td><td>LIFNR</td><td>LIFNR</td><td>Vendor</td><td>CHAR 10</td><td>Vendor-level check (optional input)</td></tr>
+<tr><td>LFBK</td><td>BANKS</td><td>BANKS</td><td>Bank Country</td><td>CHAR 3</td><td>Input</td></tr>
+<tr><td>LFBK</td><td>BANKL</td><td>BANKK</td><td>Bank Key</td><td>CHAR 15</td><td>Input</td></tr>
+<tr><td>LFBK</td><td>BANKN</td><td>BANKN</td><td>Bank Account</td><td>CHAR 18</td><td>Input</td></tr>
+<tr><td>LFBK</td><td>BKONT</td><td>BKONT</td><td>Bank control key</td><td>CHAR 2</td><td>Optional input (IBAN / FR, ES, IT)</td></tr>
+<tr><td>LFBK</td><td>BKREF</td><td>BKREF</td><td>Reference details</td><td>CHAR 20</td><td>Overflow for accounts over 18 characters (information only)</td></tr>
+<tr><td>LFBK</td><td>KOINH</td><td>KOINH_FI</td><td>Account holder</td><td>CHAR 60</td><td>Optional completeness warning</td></tr>
+<tr><td>T005</td><td>BNKEY</td><td>BNKEY</td><td>Bank Key</td><td>CHAR 1</td><td>How the bank key is assigned (1 = bank number, 4 = external, …)</td></tr>
+<tr><td>T005</td><td>LNBKS / PRBKS</td><td>LNBKS_005 / PRBKS_005</td><td>Length of Bank Key / Check rule for bank key</td><td>NUMC 2 / CHAR 1</td><td>Bank key rule</td></tr>
+<tr><td>T005</td><td>LNBLZ / PRBLZ</td><td>LNBLZ_005 / PRBLZ_005</td><td>Bank number length / Check rule for bank number</td><td>NUMC 2 / CHAR 1</td><td>Bank number rule (applies to the key when BNKEY = 1)</td></tr>
+<tr><td>T005</td><td>LNBKN / PRBKN</td><td>LNBKN_005 / PRBKN_005</td><td>Bank account number length / Check rule for bank acct no.</td><td>NUMC 2 / CHAR 1</td><td>Account rule</td></tr>
+<tr><td>T005</td><td>XPRBK</td><td>XPRBK_005</td><td>Bank data</td><td>CHAR 1</td><td>Country needs additional country-specific bank checks</td></tr>
+<tr><td>BNKA</td><td>BANKS, BANKL</td><td>BANKS, BANKK</td><td>Bank Country, Bank Key</td><td>CHAR 3, 15</td><td>Bank master existence (key = country + key)</td></tr>
+<tr><td>BNKA</td><td>BANKA / SWIFT / BNKLZ</td><td>BANKA / SWIFT / BANKL</td><td>Bank name / SWIFT/BIC / Bank number</td><td>CHAR 60 / 11 / 15</td><td>Enrichment and IBAN input</td></tr>
+<tr><td>BNKA</td><td>LOEVM</td><td>LOEVM</td><td>Deletion flag</td><td>CHAR 1</td><td>Reject banks flagged for deletion</td></tr>
+<tr><td>TIBAN</td><td>IBAN, BANKS, BANKL, BANKN, BKONT</td><td>IBAN, …</td><td>IBAN</td><td>CHAR 34</td><td>Look up an IBAN already stored for the account</td></tr>
+</table>
+
+<h2><span class="sec-num">6</span> Functional Requirements</h2>
+<h3>6.1 Validation requirements</h3>
+<table class="data">
+<tr><th>ID</th><th>Requirement</th><th>Rule / logic</th><th>Severity on failure</th></tr>
+<tr><td>FR-01</td><td>Bank country is mandatory and must exist</td><td>BANKS not initial and found in T005 (key LAND1). Input is converted to upper case first.</td><td>Error</td></tr>
+<tr><td>FR-02</td><td>Bank key is mandatory</td><td>BANKL not initial after trimming.</td><td>Error</td></tr>
+<tr><td>FR-03</td><td>Bank key format follows the country rule</td><td>If T005-BNKEY = 1 (bank key = bank number): apply LNBLZ/PRBLZ to the key. Otherwise apply LNBKS/PRBKS. Use the check-rule logic in §3.4.</td><td>Error</td></tr>
+<tr><td>FR-04</td><td>Bank key exists in the bank master</td><td>Read BNKA with <strong>BANKS + BANKL</strong> (never BANKL alone). Not found → error. Found with LOEVM = 'X' → error "bank flagged for deletion".</td><td>Error</td></tr>
+<tr><td>FR-05</td><td>Bank account is mandatory where the country uses accounts</td><td>If T005-LNBKN = 00 and PRBKN is blank (e.g. IN), the account is not rule-checked, but an empty account still gives a warning.</td><td>Error (Warning for LNBKN = 00)</td></tr>
+<tr><td>FR-06</td><td>Bank account format follows the country rule</td><td>Apply LNBKN/PRBKN using the §3.4 logic. Rule 0 or blank → no check.</td><td>Error</td></tr>
+<tr><td>FR-07</td><td>Country-specific standard checks</td><td>Call the SAP standard function <code>BANK_NUMBER_CHECK</code> (verified signature: BANK_ACCOUNT, BANK_COUNTRY, BANK_NUMBER; exceptions DATA_MISSING, NOT_VALID) so SAP's own country algorithms also run. Required when rule = 9 or T005-XPRBK = 'X'; recommended always. Its exceptions are mapped to the class's own messages.</td><td>Error</td></tr>
+<tr><td>FR-08</td><td>Control key plausibility</td><td>If BKONT is supplied: max 2 characters, no gaps. For countries that use control keys (e.g. FR, sample vendor 0000000010 with BKONT 11), a missing BKONT gives a warning.</td><td>Warning</td></tr>
+<tr><td>FR-09</td><td>Vendor-level duplicate check (optional)</td><td>When a vendor (LIFNR) is supplied, report if the same BANKS + BANKL + BANKN already exists in LFBK for a <em>different</em> vendor. This can point to fraud or a duplicate vendor.</td><td>Warning</td></tr>
+<tr><td>FR-10</td><td>Collect all findings</td><td><code>VALIDATE_ALL</code> runs every check and returns the complete list (no early exit), with an overall valid / invalid flag.</td><td>–</td></tr>
+</table>
+<h3>6.2 Formatting requirements</h3>
+<table class="data">
+<tr><th>ID</th><th>Requirement</th><th>Example (from live data)</th></tr>
+<tr><td>FR-11</td><td><strong>Normalise</strong> for storage: convert country to upper case, trim leading and trailing blanks, remove common separators (space, "-", "/", ".") from the key and account <em>only when the country rule is "without gaps" or numerical</em>. No zero-padding unless the rule is "exact length, numerical" and the business enables padding (open point OP-02).</td><td>"de" → "DE"; "5656-5656" → "56565656"</td></tr>
+<tr><td>FR-12</td><td><strong>Mask</strong> the account for display: show only the last 4 characters and mask the rest with "*". The mask length equals the original length.</td><td>"88888888" → "****8888"</td></tr>
+<tr><td>FR-13</td><td><strong>Display string</strong>: "&lt;country&gt; / &lt;bank key&gt; / &lt;account (masked by default)&gt; – &lt;bank name&gt;"</td><td>"DE / 56565656 / ****8888 – City-Bank Hamburg"</td></tr>
+<tr><td>FR-14</td><td><strong>IBAN</strong>: first read TIBAN for an IBAN already stored for BANKS/BANKL/BANKN/BKONT. Otherwise derive it with the SAP standard function <code>CONVERT_BANK_ACCOUNT_2_IBAN</code> (verified: I_BANK_ACCOUNT, I_BANK_CONTROL_KEY, I_BANK_COUNTRY, I_BANK_NUMBER = BNKA-BNKLZ, I_BANK_KEY; E_IBAN; exception NO_CONVERSION). If no conversion is possible, return an empty IBAN plus an information message, not an error.</td><td>DE / 56565656 / 88888888 → IBAN derived by the SAP standard algorithm</td></tr>
+<tr><td>FR-15</td><td><strong>Bank details enrichment</strong>: return bank name, SWIFT/BIC and bank number from BNKA.</td><td>DK / 1234 → "Danske Bank A/S", DABADKKK</td></tr>
+<tr><td>FR-16</td><td>Formatting methods never change their input. They return new values.</td><td>–</td></tr>
+</table>
+
+<h2><span class="sec-num">7</span> Proposed Public Interface (functional view)</h2>
+<p>The developer finalises the exact signatures in the Technical Specification. All types refer to DDIC data elements (BANKS, BANKK, BANKN, BKONT, LIFNR, IBAN, BANKA, SWIFT, BAPIRET2).</p>
+<table class="data">
+<tr><th>Method</th><th>Inputs</th><th>Outputs</th><th>Purpose</th></tr>
+<tr><td><code>VALIDATE_ALL</code></td><td>Bank country, bank key, bank account, control key (opt.), vendor (opt.)</td><td>Valid flag + message table (BAPIRET2)</td><td>Runs FR-01 to FR-10 in one call</td></tr>
+<tr><td><code>VALIDATE_BANK_COUNTRY</code></td><td>Bank country</td><td>Valid flag + messages</td><td>FR-01</td></tr>
+<tr><td><code>VALIDATE_BANK_KEY</code></td><td>Bank country, bank key</td><td>Valid flag + messages</td><td>FR-02 to FR-04</td></tr>
+<tr><td><code>VALIDATE_ACCOUNT_NUMBER</code></td><td>Bank country, bank key, account, control key (opt.)</td><td>Valid flag + messages</td><td>FR-05 to FR-08</td></tr>
+<tr><td><code>NORMALIZE</code></td><td>Bank country, bank key, account</td><td>Normalised values</td><td>FR-11</td></tr>
+<tr><td><code>MASK_ACCOUNT</code></td><td>Account</td><td>Masked account</td><td>FR-12</td></tr>
+<tr><td><code>FORMAT_FOR_DISPLAY</code></td><td>Bank country, bank key, account, show-full flag (default off)</td><td>Display string</td><td>FR-13</td></tr>
+<tr><td><code>GET_IBAN</code></td><td>Bank country, bank key, account, control key</td><td>IBAN + messages</td><td>FR-14</td></tr>
+<tr><td><code>GET_BANK_DETAILS</code></td><td>Bank country, bank key</td><td>Bank name, SWIFT/BIC, bank number, found flag</td><td>FR-15</td></tr>
+</table>
+<div class="callout tip"><strong>Testability (required):</strong> All database reads (T005, BNKA, TIBAN, LFBK) sit behind a local data-access interface that is injected through the constructor. ABAP Unit tests can then supply fake configuration and edge-case rows. On SAP_BASIS 740 the SQL test-double framework is not available, so a classic dependency-injection fake is required. Country rules are buffered per call sequence, with one T005 read per country per instance.</div>
+
+<h2><span class="sec-num">8</span> Processing Logic – <code>VALIDATE_ALL</code></h2>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792739274211" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="flowchart" viewBox="0 0 725.3828125 2112.671875" role="graphics-document document" aria-roledescription="flowchart-v2" style="max-width:100%;height:auto;"><style>#mermaid-1792739274211{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792739274211 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792739274211 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792739274211 .error-icon{fill:#552222;}#mermaid-1792739274211 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792739274211 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792739274211 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792739274211 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792739274211 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792739274211 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792739274211 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792739274211 .marker{fill:#666;stroke:#666;}#mermaid-1792739274211 .marker.cross{stroke:#666;}#mermaid-1792739274211 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792739274211 p{margin:0;}#mermaid-1792739274211 .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#000000;}#mermaid-1792739274211 .cluster-label text{fill:#333;}#mermaid-1792739274211 .cluster-label span{color:#333;}#mermaid-1792739274211 .cluster-label span p{background-color:transparent;}#mermaid-1792739274211 .label text,#mermaid-1792739274211 span{fill:#000000;color:#000000;}#mermaid-1792739274211 .node rect,#mermaid-1792739274211 .node circle,#mermaid-1792739274211 .node ellipse,#mermaid-1792739274211 .node polygon,#mermaid-1792739274211 .node path{fill:#eee;stroke:#999;stroke-width:1px;}#mermaid-1792739274211 .rough-node .label text,#mermaid-1792739274211 .node .label text,#mermaid-1792739274211 .image-shape .label,#mermaid-1792739274211 .icon-shape .label{text-anchor:middle;}#mermaid-1792739274211 .node .katex path{fill:#000;stroke:#000;stroke-width:1px;}#mermaid-1792739274211 .rough-node .label,#mermaid-1792739274211 .node .label,#mermaid-1792739274211 .image-shape .label,#mermaid-1792739274211 .icon-shape .label{text-align:center;}#mermaid-1792739274211 .node.clickable{cursor:pointer;}#mermaid-1792739274211 .root .anchor path{fill:#666!important;stroke-width:0;stroke:#666;}#mermaid-1792739274211 .arrowheadPath{fill:#333333;}#mermaid-1792739274211 .edgePath .path{stroke:#666;stroke-width:2.0px;}#mermaid-1792739274211 .flowchart-link{stroke:#666;fill:none;}#mermaid-1792739274211 .edgeLabel{background-color:white;text-align:center;}#mermaid-1792739274211 .edgeLabel p{background-color:white;}#mermaid-1792739274211 .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792739274211 .labelBkg{background-color:rgba(255, 255, 255, 0.5);}#mermaid-1792739274211 .cluster rect{fill:hsl(0, 0%, 98.9215686275%);stroke:#707070;stroke-width:1px;}#mermaid-1792739274211 .cluster text{fill:#333;}#mermaid-1792739274211 .cluster span{color:#333;}#mermaid-1792739274211 div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:hsl(-160, 0%, 93.3333333333%);border:1px solid #707070;border-radius:2px;pointer-events:none;z-index:100;}#mermaid-1792739274211 .flowchartTitleText{text-anchor:middle;font-size:18px;fill:#000000;}#mermaid-1792739274211 rect.text{fill:none;stroke-width:0;}#mermaid-1792739274211 .icon-shape,#mermaid-1792739274211 .image-shape{background-color:white;text-align:center;}#mermaid-1792739274211 .icon-shape p,#mermaid-1792739274211 .image-shape p{background-color:white;padding:2px;}#mermaid-1792739274211 .icon-shape .label rect,#mermaid-1792739274211 .image-shape .label rect{opacity:0.5;background-color:white;fill:white;}#mermaid-1792739274211 .label-icon{display:inline-block;height:1em;overflow:visible;vertical-align:-0.125em;}#mermaid-1792739274211 .node .label-icon path{fill:currentColor;stroke:revert;stroke-width:revert;}#mermaid-1792739274211 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g><marker id="mermaid-1792739274211_flowchart-v2-pointEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739274211_flowchart-v2-pointStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="4.5" refY="5" markerUnits="userSpaceOnUse" markerWidth="8" markerHeight="8" orient="auto"><path d="M 0 5 L 10 10 L 10 0 z" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739274211_flowchart-v2-circleEnd" class="marker flowchart-v2" viewBox="0 0 10 10" refX="11" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792739274211_flowchart-v2-circleStart" class="marker flowchart-v2" viewBox="0 0 10 10" refX="-1" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><circle cx="5" cy="5" r="5" class="arrowMarkerPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></circle></marker><marker id="mermaid-1792739274211_flowchart-v2-crossEnd" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="12" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><marker id="mermaid-1792739274211_flowchart-v2-crossStart" class="marker cross flowchart-v2" viewBox="0 0 11 11" refX="-1" refY="5.2" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M 1,1 l 9,9 M 10,1 l -9,9" class="arrowMarkerPath" style="stroke-width: 2; stroke-dasharray: 1, 0;"></path></marker><g class="root"><g class="clusters"></g><g class="edgePaths"><path d="M355.289,86L355.289,90.167C355.289,94.333,355.289,102.667,355.289,110.333C355.289,118,355.289,125,355.289,128.5L355.289,132" id="L_A_B_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_A_B_0" data-points="W3sieCI6MzU1LjI4OTA2MjUsInkiOjg2fSx7IngiOjM1NS4yODkwNjI1LCJ5IjoxMTF9LHsieCI6MzU1LjI4OTA2MjUsInkiOjEzNn1d" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M355.289,190L355.289,194.167C355.289,198.333,355.289,206.667,355.289,214.333C355.289,222,355.289,229,355.289,232.5L355.289,236" id="L_B_C_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_B_C_0" data-points="W3sieCI6MzU1LjI4OTA2MjUsInkiOjE5MH0seyJ4IjozNTUuMjg5MDYyNSwieSI6MjE1fSx7IngiOjM1NS4yODkwNjI1LCJ5IjoyNDB9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M285.954,406.524L260.667,424.247C235.381,441.969,184.808,477.414,159.521,511.804C134.234,546.193,134.234,579.526,134.234,610.859C134.234,642.193,134.234,671.526,134.234,702.665C134.234,733.805,134.234,766.75,134.234,801.695C134.234,836.641,134.234,873.586,134.234,906.725C134.234,939.865,134.234,969.198,134.234,996.531C134.234,1023.865,134.234,1049.198,134.234,1072.531C134.234,1095.865,134.234,1117.198,134.234,1140.531C134.234,1163.865,134.234,1189.198,134.234,1214.531C134.234,1239.865,134.234,1265.198,134.234,1288.531C134.234,1311.865,134.234,1333.198,134.234,1354.531C134.234,1375.865,134.234,1397.198,134.234,1418.531C134.234,1439.865,134.234,1461.198,134.234,1482.531C134.234,1503.865,134.234,1525.198,134.234,1546.531C134.234,1567.865,134.234,1589.198,134.234,1617.793C134.234,1646.388,134.234,1682.245,134.234,1720.102C134.234,1757.958,134.234,1797.815,134.234,1825.243C134.234,1852.672,134.234,1867.672,134.234,1875.172L134.234,1882.672" id="L_C_E1_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_E1_0" data-points="W3sieCI6Mjg1Ljk1Mzk3MzE5NjY2MDg1LCJ5Ijo0MDYuNTI0Mjg1Njk2NjYwODV9LHsieCI6MTM0LjIzNDM3NSwieSI6NTEyLjg1OTM3NX0seyJ4IjoxMzQuMjM0Mzc1LCJ5Ijo2MTIuODU5Mzc1fSx7IngiOjEzNC4yMzQzNzUsInkiOjcwMC44NTkzNzV9LHsieCI6MTM0LjIzNDM3NSwieSI6Nzk5LjY5NTMxMjV9LHsieCI6MTM0LjIzNDM3NSwieSI6OTEwLjUzMTI1fSx7IngiOjEzNC4yMzQzNzUsInkiOjk5OC41MzEyNX0seyJ4IjoxMzQuMjM0Mzc1LCJ5IjoxMDc0LjUzMTI1fSx7IngiOjEzNC4yMzQzNzUsInkiOjExMzguNTMxMjV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTIxNC41MzEyNX0seyJ4IjoxMzQuMjM0Mzc1LCJ5IjoxMjkwLjUzMTI1fSx7IngiOjEzNC4yMzQzNzUsInkiOjEzNTQuNTMxMjV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTQxOC41MzEyNX0seyJ4IjoxMzQuMjM0Mzc1LCJ5IjoxNDgyLjUzMTI1fSx7IngiOjEzNC4yMzQzNzUsInkiOjE1NDYuNTMxMjV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTYxMC41MzEyNX0seyJ4IjoxMzQuMjM0Mzc1LCJ5IjoxNzE4LjEwMTU2MjV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTgzNy42NzE4NzV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTg4Ni42NzE4NzV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M134.234,1940.672L134.234,1946.839C134.234,1953.005,134.234,1965.339,142.98,1975.401C151.726,1985.463,169.218,1993.254,177.964,1997.149L186.71,2001.044" id="L_E1_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E1_Z_0" data-points="W3sieCI6MTM0LjIzNDM3NSwieSI6MTk0MC42NzE4NzV9LHsieCI6MTM0LjIzNDM3NSwieSI6MTk3Ny42NzE4NzV9LHsieCI6MTkwLjM2MzU4OTYzODE1NzksInkiOjIwMDIuNjcxODc1fV0=" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M397.168,433.98L404.408,447.127C411.647,460.273,426.126,486.566,433.366,505.213C440.605,523.859,440.605,534.859,440.605,540.359L440.605,545.859" id="L_C_D_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_C_D_0" data-points="W3sieCI6Mzk3LjE2ODM1Nzg5NTE0MzM0LCJ5Ijo0MzMuOTgwMDc5NjA0ODU2NjZ9LHsieCI6NDQwLjYwNTQ2ODc1LCJ5Ijo1MTIuODU5Mzc1fSx7IngiOjQ0MC42MDU0Njg3NSwieSI6NTQ5Ljg1OTM3NX1d" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M440.605,675.859L440.605,680.026C440.605,684.193,440.605,692.526,440.605,700.193C440.605,707.859,440.605,714.859,440.605,718.359L440.605,721.859" id="L_D_F_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_D_F_0" data-points="W3sieCI6NDQwLjYwNTQ2ODc1LCJ5Ijo2NzUuODU5Mzc1fSx7IngiOjQ0MC42MDU0Njg3NSwieSI6NzAwLjg1OTM3NX0seyJ4Ijo0NDAuNjA1NDY4NzUsInkiOjcyNS44NTkzNzV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M398.537,831.463L381.085,844.641C363.634,857.819,328.731,884.175,311.28,912.02C293.828,939.865,293.828,969.198,293.828,996.531C293.828,1023.865,293.828,1049.198,293.828,1067.365C293.828,1085.531,293.828,1096.531,293.828,1102.031L293.828,1107.531" id="L_F_E2_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_E2_0" data-points="W3sieCI6Mzk4LjUzNjgxOTQ2NzAzMTM2LCJ5Ijo4MzEuNDYyNjAwNzE3MDMxNH0seyJ4IjoyOTMuODI4MTI1LCJ5Ijo5MTAuNTMxMjV9LHsieCI6MjkzLjgyODEyNSwieSI6OTk4LjUzMTI1fSx7IngiOjI5My44MjgxMjUsInkiOjEwNzQuNTMxMjV9LHsieCI6MjkzLjgyODEyNSwieSI6MTExMS41MzEyNX1d" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M482.674,831.463L500.126,844.641C517.577,857.819,552.48,884.175,569.931,902.853C587.383,921.531,587.383,932.531,587.383,938.031L587.383,943.531" id="L_F_G_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_F_G_0" data-points="W3sieCI6NDgyLjY3NDExODAzMjk2ODY0LCJ5Ijo4MzEuNDYyNjAwNzE3MDMxNH0seyJ4Ijo1ODcuMzgyODEyNSwieSI6OTEwLjUzMTI1fSx7IngiOjU4Ny4zODI4MTI1LCJ5Ijo5NDcuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M587.383,1049.531L587.383,1053.698C587.383,1057.865,587.383,1066.198,587.383,1073.865C587.383,1081.531,587.383,1088.531,587.383,1092.031L587.383,1095.531" id="L_G_H_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_G_H_0" data-points="W3sieCI6NTg3LjM4MjgxMjUsInkiOjEwNDkuNTMxMjV9LHsieCI6NTg3LjM4MjgxMjUsInkiOjEwNzQuNTMxMjV9LHsieCI6NTg3LjM4MjgxMjUsInkiOjEwOTkuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M293.828,1165.531L293.828,1173.698C293.828,1181.865,293.828,1198.198,305.146,1212.225C316.463,1226.252,339.098,1237.972,350.416,1243.832L361.733,1249.692" id="L_E2_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_E2_I_0" data-points="W3sieCI6MjkzLjgyODEyNSwieSI6MTE2NS41MzEyNX0seyJ4IjoyOTMuODI4MTI1LCJ5IjoxMjE0LjUzMTI1fSx7IngiOjM2NS4yODU1MTYwMzYxODQyLCJ5IjoxMjUxLjUzMTI1fV0=" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M587.383,1177.531L587.383,1183.698C587.383,1189.865,587.383,1202.198,576.065,1214.225C564.748,1226.252,542.113,1237.972,530.795,1243.832L519.477,1249.692" id="L_H_I_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_H_I_0" data-points="W3sieCI6NTg3LjM4MjgxMjUsInkiOjExNzcuNTMxMjV9LHsieCI6NTg3LjM4MjgxMjUsInkiOjEyMTQuNTMxMjV9LHsieCI6NTE1LjkyNTQyMTQ2MzgxNTgsInkiOjEyNTEuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M440.605,1329.531L440.605,1333.698C440.605,1337.865,440.605,1346.198,440.605,1353.865C440.605,1361.531,440.605,1368.531,440.605,1372.031L440.605,1375.531" id="L_I_J_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_I_J_0" data-points="W3sieCI6NDQwLjYwNTQ2ODc1LCJ5IjoxMzI5LjUzMTI1fSx7IngiOjQ0MC42MDU0Njg3NSwieSI6MTM1NC41MzEyNX0seyJ4Ijo0NDAuNjA1NDY4NzUsInkiOjEzNzkuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M440.605,1457.531L440.605,1461.698C440.605,1465.865,440.605,1474.198,440.605,1481.865C440.605,1489.531,440.605,1496.531,440.605,1500.031L440.605,1503.531" id="L_J_K_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_J_K_0" data-points="W3sieCI6NDQwLjYwNTQ2ODc1LCJ5IjoxNDU3LjUzMTI1fSx7IngiOjQ0MC42MDU0Njg3NSwieSI6MTQ4Mi41MzEyNX0seyJ4Ijo0NDAuNjA1NDY4NzUsInkiOjE1MDcuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M440.605,1585.531L440.605,1589.698C440.605,1593.865,440.605,1602.198,440.605,1609.865C440.605,1617.531,440.605,1624.531,440.605,1628.031L440.605,1631.531" id="L_K_L_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_K_L_0" data-points="W3sieCI6NDQwLjYwNTQ2ODc1LCJ5IjoxNTg1LjUzMTI1fSx7IngiOjQ0MC42MDU0Njg3NSwieSI6MTYxMC41MzEyNX0seyJ4Ijo0NDAuNjA1NDY4NzUsInkiOjE2MzUuNTMxMjV9XQ==" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M475.427,1765.85L484.157,1777.82C492.886,1789.791,510.346,1813.731,519.075,1831.202C527.805,1848.672,527.805,1859.672,527.805,1865.172L527.805,1870.672" id="L_L_M_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_L_M_0" data-points="W3sieCI6NDc1LjQyNzE2OTUwMjYwMjM0LCJ5IjoxNzY1Ljg1MDE3NDI0NzM5Nzd9LHsieCI6NTI3LjgwNDY4NzUsInkiOjE4MzcuNjcxODc1fSx7IngiOjUyNy44MDQ2ODc1LCJ5IjoxODc0LjY3MTg3NX1d" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M396.706,1756.772L381.399,1770.256C366.093,1783.739,335.48,1810.705,320.174,1836.855C304.867,1863.005,304.867,1888.339,304.867,1911.672C304.867,1935.005,304.867,1956.339,304.867,1970.505C304.867,1984.672,304.867,1991.672,304.867,1995.172L304.867,1998.672" id="L_L_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_L_Z_0" data-points="W3sieCI6Mzk2LjcwNTg0MDcxMDA1OTEsInkiOjE3NTYuNzcyMjQ2OTYwMDU5fSx7IngiOjMwNC44NjcxODc1LCJ5IjoxODM3LjY3MTg3NX0seyJ4IjozMDQuODY3MTg3NSwieSI6MTkxMy42NzE4NzV9LHsieCI6MzA0Ljg2NzE4NzUsInkiOjE5NzcuNjcxODc1fSx7IngiOjMwNC44NjcxODc1LCJ5IjoyMDAyLjY3MTg3NX1d" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path><path d="M527.805,1952.672L527.805,1956.839C527.805,1961.005,527.805,1969.339,512.946,1978.571C498.088,1987.803,468.37,1997.933,453.512,2002.999L438.653,2008.064" id="L_M_Z_0" class=" edge-thickness-normal edge-pattern-solid edge-thickness-normal edge-pattern-solid flowchart-link" style=";" data-edge="true" data-et="edge" data-id="L_M_Z_0" data-points="W3sieCI6NTI3LjgwNDY4NzUsInkiOjE5NTIuNjcxODc1fSx7IngiOjUyNy44MDQ2ODc1LCJ5IjoxOTc3LjY3MTg3NX0seyJ4Ijo0MzQuODY3MTg3NSwieSI6MjAwOS4zNTQ1MjE0ODE2MzcyfV0=" marker-end="url(#mermaid-1792739274211_flowchart-v2-pointEnd)"></path></g><g class="edgeLabels"><g class="edgeLabel"><g class="label" data-id="L_A_B_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_B_C_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(134.234375, 1214.53125)"><g class="label" data-id="L_C_E1_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E1_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(440.60546875, 512.859375)"><g class="label" data-id="L_C_D_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_D_F_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(293.828125, 998.53125)"><g class="label" data-id="L_F_E2_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(587.3828125, 910.53125)"><g class="label" data-id="L_F_G_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_G_H_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_E2_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_H_I_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_I_J_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_J_K_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_K_L_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(527.8046875, 1837.671875)"><g class="label" data-id="L_L_M_0" transform="translate(-11.328125, -12)"><foreignObject width="22.65625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>Yes</p></span></div></foreignObject></g></g><g class="edgeLabel" transform="translate(304.8671875, 1913.671875)"><g class="label" data-id="L_L_Z_0" transform="translate(-9.3984375, -12)"><foreignObject width="18.796875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "><p>No</p></span></div></foreignObject></g></g><g class="edgeLabel"><g class="label" data-id="L_M_Z_0" transform="translate(0, 0)"><foreignObject width="0" height="0"><div xmlns="http://www.w3.org/1999/xhtml" class="labelBkg" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="edgeLabel "></span></div></foreignObject></g></g></g><g class="nodes"><g class="node default  " id="flowchart-A-0" transform="translate(355.2890625, 47)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Input: BANKS, BANKL, BANKN, BKONT, LIFNR</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-B-1" transform="translate(355.2890625, 163)"><rect class="basic label-container" style="" x="-112.4921875" y="-27" width="224.984375" height="54"></rect><g class="label" style="" transform="translate(-82.4921875, -12)"><rect></rect><foreignObject width="164.984375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Normalise inputs FR-11</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-C-3" transform="translate(355.2890625, 357.9296875)"><polygon points="117.9296875,0 235.859375,-117.9296875 117.9296875,-235.859375 0,-117.9296875" class="label-container" transform="translate(-117.4296875, 117.9296875)"></polygon><g class="label" style="" transform="translate(-90.9296875, -12)"><rect></rect><foreignObject width="181.859375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>BANKS filled and in T005?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E1-5" transform="translate(134.234375, 1913.671875)"><rect class="basic label-container" style="" x="-126.234375" y="-27" width="252.46875" height="54"></rect><g class="label" style="" transform="translate(-96.234375, -12)"><rect></rect><foreignObject width="192.46875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Error: invalid bank country</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-Z-6" transform="translate(304.8671875, 2053.671875)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Return valid flag = no E messages, plus full message table</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-D-8" transform="translate(440.60546875, 612.859375)"><rect class="basic label-container" style="" x="-130" y="-63" width="260" height="126"></rect><g class="label" style="" transform="translate(-100, -48)"><rect></rect><foreignObject width="200" height="96"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Read country rules: BNKEY, LNBKS/PRBKS, LNBLZ/PRBLZ, LNBKN/PRBKN, XPRBK</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-F-10" transform="translate(440.60546875, 799.6953125)"><polygon points="73.8359375,0 147.671875,-73.8359375 73.8359375,-147.671875 0,-73.8359375" class="label-container" transform="translate(-73.3359375, 73.8359375)"></polygon><g class="label" style="" transform="translate(-46.8359375, -12)"><rect></rect><foreignObject width="93.671875" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>BANKL filled?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-E2-12" transform="translate(293.828125, 1138.53125)"><rect class="basic label-container" style="" x="-113.5546875" y="-27" width="227.109375" height="54"></rect><g class="label" style="" transform="translate(-83.5546875, -12)"><rect></rect><foreignObject width="167.109375" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>Error: bank key missing</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-G-14" transform="translate(587.3828125, 998.53125)"><rect class="basic label-container" style="" x="-130" y="-51" width="260" height="102"></rect><g class="label" style="" transform="translate(-100, -36)"><rect></rect><foreignObject width="200" height="72"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Apply key rule: BNKEY=1 uses LNBLZ/PRBLZ, else LNBKS/PRBKS</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-H-16" transform="translate(587.3828125, 1138.53125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Read BNKA by BANKS + BANKL; check LOEVM</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-I-18" transform="translate(440.60546875, 1290.53125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Apply account rule LNBKN/PRBKN</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-J-22" transform="translate(440.60546875, 1418.53125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Call BANK_NUMBER_CHECK if XPRBK=X or rule 9</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-K-24" transform="translate(440.60546875, 1546.53125)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Control key plausibility FR-08</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-L-26" transform="translate(440.60546875, 1718.1015625)"><polygon points="82.5703125,0 165.140625,-82.5703125 82.5703125,-165.140625 0,-82.5703125" class="label-container" transform="translate(-82.0703125, 82.5703125)"></polygon><g class="label" style="" transform="translate(-55.5703125, -12)"><rect></rect><foreignObject width="111.140625" height="24"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table-cell; white-space: nowrap; line-height: 1.5; max-width: 200px; text-align: center;"><span class="nodeLabel "><p>LIFNR supplied?</p></span></div></foreignObject></g></g><g class="node default  " id="flowchart-M-28" transform="translate(527.8046875, 1913.671875)"><rect class="basic label-container" style="" x="-130" y="-39" width="260" height="78"></rect><g class="label" style="" transform="translate(-100, -24)"><rect></rect><foreignObject width="200" height="48"><div xmlns="http://www.w3.org/1999/xhtml" style="display: table; white-space: break-spaces; line-height: 1.5; max-width: 200px; text-align: center; width: 200px;"><span class="nodeLabel "><p>Duplicate account at other vendor? FR-09</p></span></div></foreignObject></g></g></g></g></g></svg></figure>
+<ol>
+<li>Normalise all inputs (FR-11). Validation always runs on the normalised values.</li>
+<li>Country check. If it fails, stop the country-dependent checks because there are no rules to apply, and return.</li>
+<li>Bank key checks (format rule, then BNKA existence and deletion flag).</li>
+<li>Account checks (format rule, then the standard country check).</li>
+<li>Optional checks (control key, duplicate at another vendor).</li>
+<li>Overall result is valid if no message has type E or A. Warnings (W) and information (I) do not make the result invalid.</li>
+</ol>
+
+<h2><span class="sec-num">9</span> Messages</h2>
+<p>Proposed message class <code>ZVBANK</code>. All texts are T100 messages, so they are translatable. Numbers are proposals.</p>
+<table class="data">
+<tr><th>No.</th><th>Type</th><th>Text</th><th>Trigger</th></tr>
+<tr><td>001</td><td>E</td><td>Bank country &amp;1 is missing or does not exist</td><td>FR-01</td></tr>
+<tr><td>002</td><td>E</td><td>Bank key is missing</td><td>FR-02</td></tr>
+<tr><td>003</td><td>E</td><td>Bank key &amp;1 violates rule &amp;2 (length &amp;3) for country &amp;4</td><td>FR-03</td></tr>
+<tr><td>004</td><td>E</td><td>Bank key &amp;1 does not exist in the bank master for country &amp;2</td><td>FR-04</td></tr>
+<tr><td>005</td><td>E</td><td>Bank &amp;1 / &amp;2 is flagged for deletion</td><td>FR-04</td></tr>
+<tr><td>006</td><td>E</td><td>Bank account is missing</td><td>FR-05</td></tr>
+<tr><td>007</td><td>E</td><td>Bank account violates rule &amp;1 (length &amp;2) for country &amp;3</td><td>FR-06</td></tr>
+<tr><td>008</td><td>E</td><td>Bank account is not valid for country &amp;1 (SAP country check)</td><td>FR-07 (NOT_VALID)</td></tr>
+<tr><td>009</td><td>W</td><td>Bank control key missing or implausible for country &amp;1</td><td>FR-08</td></tr>
+<tr><td>010</td><td>W</td><td>Account already used by vendor &amp;1</td><td>FR-09</td></tr>
+<tr><td>011</td><td>I</td><td>No IBAN can be derived for this account</td><td>FR-14</td></tr>
+<tr><td>012</td><td>W</td><td>Bank account not checked: country &amp;1 has no account rule</td><td>FR-05</td></tr>
+</table>
+
+<h2><span class="sec-num">10</span> Error Handling</h2>
+<ul>
+<li>Business validation failures are <strong>returned as messages</strong> and never raised as exceptions. The caller decides whether to block, warn or log.</li>
+<li>Technical failures, such as an unexpected exception from a standard function, raise <code>ZCX_VENDOR_BANK_ERROR</code> (inherits from CX_STATIC_CHECK, T100-based). The original exception is attached as PREVIOUS.</li>
+<li>The class never shows a popup and never uses MESSAGE ... TYPE 'E'. It is safe for batch jobs, RFC and background runs.</li>
+<li>Empty input never causes a short dump. Every read handles "not found" explicitly.</li>
+</ul>
+
+<h2><span class="sec-num">11</span> Authorisation &amp; Data Protection</h2>
+<ul>
+<li>The class reads configuration and master data and does not perform its own authority check. The <strong>calling program</strong> is responsible for vendor-level authorisation (e.g. F_LFA1_BEK / F_LFA1_BUK) before it passes vendor data.</li>
+<li>Bank account numbers are sensitive personal and financial data. Display formatting is <strong>masked by default</strong> (FR-12/13). Full display needs the caller to pass the show-full flag explicitly.</li>
+<li>Account numbers are never written to application logs in clear text. Callers that log messages should use the masked form.</li>
+</ul>
+
+<h2><span class="sec-num">12</span> Non-Functional Requirements</h2>
+<table class="data">
+<tr><th>Area</th><th>Requirement</th></tr>
+<tr><td>Performance</td><td>One validation runs in under 50 ms. Country rules and bank master entries are buffered inside the instance. Mass callers can reuse one instance for thousands of records, e.g. all 1,231 LFBK rows.</td></tr>
+<tr><td>Compatibility</td><td>SAP_BASIS 740: inline declarations and constructor expressions allowed; no REDUCE, enums, AMDP, CDS-in-ABAP or RAP.</td></tr>
+<tr><td>Reusability</td><td>Independent of vendor vs customer. Bank checks take only country, key and account, so they can be reused later for KNBK.</td></tr>
+<tr><td>Quality</td><td>ATC clean (no priority 1/2 findings). ABAP Unit coverage of every FR, using the injected data-access fake.</td></tr>
+<tr><td>Translation</td><td>All user-facing texts are T100 messages; no hard-coded literals.</td></tr>
+</table>
+
+<h2><span class="sec-num">13</span> Test Scenarios (grounded in live data)</h2>
+<table class="data">
+<tr><th>#</th><th>Category</th><th>Input (country / key / account / control)</th><th>Expected result</th></tr>
+<tr><td>T01</td><td>Positive</td><td>DE / 56565656 / 88888888 (vendor 0000000001)</td><td>Valid. Key: 8 digits = DE rule 4 exact 8. Account: 8 digits, within DE rule 2 max 14. Bank "City-Bank Hamburg"</td></tr>
+<tr><td>T02</td><td>Positive</td><td>DE / 30080000 / 1234321 (vendor 0000000100)</td><td>Valid (7-digit account allowed under the "maximum" rule)</td></tr>
+<tr><td>T03</td><td>Positive</td><td>FR / 3000200650 / 11111111111 / 11 (vendor 0000000010)</td><td>Valid on length rules (key exact 10 numeric; account exact 11). Bank "Credit Lyonnais"</td></tr>
+<tr><td>T04</td><td>Negative</td><td>IN / "B 111" / 8888777788787 (LFBK record with no vendor)</td><td>Error 003 (IN rule 1 "without gaps") and Error 004 (not in BNKA for IN)</td></tr>
+<tr><td>T05</td><td>Negative</td><td>blank / blank / blank (empty LFBK record)</td><td>Error 001; country-dependent checks skipped; no dump</td></tr>
+<tr><td>T06</td><td>Negative</td><td>DE / 5656565 (7 digits) / 88888888</td><td>Error 003: DE requires exactly 8 numeric digits</td></tr>
+<tr><td>T07</td><td>Negative</td><td>DE / 56565656 / 8888A888</td><td>Error 007: DE account rule 2 is numerical</td></tr>
+<tr><td>T08</td><td>Boundary</td><td>DE / 56565656 / 14-digit account vs 15-digit account</td><td>14 digits valid; 15 digits → Error 007</td></tr>
+<tr><td>T09</td><td>Boundary</td><td>AR / 20050000 vs DE / 20050000</td><td>Both found, but with different banks (Citibank vs Deutsche Bank Hamburg). Proves the lookup uses country + key</td></tr>
+<tr><td>T10</td><td>Edge</td><td>US / &lt;valid key&gt; / any account</td><td>US account rule "0" → no format check on the account</td></tr>
+<tr><td>T11</td><td>Edge</td><td>IN / valid key / blank account</td><td>Warning 012 only (IN has no account rule); result still valid</td></tr>
+<tr><td>T12</td><td>Formatting</td><td>MASK_ACCOUNT( "88888888" )</td><td>"****8888"</td></tr>
+<tr><td>T13</td><td>Formatting</td><td>NORMALIZE( "de" / " 5656-5656 " / "8888 8888" )</td><td>"DE" / "56565656" / "88888888"</td></tr>
+<tr><td>T14</td><td>Formatting</td><td>GET_BANK_DETAILS( DK / 1234 )</td><td>"Danske Bank A/S", SWIFT DABADKKK</td></tr>
+<tr><td>T15</td><td>Duplicate</td><td>Vendor 0000001003 with DE / 23984899 / 12345678</td><td>Warning 010: account already used by vendor 0000001002</td></tr>
+<tr><td>T16</td><td>Regression</td><td>VALIDATE_ALL on T04 input</td><td>Returns <em>both</em> errors (003 and 004), with no early exit</td></tr>
+</table>
+
+<h2><span class="sec-num">14</span> Assumptions &amp; Open Points</h2>
+<table class="data">
+<tr><th>ID</th><th>Topic</th><th>Question / Assumption</th><th>Owner</th></tr>
+<tr><td>OP-01</td><td>Naming</td><td>Confirm the class name <code>ZCL_VENDOR_BANK_VALIDATOR</code>, the exception class <code>ZCX_VENDOR_BANK_ERROR</code>, message class <code>ZVBANK</code> and the target package.</td><td>Dev lead</td></tr>
+<tr><td>OP-02</td><td>Zero-padding</td><td>Should normalisation left-pad numeric "exact length" keys or accounts (e.g. DE bank key, FR account) or reject them as too short? Default assumption: reject, no padding.</td><td>AP business</td></tr>
+<tr><td>OP-03</td><td>XPRBK meaning</td><td>Assumed meaning: XPRBK = 'X' requires the additional SAP country check (FR-07). Confirm against OY17 for the countries in use.</td><td>FI config</td></tr>
+<tr><td>OP-04</td><td>Duplicates</td><td>Should a duplicate account at another vendor (FR-09) be a warning or a hard error?</td><td>AP / Compliance</td></tr>
+<tr><td>OP-05</td><td>Data clean-up</td><td>The LFBK records with blank vendor numbers (§3.2) are a data-quality issue outside this object. Raise a separate clean-up item.</td><td>Master data team</td></tr>
+<tr><td>OP-06</td><td>DK rules</td><td>The DK check rules were not part of the T005 extract above. Include them in the TS once confirmed.</td><td>FI config</td></tr>
+</table>
+
+<h2><span class="sec-num">15</span> Approval</h2>
+<table class="data">
+<tr><th>Role</th><th>Name</th><th>Date</th><th>Signature</th></tr>
+<tr><td>Business Owner (AP)</td><td></td><td></td><td></td></tr>
+<tr><td>FI Functional Lead</td><td></td><td></td><td></td></tr>
+<tr><td>Development Lead</td><td></td><td></td><td></td></tr>
+</table>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
