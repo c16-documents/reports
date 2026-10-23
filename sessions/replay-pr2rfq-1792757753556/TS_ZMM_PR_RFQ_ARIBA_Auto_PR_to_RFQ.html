@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<!--
+  C16 Document Template — v1.0
+  Brand spec: branding/README.md
+
+  To use:
+   1. Copy this file to your destination.
+   2. Replace ${...} placeholders.
+   3. Embed the C16 logo as base64 in the <img src="...">.
+   4. Add body content under <div class="doc-body">.
+   5. Render to PDF via tools/html_to_pdf.py.
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TS ZMM PR RFQ ARIBA Auto PR to RFQ</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm 18mm 20mm 18mm;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', Calibri, Arial, sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.55;
+    color: #1a1a1a;
+    background: #f4f5f6;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #ffffff;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+    border: 1px solid #d0d4d8;
+  }
+
+  /* HEADER */
+  .doc-header {
+    background: #003366;
+    color: #ffffff;
+    padding: 28px 36px 24px 36px;
+    border-bottom: 4px solid #7fb3e0;
+  }
+  .doc-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+  }
+  .doc-logo img { height: 40px; display: block; }
+  .doc-classification {
+    font-size: 8.5pt;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: #7fb3e0;
+    border: 1px solid #7fb3e0;
+    padding: 3px 12px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .doc-header h1 {
+    font-size: 22pt;
+    font-weight: 600;
+    letter-spacing: -0.3px;
+    margin: 0 0 4px 0;
+    line-height: 1.2;
+  }
+  .doc-header .doc-subtitle {
+    font-size: 11pt;
+    color: #7fb3e0;
+    font-weight: 400;
+  }
+
+  /* META */
+  .doc-meta {
+    padding: 16px 36px;
+    background: #f7f8fa;
+    border-bottom: 1px solid #d0d4d8;
+    font-size: 9.5pt;
+    color: #444;
+  }
+  .doc-meta table { width: 100%; border-collapse: collapse; }
+  .doc-meta td { padding: 3px 12px 3px 0; vertical-align: top; }
+  .doc-meta .meta-label { font-weight: 600; color: #003366; width: 90px; }
+
+  /* BODY */
+  .doc-body { padding: 28px 36px 36px 36px; background: #ffffff; }
+  .doc-body p { margin: 8px 0; }
+  .doc-body h2 {
+    font-size: 14pt;
+    color: #003366;
+    margin: 24px 0 12px 0;
+    padding-bottom: 6px;
+    border-bottom: 2px solid #7fb3e0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-body h2 .sec-num {
+    display: inline-block;
+    background: #003366;
+    color: white;
+    font-size: 11pt;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 3px;
+    line-height: 1;
+    min-width: 26px;
+    text-align: center;
+  }
+  .doc-body h3 { font-size: 11.5pt; color: #003366; margin: 18px 0 8px 0; font-weight: 600; }
+  .doc-body h4 { font-size: 10.5pt; color: #1a5c8a; margin: 12px 0 6px 0; font-weight: 600; }
+  .doc-body ul, .doc-body ol { margin: 8px 0 8px 22px; }
+  .doc-body li { margin: 4px 0; }
+
+  /* TABLES */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 14px 0;
+    font-size: 9.5pt;
+  }
+  table.data th, table.data td {
+    border: 1px solid #d0d4d8;
+    padding: 7px 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+  table.data th {
+    background: #003366;
+    color: white;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+  }
+  table.data tr:nth-child(even) td { background: #f7f8fa; }
+  table.data td.center { text-align: center; }
+
+  /* CALLOUTS */
+  .callout {
+    background: #f0f6fa;
+    border-left: 4px solid #1a5c8a;
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 10pt;
+    color: #1f2937;
+  }
+  .callout.tip { border-left-color: #15803D; background: #f0fdf4; }
+  .callout.warning { border-left-color: #C2410C; background: #fff7ed; }
+
+  /* PILLS — Clean Core levels */
+  .pill {
+    display: inline-block;
+    font-size: 8.5pt;
+    font-weight: 600;
+    padding: 2px 9px;
+    border-radius: 10px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+  }
+  .pill-a { background: #dcfce7; color: #15803D; }
+  .pill-b { background: #dbeafe; color: #1D4ED8; }
+  .pill-c { background: #fef3c7; color: #A16207; }
+  .pill-d { background: #fee2e2; color: #B91C1C; }
+
+  /* SYSTEM PILLS — engagement context strip under the header */
+  .doc-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .doc-pills .doc-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8.5pt;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    color: #ffffff;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+  }
+  .doc-pills .doc-pill .doc-pill-icon { font-size: 9pt; opacity: 0.9; }
+  .doc-pills .doc-pill.danger  { background: rgba(254, 226, 226, 0.18); border-color: rgba(254, 226, 226, 0.35); }
+  .doc-pills .doc-pill.warn    { background: rgba(254, 243, 199, 0.15); border-color: rgba(254, 243, 199, 0.35); }
+
+  /* KPI STRIP — volume counters under the pills */
+  .doc-kpi-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    font-size: 9pt;
+    color: rgba(255, 255, 255, 0.92);
+  }
+  .doc-kpi-strip .doc-kpi {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .doc-kpi-strip .doc-kpi-icon { font-size: 10.5pt; }
+  .doc-kpi-strip .doc-kpi-value { font-weight: 700; color: #ffffff; }
+  .doc-kpi-strip .doc-kpi-label { color: rgba(255, 255, 255, 0.78); }
+
+  /* PHASE TIMELINE */
+  .phase {
+    border-left: 3px solid #7fb3e0;
+    padding: 10px 16px;
+    margin: 10px 0;
+    background: #f7f8fa;
+  }
+  .phase strong { color: #003366; }
+  .phase .phase-dur { color: #1a5c8a; font-size: 9pt; }
+
+  /* DOC FOOTER (inside wrapper) */
+  .doc-footer {
+    background: #f7f8fa;
+    border-top: 1px solid #d0d4d8;
+    padding: 16px 36px;
+    font-size: 9pt;
+    color: #555;
+  }
+  .doc-footer table { width: 100%; }
+  .doc-footer .footer-right { text-align: right; color: #003366; font-weight: 600; }
+
+  @media print {
+    body { background: white; }
+    .doc-wrapper { box-shadow: none; border: none; margin: 0; max-width: 100%; }
+    h2, h3 { page-break-after: avoid; }
+    table.data { page-break-inside: avoid; }
+    .phase, .callout { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="doc-wrapper">
+
+  <!-- HEADER -->
+  <div class="doc-header">
+    <div class="doc-header-top">
+      <div class="doc-logo">
+        <!-- Replace src with base64 of c16-logo-horizontal-on-dark-1200.png -->
+        <img src="data:image/png;base64,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" alt="C16">
+      </div>
+      <div class="doc-classification">Reference</div>
+    </div>
+    <h1>TS ZMM PR RFQ ARIBA Auto PR to RFQ</h1>
+    <div class="doc-subtitle"></div>
+    
+    
+  </div>
+
+  <!-- META -->
+  <div class="doc-meta">
+    <table>
+      <tr>
+        <td class="meta-label">Topic</td>
+        <td>TS ZMM PR RFQ ARIBA Auto PR to RFQ</td>
+        <td class="meta-label">Date</td>
+        <td>23 October 2026</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Audience</td>
+        <td>CIOs, SAP program leaders, transformation architects</td>
+        <td class="meta-label">Author</td>
+        <td>C16 &mdash; AI for SAP operational efficiency</td>
+      </tr>
+      <tr>
+        <td class="meta-label">Scope</td>
+        <td></td>
+        <td class="meta-label">Version</td>
+        <td>1.0</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BODY -->
+  <div class="doc-body">
+<p><b>&lt;&lt;Customer Name&gt;&gt;</b><br/><b>&lt;&lt;Project Name&gt;&gt;</b></p>
+<p><b>TECHNICAL SPECIFICATION – REPORT</b><br/><b>ZMM_PR_RFQ_ARIBA – Automatic PR to S/4HANA RFQ Conversion and Ariba Publishing</b></p>
+<div class="callout warning"><b>Target system:</b> SAP S/4HANA. The release and deployment type are still open (OP-00). This TS assumes S/4HANA on-premise or RISE Private Cloud 2022+ with classic extensibility. All S/4HANA API, BO and service names are marked <b>TBV (to be verified on target)</b>; they could not be validated against the connected ECC system (SAP_BASIS 740). If the target is S/4HANA Public Cloud or ABAP Cloud (Tier 1), the frame must be redesigned as an application job in ABAP Cloud. Section 6 has the details.</div>
+
+<h2><span class="sec-num">1</span> Document Organization</h2>
+<p>This section provides details about this document, previous version(s) of this document and the document(s) referred.</p>
+<h3>1.1 Document Log</h3>
+<table class="data">
+<tr><th>Version</th><th>Status</th><th>Date</th><th>Version Created by</th><th>Role</th><th>Comments</th></tr>
+<tr><td>0.1</td><td>Draft</td><td>2026-10-23</td><td>C16</td><td>Author</td><td>Initial technical design derived from FS_ZMM_PR_RFQ_ARIBA v0.1</td></tr>
+<tr><td></td><td></td><td></td><td></td><td>Reviewer</td><td>Pending technical lead review</td></tr>
+</table>
+<h3>1.2 Integration, Document Reference</h3>
+<table class="data">
+<tr><th>S. No.</th><th>Referred Document Name</th><th>Referred Document Version</th><th>Referred Document URL (Optional)</th></tr>
+<tr><td>1</td><td>FS_ZMM_PR_RFQ_ARIBA – Automatic PR to RFQ (functional specification)</td><td>0.1</td><td>Documents panel</td></tr>
+<tr><td>2</td><td>S/4HANA ↔ SAP Ariba Sourcing integration setup guide (customer landscape)</td><td>TBD</td><td>—</td></tr>
+<tr><td>3</td><td>Requirement workshop answers (rounds 1–4)</td><td>23-Oct-2026</td><td>—</td></tr>
+</table>
+
+<h2><span class="sec-num">2</span> Code Quality</h2>
+<table class="data">
+<tr><th>Final Solution</th><th>Category</th><th>Comments</th></tr>
+<tr><td>Custom executable report (local classes) using released S/4HANA interfaces for RFQ create/publish, standard read APIs for PR/source list/supplier, and 2 custom tables</td><td>Level B (classic extensibility, on-prem / RISE Private Cloud). Writes are Level A where a released RFQ BO is used.</td><td>No modification, no implicit enhancement, no direct DML on standard tables. RFQ is created only through the released RFQ business object/API (TBV). The classic report frame, selection screen, ALV and SM30 view are accepted classic extensibility on on-prem / RISE Private Cloud. The design is <b>not</b> ABAP Cloud ready: on Public Cloud / Tier 1 the report frame, selection screen and SALV display would block, and the program would have to become an Application Job + Fiori log.</td></tr>
+</table>
+
+<h2><span class="sec-num">3</span> Program Attributes</h2>
+<table class="data">
+<tr><th>Attribute</th><th>Value</th></tr>
+<tr><td>Program title</td><td>Automatic PR to RFQ conversion with Ariba publishing</td></tr>
+<tr><td>Program Name</td><td>ZMM_PR_RFQ_ARIBA</td></tr>
+<tr><td>Program Type</td><td>Executable (background-enabled), single program with local classes</td></tr>
+<tr><td>Package</td><td>TBD by customer (e.g. ZMM_SOURCING)</td></tr>
+<tr><td>Authorization Group</td><td>ZMMP (proposed, program authorization group via S_PROGRAM)</td></tr>
+<tr><td>Transaction Code</td><td>ZMM_PRRFQ (report transaction). Maintenance transaction ZMM_PRRFQ_MAP for the mapping view.</td></tr>
+<tr><td>Include Programs</td><td>None (single program with local classes lcl_selection, lcl_processor, lcl_log, lcl_output)</td></tr>
+<tr><td>Function Modules</td><td>READ_TEXT; ENQUEUE_EZMM_PRRFQ / DEQUEUE_EZMM_PRRFQ (generated); BAL_LOG_CREATE, BAL_LOG_MSG_ADD, BAL_DB_SAVE (application log). Text write to RFQ via BO text entity or SAVE_TEXT (TBV).</td></tr>
+<tr><td>Message Class</td><td>ZMM_PRRFQ</td></tr>
+<tr><td>SAP Tables Read</td><td>EBAN (PR items; or released read view for PR items, TBV), EORD (source list), LFA1 / LFB1 / LFM1 (supplier blocks; or released supplier views, TBV), T024 (purchasing groups), T001W / T001K (plant → company code), T024W (plant ↔ purchasing org assignment), EKKO / EKPO (existing RFQ check, BSTYP = 'A'), STXH/STXL via READ_TEXT</td></tr>
+<tr><td>Custom Tables</td><td>ZMM_PRRFQ_ORGMAP (customising, delivery class C); ZMM_PRRFQ_LOG (application, delivery class A)</td></tr>
+<tr><td>Custom Indexes</td><td>None on standard tables. ZMM_PRRFQ_LOG secondary index on RUN_ID.</td></tr>
+<tr><td>CDS Views</td><td>No custom CDS. Released standard read views may be consumed for PR / supplier / source list if available on target (TBV).</td></tr>
+<tr><td>OData Service</td><td>None exposed. Consumed: RFQ business object via EML (released RFQ RAP BO, TBV). Alternative: RFQ OData API (API_RFQ_PROCESS_SRV, TBV).</td></tr>
+<tr><td>Business Object</td><td>Standard S/4HANA Request for Quotation BO (RAP, TBV). No BOPF.</td></tr>
+<tr><td>Fiori App Name</td><td>Not applicable (report). Buyers follow up in the standard RFQ app.</td></tr>
+<tr><td>Group Name</td><td>Not applicable</td></tr>
+<tr><td>Catalog Name</td><td>Not applicable</td></tr>
+</table>
+
+<h3>3.1 Selection Screen</h3>
+<p><b>Block B01: PR selection</b>. <b>Block B02: RFQ parameters</b>. <b>Block B03: Processing control</b>. Every field is typed against its dictionary field (Rule 3), and selection texts use "Dictionary reference" so labels come from the data element texts.</p>
+<table class="data">
+<tr><th>Parameter / Select Options</th><th>Type / Field Name</th><th>Mandatory</th><th>Default Value</th><th>Parameter ID</th><th>Search Help</th><th>Selection Screen Text</th></tr>
+<tr><td>S – S_EKGRP</td><td>EBAN-EKGRP</td><td>Yes</td><td>001</td><td>EKG</td><td>Standard (T024)</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_EKORG</td><td>EBAN-EKORG</td><td>No</td><td>—</td><td>EKO</td><td>Standard</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_WERKS</td><td>EBAN-WERKS</td><td>No</td><td>—</td><td>WRK</td><td>Standard</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_BSART</td><td>EBAN-BSART</td><td>No</td><td>NB</td><td>BAR</td><td>Standard</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_BANFN</td><td>EBAN-BANFN</td><td>No</td><td>—</td><td>BAN</td><td>Standard</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_MATKL</td><td>EBAN-MATKL</td><td>No</td><td>—</td><td>MKL</td><td>Standard</td><td>Dictionary reference</td></tr>
+<tr><td>S – S_BADAT</td><td>EBAN-BADAT (date)</td><td>No</td><td>sy-datum − 30 to sy-datum (set in INITIALIZATION; OP-03)</td><td>—</td><td>Calendar</td><td>Dictionary reference</td></tr>
+<tr><td>P – P_DLDAYS</td><td>ZMM_DE_RFQ_DEADLINE_DAYS (new data element, NUMC 3)</td><td>Yes</td><td>030</td><td>—</td><td>—</td><td>Dictionary reference ("Quotation deadline (days)")</td></tr>
+<tr><td>P – P_MAXBID</td><td>ZMM_DE_RFQ_MAX_BIDDERS (new data element, NUMC 1)</td><td>Yes</td><td>3</td><td>—</td><td>—</td><td>Dictionary reference ("Max. suppliers per RFQ")</td></tr>
+<tr><td>P – P_PUBL (checkbox)</td><td>XFELD</td><td>No</td><td>X</td><td>—</td><td>—</td><td>Publish RFQ to Ariba (text symbol)</td></tr>
+<tr><td>P – P_TEST (checkbox)</td><td>XFELD</td><td>No</td><td>X online. Space in job variant.</td><td>—</td><td>—</td><td>Test mode (simulation) (text symbol)</td></tr>
+</table>
+
+<h3>3.2 Validation of Selection Criteria</h3>
+<ul>
+<li><b>AT SELECTION-SCREEN ON S_EKGRP:</b> must not be initial (E, ZMM_PRRFQ 002). Every single value must exist in T024 (E, 003).</li>
+<li><b>AT SELECTION-SCREEN ON S_EKORG / S_WERKS:</b> single values must exist in T024E / T001W (E, 004).</li>
+<li><b>P_DLDAYS:</b> 1–365 (E, 005).</li>
+<li><b>P_MAXBID:</b> 1–9. Business default 3 (E, 006).</li>
+<li><b>Mapping completeness:</b> for each purchasing group in S_EKGRP with no entry in ZMM_PRRFQ_ORGMAP, warning 007 (online only). Items needing derivation will be skipped.</li>
+<li><b>Background check:</b> if sy-batch = abap_true and P_TEST = abap_true, write info 008 to the log ("Job running in test mode – no RFQs created").</li>
+<li><b>Authorisation:</b> AUTHORITY-CHECK on M_ANFR_EKO (ACTVT 01) for each single EKORG value entered. Item-level checks are repeated during processing (3.4).</li>
+<li><b>Run lock:</b> at START-OF-SELECTION, ENQUEUE_EZMM_PRRFQ (exclusive, mode E, scope client). If foreign lock, E 009 and the run stops.</li>
+</ul>
+
+<h3>3.3 CDS Views/AMDP/Table Function</h3>
+<p>No custom CDS view, AMDP or table function is created. The program uses Open SQL reads (or released standard read views where available on the target, TBV). The selection and join logic is documented below because it defines the data model.</p>
+<h4>3.3.1 Selection Condition</h4>
+<ul>
+<li><b>EBAN (PR items):</b> EKGRP IN s_ekgrp, EKORG IN s_ekorg, WERKS IN s_werks, BSART IN s_bsart, BANFN IN s_banfn, MATKL IN s_matkl, BADAT IN s_badat.
+ <ul>
+ <li>Not deleted: LOEKZ = space.</li>
+ <li>Not closed: EBAKZ = space.</li>
+ <li>Released: FRGRL = space (release complete or not subject to release; OP-02).</li>
+ <li>Open: STATU = 'N' (not yet processed; TBV on S/4), EBELN = space, KONNR = space.</li>
+ <li>Open quantity: MENGE − BSMNG &gt; 0.</li>
+ <li>Item category: PSTYP IN lr_pstyp (default standard '0' only; OP-04).</li>
+ </ul></li>
+<li><b>ZMM_PRRFQ_LOG:</b> exclude BANFN/BNFPO with STATUS IN ('C','P'), i.e. RFQ created or published.</li>
+<li><b>EKPO (existing RFQ):</b> exclude PR items already referenced by an RFQ item: EKPO-BANFN/BNFPO with EKKO-BSTYP = 'A' and LOEKZ = space.</li>
+<li><b>EORD (source list):</b> MATNR/WERKS FOR ALL ENTRIES of PR items (driver checked not initial, R-RT09). VDATU ≤ sy-datum ≤ BDATU, NOTKZ = space (not blocked), EKORG = derived org or space.</li>
+<li><b>Supplier checks:</b> LFA1 (SPERM purchasing block, SPERR posting block, LOEVM deletion flag), LFM1 (SPERM per EKORG), LFB1 (SPERR per BUKRS). Fields to be verified via DD03L on the target before coding.</li>
+</ul>
+<h4>3.3.2 Join Condition</h4>
+<ul>
+<li>EBAN → ZMM_PRRFQ_ORGMAP: EBAN-EKGRP = ORGMAP-EKGRP (AND ORGMAP-WERKS = EBAN-WERKS or ORGMAP-WERKS = space, plant-specific entry first).</li>
+<li>EBAN → T001W → T001K: EBAN-WERKS = T001W-WERKS; T001W-BWKEY = T001K-BWKEY (gives BUKRS).</li>
+<li>Derived org check: T024W-WERKS = EBAN-WERKS AND T024W-EKORG = derived org.</li>
+<li>EBAN → EORD: EBAN-MATNR = EORD-MATNR AND EBAN-WERKS = EORD-WERKS.</li>
+<li>Bidder → LFA1 / LFM1 (LIFNR + EKORG) / LFB1 (LIFNR + BUKRS).</li>
+<li>EBAN → EKPO/EKKO: EKPO-BANFN = EBAN-BANFN AND EKPO-BNFPO = EBAN-BNFPO; EKKO-EBELN = EKPO-EBELN AND EKKO-BSTYP = 'A'.</li>
+</ul>
+<h4>3.3.3 Fields</h4>
+<table class="data">
+<tr><th>Table</th><th>Fields read</th></tr>
+<tr><td>EBAN</td><td>BANFN, BNFPO, BSART, EKGRP, EKORG, WERKS, LGORT, MATNR, MATKL, TXZ01, MENGE, BSMNG, MEINS, LFDAT, BADAT, LIFNR (desired), FLIEF (fixed), KNTTP, PSTYP, WAERS, PREIS, PEINH, FRGRL, FRGKZ, STATU</td></tr>
+<tr><td>EORD</td><td>MATNR, WERKS, ZEORD, LIFNR, EKORG, VDATU, BDATU, FLIFN (fixed source), NOTKZ (blocked)</td></tr>
+<tr><td>LFA1 / LFM1 / LFB1</td><td>LIFNR, SPERM, SPERR, LOEVM / LIFNR, EKORG, SPERM / LIFNR, BUKRS, SPERR</td></tr>
+<tr><td>T001W / T001K / T024W</td><td>WERKS, BWKEY / BWKEY, BUKRS / WERKS, EKORG</td></tr>
+<tr><td>ZMM_PRRFQ_ORGMAP</td><td>EKGRP, WERKS, EKORG, ACTIVE</td></tr>
+<tr><td>EKBE / EBKN</td><td>EBKN (account assignment of PR item) when KNTTP ≠ space, to copy to the RFQ item</td></tr>
+</table>
+<h4>3.3.4 Additional Details</h4>
+<p><b>New DDIC objects.</b> Every field uses a data element, and labels come from the data elements (D1):</p>
+<table class="data">
+<tr><th>Object</th><th>Fields (key*)</th><th>Settings</th></tr>
+<tr><td>ZMM_PRRFQ_ORGMAP</td><td>MANDT*, EKGRP* (EKGRP), WERKS* (WERKS_D, space = all plants), EKORG (EKORG), ACTIVE (XFELD), changed by/on (AENAM / AEDAT)</td><td>Delivery class C. Table maintenance generator, authorisation group ZMM. Log data changes = X.</td></tr>
+<tr><td>ZMM_PRRFQ_LOG</td><td>MANDT*, BANFN* (BANFN), BNFPO* (BNFPO), RUN_ID* (SYSUUID_C32 via data element ZMM_DE_PRRFQ_RUNID), RFQ_EBELN (EBELN), RFQ_NAME (ZMM_DE_RFQ_NAME, CHAR 40), EKORG, ORG_SOURCE (ZMM_DE_ORG_SOURCE: P = PR, M = mapping), BIDDER1-3 (LIFNR), STATUS (ZMM_DE_PRRFQ_STATUS: C created, P published, F publish failed, S skipped, E error), MSGTXT (BAPI_MSG), ERNAM, ERDAT, ERZET</td><td>Delivery class A. Secondary index on RUN_ID. Archiving / retention 2 years (housekeeping report out of scope).</td></tr>
+<tr><td>EZMM_PRRFQ</td><td>Lock object on ZMM_PRRFQ_LOG (MANDT only)</td><td>Run lock</td></tr>
+<tr><td>Application log</td><td>Object ZMM, subobject PRRFQ (SLG0)</td><td>External ID = RUN_ID</td></tr>
+</table>
+<h4>3.3.5 GIT Repository Details</h4>
+<table class="data">
+<tr><th>Development Details</th><th></th></tr>
+<tr><td>GIT Location</td><td>Not applicable (ABAP transport-based). An abapGit repository is optional if used by the customer.</td></tr>
+<tr><td>GIT URL</td><td>Not applicable</td></tr>
+</table>
+
+<h3>3.4 Authorization Requirements</h3>
+<h4>3.4.1 Definition</h4>
+<p>Standard authorisation objects only. No custom authorisation object is required.</p>
+<ul>
+<li><b>M_ANFR_EKO</b>: RFQ purchasing org</li>
+<li><b>M_ANFR_EKG</b>: RFQ purchasing group</li>
+<li><b>M_ANFR_WRK</b>: RFQ plant</li>
+<li><b>M_ANFR_BSA</b>: RFQ document type</li>
+<li><b>M_BANF_EKG / M_BANF_WRK</b>: display PR</li>
+<li><b>S_TCODE</b>: ZMM_PRRFQ / ZMM_PRRFQ_MAP</li>
+<li><b>S_PROGRAM</b>: group ZMMP</li>
+<li><b>S_TABU_NAM</b>: ZMM_PRRFQ_ORGMAP (maintenance)</li>
+<li><b>S_APPL_LOG</b>: display application log</li>
+</ul>
+<p>The S/4HANA RFQ BO performs its own instance authorisation on create (TBV).</p>
+<h4>3.4.2 Defined Fields</h4>
+<table class="data">
+<tr><th>Object</th><th>Field</th><th>Values</th></tr>
+<tr><td>M_ANFR_EKO</td><td>ACTVT / EKORG</td><td>01 (create), 02 (change for publish) / orgs in scope</td></tr>
+<tr><td>M_ANFR_EKG</td><td>ACTVT / EKGRP</td><td>01, 02 / 001</td></tr>
+<tr><td>M_ANFR_WRK</td><td>ACTVT / WERKS</td><td>01, 02 / plants in scope</td></tr>
+<tr><td>M_ANFR_BSA</td><td>ACTVT / BSART</td><td>01, 02 / RFQ type in use</td></tr>
+<tr><td>M_BANF_EKG, M_BANF_WRK</td><td>ACTVT</td><td>03</td></tr>
+<tr><td>S_TABU_NAM</td><td>ACTVT / TABLE</td><td>02, 03 / ZMM_PRRFQ_ORGMAP</td></tr>
+</table>
+<h4>3.4.3 Procedure</h4>
+<p>For each candidate PR item, after org derivation, the program runs AUTHORITY-CHECK on M_ANFR_EKO (EKORG = derived org, ACTVT 01), M_ANFR_EKG (EKGRP) and M_ANFR_WRK (WERKS). If sy-subrc ≠ 0, the item is skipped with E 020 "No authorisation to create RFQ for org &amp;1 / group &amp;2 / plant &amp;3".</p>
+<p>The job user gets a dedicated role, e.g. Z_MM_PRRFQ_BATCH, containing the values above for the scoped orgs. Key users get Z_MM_PRRFQ_MAP for mapping maintenance.</p>
+<h4>3.4.4 DCL Details</h4>
+<p>Not applicable. No custom CDS view or DCL. Standard DCL of released read views (if used) applies.</p>
+<h4>3.4.5 BTP Details</h4>
+<table class="data">
+<tr><td>xs-security Configuration</td><td>Not applicable (no BTP component)</td></tr>
+<tr><td>IDP Setup</td><td>Not applicable</td></tr>
+<tr><td>BTP Role Collections</td><td>Not applicable. Middleware roles for Ariba connectivity are owned by the integration team.</td></tr>
+</table>
+
+<h3>3.5 Technical Flow Diagram</h3>
+<figure class="mermaid-rendered" style="margin:12px 0;text-align:center;"><svg id="mermaid-1792758311581" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="max-width:100%;height:auto;" viewBox="-50 -10 2101.5 1233" role="graphics-document document" aria-roledescription="sequence"><g><rect x="1845.5" y="1147" fill="#eaeaea" stroke="#666" width="156" height="65" name="AR" rx="3" ry="3" class="actor actor-bottom"></rect><text x="1923.5" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1923.5" dy="0">SAP Ariba Sourcing</tspan></text></g><g><rect x="1537.5" y="1147" fill="#eaeaea" stroke="#666" width="258" height="65" name="OM" rx="3" ry="3" class="actor actor-bottom"></rect><text x="1666.5" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1666.5" dy="0">Output Mgmt / Outbound service</tspan></text></g><g><rect x="1234.5" y="1147" fill="#eaeaea" stroke="#666" width="188" height="65" name="BO" rx="3" ry="3" class="actor actor-bottom"></rect><text x="1328.5" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1328.5" dy="0">S/4HANA RFQ BO (TBV)</tspan></text></g><g><rect x="998.5" y="1147" fill="#eaeaea" stroke="#666" width="186" height="65" name="M" rx="3" ry="3" class="actor actor-bottom"></rect><text x="1091.5" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1091.5" dy="0">ZMM_PRRFQ_ORGMAP</tspan></text></g><g><rect x="713.5" y="1147" fill="#eaeaea" stroke="#666" width="235" height="65" name="DB" rx="3" ry="3" class="actor actor-bottom"></rect><text x="831" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="831" dy="0">PR / Source list / Supplier data</tspan></text></g><g><rect x="312.5" y="1147" fill="#eaeaea" stroke="#666" width="171" height="65" name="P" rx="3" ry="3" class="actor actor-bottom"></rect><text x="398" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="398" dy="0">ZMM_PR_RFQ_ARIBA</tspan></text></g><g><rect x="0" y="1147" fill="#eaeaea" stroke="#666" width="150" height="65" name="J" rx="3" ry="3" class="actor actor-bottom"></rect><text x="75" y="1179.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="75" dy="0">Job / User</tspan></text></g><g><line id="actor6" x1="1923.5" y1="65" x2="1923.5" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="AR"></line><g id="root-6"><rect x="1845.5" y="0" fill="#eaeaea" stroke="#666" width="156" height="65" name="AR" rx="3" ry="3" class="actor actor-top"></rect><text x="1923.5" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1923.5" dy="0">SAP Ariba Sourcing</tspan></text></g></g><g><line id="actor5" x1="1666.5" y1="65" x2="1666.5" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="OM"></line><g id="root-5"><rect x="1537.5" y="0" fill="#eaeaea" stroke="#666" width="258" height="65" name="OM" rx="3" ry="3" class="actor actor-top"></rect><text x="1666.5" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1666.5" dy="0">Output Mgmt / Outbound service</tspan></text></g></g><g><line id="actor4" x1="1328.5" y1="65" x2="1328.5" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="BO"></line><g id="root-4"><rect x="1234.5" y="0" fill="#eaeaea" stroke="#666" width="188" height="65" name="BO" rx="3" ry="3" class="actor actor-top"></rect><text x="1328.5" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1328.5" dy="0">S/4HANA RFQ BO (TBV)</tspan></text></g></g><g><line id="actor3" x1="1091.5" y1="65" x2="1091.5" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="M"></line><g id="root-3"><rect x="998.5" y="0" fill="#eaeaea" stroke="#666" width="186" height="65" name="M" rx="3" ry="3" class="actor actor-top"></rect><text x="1091.5" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="1091.5" dy="0">ZMM_PRRFQ_ORGMAP</tspan></text></g></g><g><line id="actor2" x1="831" y1="65" x2="831" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="DB"></line><g id="root-2"><rect x="713.5" y="0" fill="#eaeaea" stroke="#666" width="235" height="65" name="DB" rx="3" ry="3" class="actor actor-top"></rect><text x="831" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="831" dy="0">PR / Source list / Supplier data</tspan></text></g></g><g><line id="actor1" x1="398" y1="65" x2="398" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="P"></line><g id="root-1"><rect x="312.5" y="0" fill="#eaeaea" stroke="#666" width="171" height="65" name="P" rx="3" ry="3" class="actor actor-top"></rect><text x="398" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="398" dy="0">ZMM_PR_RFQ_ARIBA</tspan></text></g></g><g><line id="actor0" x1="75" y1="65" x2="75" y2="1147" class="actor-line 200" stroke-width="0.5px" stroke="#999" name="J"></line><g id="root-0"><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" name="J" rx="3" ry="3" class="actor actor-top"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor actor-box" style="text-anchor: middle; font-size: 16px; font-weight: 400;"><tspan x="75" dy="0">Job / User</tspan></text></g></g><style>#mermaid-1792758311581{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}@keyframes edge-animation-frame{from{stroke-dashoffset:0;}}@keyframes dash{to{stroke-dashoffset:0;}}#mermaid-1792758311581 .edge-animation-slow{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 50s linear infinite;stroke-linecap:round;}#mermaid-1792758311581 .edge-animation-fast{stroke-dasharray:9,5!important;stroke-dashoffset:900;animation:dash 20s linear infinite;stroke-linecap:round;}#mermaid-1792758311581 .error-icon{fill:#552222;}#mermaid-1792758311581 .error-text{fill:#552222;stroke:#552222;}#mermaid-1792758311581 .edge-thickness-normal{stroke-width:1px;}#mermaid-1792758311581 .edge-thickness-thick{stroke-width:3.5px;}#mermaid-1792758311581 .edge-pattern-solid{stroke-dasharray:0;}#mermaid-1792758311581 .edge-thickness-invisible{stroke-width:0;fill:none;}#mermaid-1792758311581 .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-1792758311581 .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-1792758311581 .marker{fill:#666;stroke:#666;}#mermaid-1792758311581 .marker.cross{stroke:#666;}#mermaid-1792758311581 svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-1792758311581 p{margin:0;}#mermaid-1792758311581 .actor{stroke:hsl(0, 0%, 83%);fill:#eee;}#mermaid-1792758311581 text.actor&gt;tspan{fill:#333;stroke:none;}#mermaid-1792758311581 .actor-line{stroke:hsl(0, 0%, 83%);}#mermaid-1792758311581 .innerArc{stroke-width:1.5;stroke-dasharray:none;}#mermaid-1792758311581 .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:#333;}#mermaid-1792758311581 .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:#333;}#mermaid-1792758311581 #arrowhead path{fill:#333;stroke:#333;}#mermaid-1792758311581 .sequenceNumber{fill:white;}#mermaid-1792758311581 #sequencenumber{fill:#333;}#mermaid-1792758311581 #crosshead path{fill:#333;stroke:#333;}#mermaid-1792758311581 .messageText{fill:#333;stroke:none;}#mermaid-1792758311581 .labelBox{stroke:hsl(0, 0%, 83%);fill:#eee;}#mermaid-1792758311581 .labelText,#mermaid-1792758311581 .labelText&gt;tspan{fill:#333;stroke:none;}#mermaid-1792758311581 .loopText,#mermaid-1792758311581 .loopText&gt;tspan{fill:#333;stroke:none;}#mermaid-1792758311581 .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:hsl(0, 0%, 83%);fill:hsl(0, 0%, 83%);}#mermaid-1792758311581 .note{stroke:#999;fill:#666;}#mermaid-1792758311581 .noteText,#mermaid-1792758311581 .noteText&gt;tspan{fill:#fff;stroke:none;}#mermaid-1792758311581 .activation0{fill:#f4f4f4;stroke:#666;}#mermaid-1792758311581 .activation1{fill:#f4f4f4;stroke:#666;}#mermaid-1792758311581 .activation2{fill:#f4f4f4;stroke:#666;}#mermaid-1792758311581 .actorPopupMenu{position:absolute;}#mermaid-1792758311581 .actorPopupMenuPanel{position:absolute;fill:#eee;box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2);filter:drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));}#mermaid-1792758311581 .actor-man line{stroke:hsl(0, 0%, 83%);fill:#eee;}#mermaid-1792758311581 .actor-man circle,#mermaid-1792758311581 line{stroke:hsl(0, 0%, 83%);fill:#eee;stroke-width:2px;}#mermaid-1792758311581 :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style><g></g><defs><symbol id="computer" width="24" height="24"><path transform="scale(.5)" d="M2 2v13h20v-13h-20zm18 11h-16v-9h16v9zm-10.228 6l.466-1h3.524l.467 1h-4.457zm14.228 3h-24l2-6h2.104l-1.33 4h18.45l-1.297-4h2.073l2 6zm-5-10h-14v-7h14v7z"></path></symbol></defs><defs><symbol id="database" fill-rule="evenodd" clip-rule="evenodd"><path transform="scale(.5)" d="M12.258.001l.256.004.255.005.253.008.251.01.249.012.247.015.246.016.242.019.241.02.239.023.236.024.233.027.231.028.229.031.225.032.223.034.22.036.217.038.214.04.211.041.208.043.205.045.201.046.198.048.194.05.191.051.187.053.183.054.18.056.175.057.172.059.168.06.163.061.16.063.155.064.15.066.074.033.073.033.071.034.07.034.069.035.068.035.067.035.066.035.064.036.064.036.062.036.06.036.06.037.058.037.058.037.055.038.055.038.053.038.052.038.051.039.05.039.048.039.047.039.045.04.044.04.043.04.041.04.04.041.039.041.037.041.036.041.034.041.033.042.032.042.03.042.029.042.027.042.026.043.024.043.023.043.021.043.02.043.018.044.017.043.015.044.013.044.012.044.011.045.009.044.007.045.006.045.004.045.002.045.001.045v17l-.001.045-.002.045-.004.045-.006.045-.007.045-.009.044-.011.045-.012.044-.013.044-.015.044-.017.043-.018.044-.02.043-.021.043-.023.043-.024.043-.026.043-.027.042-.029.042-.03.042-.032.042-.033.042-.034.041-.036.041-.037.041-.039.041-.04.041-.041.04-.043.04-.044.04-.045.04-.047.039-.048.039-.05.039-.051.039-.052.038-.053.038-.055.038-.055.038-.058.037-.058.037-.06.037-.06.036-.062.036-.064.036-.064.036-.066.035-.067.035-.068.035-.069.035-.07.034-.071.034-.073.033-.074.033-.15.066-.155.064-.16.063-.163.061-.168.06-.172.059-.175.057-.18.056-.183.054-.187.053-.191.051-.194.05-.198.048-.201.046-.205.045-.208.043-.211.041-.214.04-.217.038-.22.036-.223.034-.225.032-.229.031-.231.028-.233.027-.236.024-.239.023-.241.02-.242.019-.246.016-.247.015-.249.012-.251.01-.253.008-.255.005-.256.004-.258.001-.258-.001-.256-.004-.255-.005-.253-.008-.251-.01-.249-.012-.247-.015-.245-.016-.243-.019-.241-.02-.238-.023-.236-.024-.234-.027-.231-.028-.228-.031-.226-.032-.223-.034-.22-.036-.217-.038-.214-.04-.211-.041-.208-.043-.204-.045-.201-.046-.198-.048-.195-.05-.19-.051-.187-.053-.184-.054-.179-.056-.176-.057-.172-.059-.167-.06-.164-.061-.159-.063-.155-.064-.151-.066-.074-.033-.072-.033-.072-.034-.07-.034-.069-.035-.068-.035-.067-.035-.066-.035-.064-.036-.063-.036-.062-.036-.061-.036-.06-.037-.058-.037-.057-.037-.056-.038-.055-.038-.053-.038-.052-.038-.051-.039-.049-.039-.049-.039-.046-.039-.046-.04-.044-.04-.043-.04-.041-.04-.04-.041-.039-.041-.037-.041-.036-.041-.034-.041-.033-.042-.032-.042-.03-.042-.029-.042-.027-.042-.026-.043-.024-.043-.023-.043-.021-.043-.02-.043-.018-.044-.017-.043-.015-.044-.013-.044-.012-.044-.011-.045-.009-.044-.007-.045-.006-.045-.004-.045-.002-.045-.001-.045v-17l.001-.045.002-.045.004-.045.006-.045.007-.045.009-.044.011-.045.012-.044.013-.044.015-.044.017-.043.018-.044.02-.043.021-.043.023-.043.024-.043.026-.043.027-.042.029-.042.03-.042.032-.042.033-.042.034-.041.036-.041.037-.041.039-.041.04-.041.041-.04.043-.04.044-.04.046-.04.046-.039.049-.039.049-.039.051-.039.052-.038.053-.038.055-.038.056-.038.057-.037.058-.037.06-.037.061-.036.062-.036.063-.036.064-.036.066-.035.067-.035.068-.035.069-.035.07-.034.072-.034.072-.033.074-.033.151-.066.155-.064.159-.063.164-.061.167-.06.172-.059.176-.057.179-.056.184-.054.187-.053.19-.051.195-.05.198-.048.201-.046.204-.045.208-.043.211-.041.214-.04.217-.038.22-.036.223-.034.226-.032.228-.031.231-.028.234-.027.236-.024.238-.023.241-.02.243-.019.245-.016.247-.015.249-.012.251-.01.253-.008.255-.005.256-.004.258-.001.258.001zm-9.258 20.499v.01l.001.021.003.021.004.022.005.021.006.022.007.022.009.023.01.022.011.023.012.023.013.023.015.023.016.024.017.023.018.024.019.024.021.024.022.025.023.024.024.025.052.049.056.05.061.051.066.051.07.051.075.051.079.052.084.052.088.052.092.052.097.052.102.051.105.052.11.052.114.051.119.051.123.051.127.05.131.05.135.05.139.048.144.049.147.047.152.047.155.047.16.045.163.045.167.043.171.043.176.041.178.041.183.039.187.039.19.037.194.035.197.035.202.033.204.031.209.03.212.029.216.027.219.025.222.024.226.021.23.02.233.018.236.016.24.015.243.012.246.01.249.008.253.005.256.004.259.001.26-.001.257-.004.254-.005.25-.008.247-.011.244-.012.241-.014.237-.016.233-.018.231-.021.226-.021.224-.024.22-.026.216-.027.212-.028.21-.031.205-.031.202-.034.198-.034.194-.036.191-.037.187-.039.183-.04.179-.04.175-.042.172-.043.168-.044.163-.045.16-.046.155-.046.152-.047.148-.048.143-.049.139-.049.136-.05.131-.05.126-.05.123-.051.118-.052.114-.051.11-.052.106-.052.101-.052.096-.052.092-.052.088-.053.083-.051.079-.052.074-.052.07-.051.065-.051.06-.051.056-.05.051-.05.023-.024.023-.025.021-.024.02-.024.019-.024.018-.024.017-.024.015-.023.014-.024.013-.023.012-.023.01-.023.01-.022.008-.022.006-.022.006-.022.004-.022.004-.021.001-.021.001-.021v-4.127l-.077.055-.08.053-.083.054-.085.053-.087.052-.09.052-.093.051-.095.05-.097.05-.1.049-.102.049-.105.048-.106.047-.109.047-.111.046-.114.045-.115.045-.118.044-.12.043-.122.042-.124.042-.126.041-.128.04-.13.04-.132.038-.134.038-.135.037-.138.037-.139.035-.142.035-.143.034-.144.033-.147.032-.148.031-.15.03-.151.03-.153.029-.154.027-.156.027-.158.026-.159.025-.161.024-.162.023-.163.022-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.011-.178.01-.179.008-.179.008-.181.006-.182.005-.182.004-.184.003-.184.002h-.37l-.184-.002-.184-.003-.182-.004-.182-.005-.181-.006-.179-.008-.179-.008-.178-.01-.176-.011-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.022-.162-.023-.161-.024-.159-.025-.157-.026-.156-.027-.155-.027-.153-.029-.151-.03-.15-.03-.148-.031-.146-.032-.145-.033-.143-.034-.141-.035-.14-.035-.137-.037-.136-.037-.134-.038-.132-.038-.13-.04-.128-.04-.126-.041-.124-.042-.122-.042-.12-.044-.117-.043-.116-.045-.113-.045-.112-.046-.109-.047-.106-.047-.105-.048-.102-.049-.1-.049-.097-.05-.095-.05-.093-.052-.09-.051-.087-.052-.085-.053-.083-.054-.08-.054-.077-.054v4.127zm0-5.654v.011l.001.021.003.021.004.021.005.022.006.022.007.022.009.022.01.022.011.023.012.023.013.023.015.024.016.023.017.024.018.024.019.024.021.024.022.024.023.025.024.024.052.05.056.05.061.05.066.051.07.051.075.052.079.051.084.052.088.052.092.052.097.052.102.052.105.052.11.051.114.051.119.052.123.05.127.051.131.05.135.049.139.049.144.048.147.048.152.047.155.046.16.045.163.045.167.044.171.042.176.042.178.04.183.04.187.038.19.037.194.036.197.034.202.033.204.032.209.03.212.028.216.027.219.025.222.024.226.022.23.02.233.018.236.016.24.014.243.012.246.01.249.008.253.006.256.003.259.001.26-.001.257-.003.254-.006.25-.008.247-.01.244-.012.241-.015.237-.016.233-.018.231-.02.226-.022.224-.024.22-.025.216-.027.212-.029.21-.03.205-.032.202-.033.198-.035.194-.036.191-.037.187-.039.183-.039.179-.041.175-.042.172-.043.168-.044.163-.045.16-.045.155-.047.152-.047.148-.048.143-.048.139-.05.136-.049.131-.05.126-.051.123-.051.118-.051.114-.052.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.051.07-.052.065-.051.06-.05.056-.051.051-.049.023-.025.023-.024.021-.025.02-.024.019-.024.018-.024.017-.024.015-.023.014-.023.013-.024.012-.022.01-.023.01-.023.008-.022.006-.022.006-.022.004-.021.004-.022.001-.021.001-.021v-4.139l-.077.054-.08.054-.083.054-.085.052-.087.053-.09.051-.093.051-.095.051-.097.05-.1.049-.102.049-.105.048-.106.047-.109.047-.111.046-.114.045-.115.044-.118.044-.12.044-.122.042-.124.042-.126.041-.128.04-.13.039-.132.039-.134.038-.135.037-.138.036-.139.036-.142.035-.143.033-.144.033-.147.033-.148.031-.15.03-.151.03-.153.028-.154.028-.156.027-.158.026-.159.025-.161.024-.162.023-.163.022-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.011-.178.009-.179.009-.179.007-.181.007-.182.005-.182.004-.184.003-.184.002h-.37l-.184-.002-.184-.003-.182-.004-.182-.005-.181-.007-.179-.007-.179-.009-.178-.009-.176-.011-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.022-.162-.023-.161-.024-.159-.025-.157-.026-.156-.027-.155-.028-.153-.028-.151-.03-.15-.03-.148-.031-.146-.033-.145-.033-.143-.033-.141-.035-.14-.036-.137-.036-.136-.037-.134-.038-.132-.039-.13-.039-.128-.04-.126-.041-.124-.042-.122-.043-.12-.043-.117-.044-.116-.044-.113-.046-.112-.046-.109-.046-.106-.047-.105-.048-.102-.049-.1-.049-.097-.05-.095-.051-.093-.051-.09-.051-.087-.053-.085-.052-.083-.054-.08-.054-.077-.054v4.139zm0-5.666v.011l.001.02.003.022.004.021.005.022.006.021.007.022.009.023.01.022.011.023.012.023.013.023.015.023.016.024.017.024.018.023.019.024.021.025.022.024.023.024.024.025.052.05.056.05.061.05.066.051.07.051.075.052.079.051.084.052.088.052.092.052.097.052.102.052.105.051.11.052.114.051.119.051.123.051.127.05.131.05.135.05.139.049.144.048.147.048.152.047.155.046.16.045.163.045.167.043.171.043.176.042.178.04.183.04.187.038.19.037.194.036.197.034.202.033.204.032.209.03.212.028.216.027.219.025.222.024.226.021.23.02.233.018.236.017.24.014.243.012.246.01.249.008.253.006.256.003.259.001.26-.001.257-.003.254-.006.25-.008.247-.01.244-.013.241-.014.237-.016.233-.018.231-.02.226-.022.224-.024.22-.025.216-.027.212-.029.21-.03.205-.032.202-.033.198-.035.194-.036.191-.037.187-.039.183-.039.179-.041.175-.042.172-.043.168-.044.163-.045.16-.045.155-.047.152-.047.148-.048.143-.049.139-.049.136-.049.131-.051.126-.05.123-.051.118-.052.114-.051.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.052.07-.051.065-.051.06-.051.056-.05.051-.049.023-.025.023-.025.021-.024.02-.024.019-.024.018-.024.017-.024.015-.023.014-.024.013-.023.012-.023.01-.022.01-.023.008-.022.006-.022.006-.022.004-.022.004-.021.001-.021.001-.021v-4.153l-.077.054-.08.054-.083.053-.085.053-.087.053-.09.051-.093.051-.095.051-.097.05-.1.049-.102.048-.105.048-.106.048-.109.046-.111.046-.114.046-.115.044-.118.044-.12.043-.122.043-.124.042-.126.041-.128.04-.13.039-.132.039-.134.038-.135.037-.138.036-.139.036-.142.034-.143.034-.144.033-.147.032-.148.032-.15.03-.151.03-.153.028-.154.028-.156.027-.158.026-.159.024-.161.024-.162.023-.163.023-.165.021-.166.02-.167.019-.169.018-.169.017-.171.016-.173.015-.173.014-.175.013-.175.012-.177.01-.178.01-.179.009-.179.007-.181.006-.182.006-.182.004-.184.003-.184.001-.185.001-.185-.001-.184-.001-.184-.003-.182-.004-.182-.006-.181-.006-.179-.007-.179-.009-.178-.01-.176-.01-.176-.012-.175-.013-.173-.014-.172-.015-.171-.016-.17-.017-.169-.018-.167-.019-.166-.02-.165-.021-.163-.023-.162-.023-.161-.024-.159-.024-.157-.026-.156-.027-.155-.028-.153-.028-.151-.03-.15-.03-.148-.032-.146-.032-.145-.033-.143-.034-.141-.034-.14-.036-.137-.036-.136-.037-.134-.038-.132-.039-.13-.039-.128-.041-.126-.041-.124-.041-.122-.043-.12-.043-.117-.044-.116-.044-.113-.046-.112-.046-.109-.046-.106-.048-.105-.048-.102-.048-.1-.05-.097-.049-.095-.051-.093-.051-.09-.052-.087-.052-.085-.053-.083-.053-.08-.054-.077-.054v4.153zm8.74-8.179l-.257.004-.254.005-.25.008-.247.011-.244.012-.241.014-.237.016-.233.018-.231.021-.226.022-.224.023-.22.026-.216.027-.212.028-.21.031-.205.032-.202.033-.198.034-.194.036-.191.038-.187.038-.183.04-.179.041-.175.042-.172.043-.168.043-.163.045-.16.046-.155.046-.152.048-.148.048-.143.048-.139.049-.136.05-.131.05-.126.051-.123.051-.118.051-.114.052-.11.052-.106.052-.101.052-.096.052-.092.052-.088.052-.083.052-.079.052-.074.051-.07.052-.065.051-.06.05-.056.05-.051.05-.023.025-.023.024-.021.024-.02.025-.019.024-.018.024-.017.023-.015.024-.014.023-.013.023-.012.023-.01.023-.01.022-.008.022-.006.023-.006.021-.004.022-.004.021-.001.021-.001.021.001.021.001.021.004.021.004.022.006.021.006.023.008.022.01.022.01.023.012.023.013.023.014.023.015.024.017.023.018.024.019.024.02.025.021.024.023.024.023.025.051.05.056.05.06.05.065.051.07.052.074.051.079.052.083.052.088.052.092.052.096.052.101.052.106.052.11.052.114.052.118.051.123.051.126.051.131.05.136.05.139.049.143.048.148.048.152.048.155.046.16.046.163.045.168.043.172.043.175.042.179.041.183.04.187.038.191.038.194.036.198.034.202.033.205.032.21.031.212.028.216.027.22.026.224.023.226.022.231.021.233.018.237.016.241.014.244.012.247.011.25.008.254.005.257.004.26.001.26-.001.257-.004.254-.005.25-.008.247-.011.244-.012.241-.014.237-.016.233-.018.231-.021.226-.022.224-.023.22-.026.216-.027.212-.028.21-.031.205-.032.202-.033.198-.034.194-.036.191-.038.187-.038.183-.04.179-.041.175-.042.172-.043.168-.043.163-.045.16-.046.155-.046.152-.048.148-.048.143-.048.139-.049.136-.05.131-.05.126-.051.123-.051.118-.051.114-.052.11-.052.106-.052.101-.052.096-.052.092-.052.088-.052.083-.052.079-.052.074-.051.07-.052.065-.051.06-.05.056-.05.051-.05.023-.025.023-.024.021-.024.02-.025.019-.024.018-.024.017-.023.015-.024.014-.023.013-.023.012-.023.01-.023.01-.022.008-.022.006-.023.006-.021.004-.022.004-.021.001-.021.001-.021-.001-.021-.001-.021-.004-.021-.004-.022-.006-.021-.006-.023-.008-.022-.01-.022-.01-.023-.012-.023-.013-.023-.014-.023-.015-.024-.017-.023-.018-.024-.019-.024-.02-.025-.021-.024-.023-.024-.023-.025-.051-.05-.056-.05-.06-.05-.065-.051-.07-.052-.074-.051-.079-.052-.083-.052-.088-.052-.092-.052-.096-.052-.101-.052-.106-.052-.11-.052-.114-.052-.118-.051-.123-.051-.126-.051-.131-.05-.136-.05-.139-.049-.143-.048-.148-.048-.152-.048-.155-.046-.16-.046-.163-.045-.168-.043-.172-.043-.175-.042-.179-.041-.183-.04-.187-.038-.191-.038-.194-.036-.198-.034-.202-.033-.205-.032-.21-.031-.212-.028-.216-.027-.22-.026-.224-.023-.226-.022-.231-.021-.233-.018-.237-.016-.241-.014-.244-.012-.247-.011-.25-.008-.254-.005-.257-.004-.26-.001-.26.001z"></path></symbol></defs><defs><symbol id="clock" width="24" height="24"><path transform="scale(.5)" d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm5.848 12.459c.202.038.202.333.001.372-1.907.361-6.045 1.111-6.547 1.111-.719 0-1.301-.582-1.301-1.301 0-.512.77-5.447 1.125-7.445.034-.192.312-.181.343.014l.985 6.238 5.394 1.011z"></path></symbol></defs><defs><marker id="arrowhead" refX="7.9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M -1 0 L 10 5 L 0 10 z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="4" refY="4.5"><path fill="none" stroke="#000000" stroke-width="1pt" d="M 1,2 L 6,7 M 6,2 L 1,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><defs><marker id="filled-head" refX="15.5" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><defs><marker id="sequencenumber" refX="15" refY="15" markerWidth="60" markerHeight="40" orient="auto"><circle cx="15" cy="15" r="6"></circle></marker></defs><defs><marker id="solidTopArrowHead" refX="7.9" refY="7.25" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 0 L 10 8 L 0 8 z"></path></marker></defs><defs><marker id="solidBottomArrowHead" refX="7.9" refY="0.75" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 0 L 10 0 L 0 8 z"></path></marker></defs><defs><marker id="stickTopArrowHead" refX="7.5" refY="7" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 0 L 7 7" stroke="black" stroke-width="1.5" fill="none"></path></marker></defs><defs><marker id="stickBottomArrowHead" refX="7.5" refY="0" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto-start-reverse"><path d="M 0 7 L 7 0" stroke="black" stroke-width="1.5" fill="none"></path></marker></defs><g><line x1="387" y1="741" x2="1934.5" y2="741" class="loopLine"></line><line x1="1934.5" y1="741" x2="1934.5" y2="943" class="loopLine"></line><line x1="387" y1="943" x2="1934.5" y2="943" class="loopLine"></line><line x1="387" y1="741" x2="387" y2="943" class="loopLine"></line><polygon points="387,741 437,741 437,754 428.6,761 387,761" class="labelBox"></polygon><text x="412" y="754" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="labelText" style="font-size: 16px; font-weight: 400;">opt</text><text x="1185.75" y="759" text-anchor="middle" class="loopText" style="font-size: 16px; font-weight: 400;"><tspan x="1185.75">[P_PUBL = X]</tspan></text></g><g><line x1="243" y1="591" x2="1944.5" y2="591" class="loopLine"></line><line x1="1944.5" y1="591" x2="1944.5" y2="1065" class="loopLine"></line><line x1="243" y1="1065" x2="1944.5" y2="1065" class="loopLine"></line><line x1="243" y1="591" x2="243" y2="1065" class="loopLine"></line><polygon points="243,591 293,591 293,604 284.6,611 243,611" class="labelBox"></polygon><text x="268" y="604" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="labelText" style="font-size: 16px; font-weight: 400;">loop</text><text x="1118.75" y="609" text-anchor="middle" class="loopText" style="font-size: 16px; font-weight: 400;"><tspan x="1118.75">[per RFQ group]</tspan></text></g><g><line x1="64" y1="447" x2="1954.5" y2="447" class="loopLine"></line><line x1="1954.5" y1="447" x2="1954.5" y2="1127" class="loopLine"></line><line x1="64" y1="1127" x2="1954.5" y2="1127" class="loopLine"></line><line x1="64" y1="447" x2="64" y2="1127" class="loopLine"></line><line x1="64" y1="550" x2="1954.5" y2="550" class="loopLine" style="stroke-dasharray: 3, 3;"></line><polygon points="64,447 114,447 114,460 105.6,467 64,467" class="labelBox"></polygon><text x="89" y="460" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="labelText" style="font-size: 16px; font-weight: 400;">alt</text><text x="1034.25" y="465" text-anchor="middle" class="loopText" style="font-size: 16px; font-weight: 400;"><tspan x="1034.25">[Test mode]</tspan></text><text x="1009.25" y="568" text-anchor="middle" class="loopText" style="font-size: 16px; font-weight: 400;">[Productive]</text></g><text x="235" y="80" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Start (variant, P_TEST, P_PUBL)</text><line x1="76" y1="117" x2="394" y2="117" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="399" y="132" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Validate selection, ENQUEUE run lock, create BAL log</text><path d="M 399,169 C 459,159 459,199 399,189" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></path><text x="613" y="214" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Select released open PR items (bulk)</text><line x1="399" y1="251" x2="827" y2="251" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="743" y="266" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Derive / check purchasing org</text><line x1="399" y1="303" x2="1087.5" y2="303" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="613" y="318" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Source list + supplier block data (FOR ALL ENTRIES)</text><line x1="399" y1="355" x2="827" y2="355" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="399" y="370" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Determine bidders (max 3), group items</text><path d="M 399,407 C 459,397 459,437 399,427" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></path><text x="238" y="498" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">ALV simulation result</text><line x1="397" y1="535" x2="79" y2="535" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="862" y="642" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">MODIFY ENTITIES create RFQ + items + bidders + texts</text><line x1="399" y1="679" x2="1324.5" y2="679" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="862" y="694" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">COMMIT ENTITIES</text><line x1="399" y1="731" x2="1324.5" y2="731" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="862" y="792" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Execute Publish action + COMMIT</text><line x1="399" y1="829" x2="1324.5" y2="829" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="1496" y="844" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Output triggered (RFQ, Ariba channel)</text><line x1="1329.5" y1="881" x2="1662.5" y2="881" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="1794" y="896" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Outbound RFQ message</text><line x1="1667.5" y1="933" x2="1919.5" y2="933" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="399" y="958" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">Write ZMM_PRRFQ_LOG + BAL messages</text><path d="M 399,995 C 459,985 459,1025 399,1015" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></path><text x="238" y="1080" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-size: 16px; font-weight: 400;">ALV result, BAL_DB_SAVE, DEQUEUE</text><line x1="397" y1="1117" x2="79" y2="1117" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line></svg></figure>
+
+<h3>3.6 UI Details</h3>
+<p>Classic selection screen and SALV result list only. There is no Fiori or UI5 application.</p>
+<h4>3.6.1 UI Mock Screens</h4>
+<table class="data">
+<tr><td>Application Name</td><td>ZMM_PR_RFQ_ARIBA (transaction ZMM_PRRFQ)</td></tr>
+<tr><td>Site</td><td>SAP GUI / Web GUI</td></tr>
+<tr><td>URL</td><td>Not applicable</td></tr>
+<tr><td>Mockup</td><td>Selection screen with blocks B01–B03 (section 3.1) and ALV list (section 4.4)</td></tr>
+</table>
+<h4>3.6.2 Navigations</h4>
+<table class="data">
+<tr><th>Source View</th><th>Target View / URL</th><th>Pattern</th></tr>
+<tr><td>ALV – double-click on PR number</td><td>Display PR (ME53N)</td><td>SET PARAMETER ID 'BAN' + CALL TRANSACTION 'ME53N' AND SKIP FIRST SCREEN, after AUTHORITY-CHECK for S_TCODE</td></tr>
+<tr><td>ALV – double-click on RFQ number</td><td>Standard RFQ display (Manage RFQs app / transaction, TBV on target)</td><td>RFQ number as parameter</td></tr>
+</table>
+<h4>3.6.3 Actions</h4>
+<table class="data">
+<tr><th>Application</th><th>Screen(s)</th><th>Action</th><th>Type</th><th>Action Description</th></tr>
+<tr><td>ZMM_PR_RFQ_ARIBA</td><td>Result ALV</td><td>Display application log</td><td>Button</td><td>Opens SLG1-style log for the current RUN_ID (BAL_DSP_LOG_DISPLAY)</td></tr>
+<tr><td>ZMM_PR_RFQ_ARIBA</td><td>Selection screen</td><td>Value help on S_EKGRP / S_EKORG / S_WERKS</td><td>Value help</td><td>Standard DDIC search help</td></tr>
+</table>
+<h4>3.6.4 Validations</h4>
+<table class="data">
+<tr><th>Application</th><th>Screen(s)</th><th>Field/Button</th><th>Validation Logic – Method, function details</th></tr>
+<tr><td>ZMM_PR_RFQ_ARIBA</td><td>Selection</td><td>S_EKGRP, S_EKORG, S_WERKS, P_DLDAYS, P_MAXBID</td><td>lcl_selection=&gt;validate. See section 3.2.</td></tr>
+</table>
+<h4>3.6.5 Other Details</h4>
+<p>Job scheduling: SM36 job ZMM_PR_RFQ_ARIBA_DAILY, daily 06:00 (system time), variant DAILY_PROD (S_EKGRP = 001, P_TEST = space, P_PUBL = X, S_BADAT dynamic: current date − 30 to current date). Spool list retained.</p>
+
+<h3>3.7 Processing Logic</h3>
+<p><b>Data model:</b> PR item (EBAN) 1:n source list entries (EORD) per material/plant. PR item n:1 RFQ group. RFQ group 1:n bidders (max 3). PR item 1:1 log record per run.</p>
+<ol>
+<li><b>INITIALIZATION:</b> default S_BADAT = sy-datum − 30 … sy-datum. Default S_EKGRP = 001 and S_BSART = NB.</li>
+<li><b>START-OF-SELECTION – init:</b> lock the run (ENQUEUE_EZMM_PRRFQ; on foreign lock, E 009 and stop). Generate RUN_ID (cl_system_uuid). Create BAL log (object ZMM / sub PRRFQ, extnumber = RUN_ID).</li>
+<li><b>select_pr_items:</b> one SELECT on EBAN with the criteria in 3.3.1, into typed table gt_pr. If initial, S 010 "No eligible PR items found" and end the run normally (log saved).</li>
+<li><b>exclude_processed:</b> read ZMM_PRRFQ_LOG (STATUS C/P) and EKPO/EKKO RFQ references for gt_pr keys (FOR ALL ENTRIES, driver checked not initial). Delete matches from gt_pr. Count logged as I 011.</li>
+<li><b>derive_purch_org:</b> read ZMM_PRRFQ_ORGMAP (ACTIVE = X) into a hashed table keyed by EKGRP + WERKS. Per item:
+ <ul>
+ <li>EKORG initial: look up (EKGRP, WERKS), then (EKGRP, space). If found, set EKORG and ORG_SOURCE = 'M'. Otherwise status S, E 012.</li>
+ <li>EKORG filled: ORG_SOURCE = 'P'. If a mapping exists and differs, W 013 (D-15).</li>
+ <li>Check T024W (plant ↔ org). If no assignment, E 014 and skip.</li>
+ </ul></li>
+<li><b>derive_company_code:</b> T001W-BWKEY → T001K-BUKRS per plant (buffered hashed table).</li>
+<li><b>check_authority:</b> per item, see 3.4.3. Skip with E 020.</li>
+<li><b>determine_bidders:</b> bulk-read EORD, LFA1, LFM1, LFB1 for all candidate suppliers. Per item:
+ <ul>
+ <li>Supplier 1 = FLIEF, otherwise LIFNR.</li>
+ <li>Candidates 2..n = EORD entries (same MATNR / WERKS, EKORG = derived or space, valid on sy-datum, NOTKZ = space), sorted FLIFN DESC, ZEORD ASC.</li>
+ <li>Remove duplicates and supplier 1.</li>
+ <li>Remove blocked suppliers: LFA1-SPERM / SPERR / LOEVM, LFM1-SPERM (EKORG), LFB1-SPERR (BUKRS). W 015 per supplier.</li>
+ <li>Remove suppliers not Ariba-enabled (is_ariba_enabled, OP-13; TBV source). W 016.</li>
+ <li>Take the first P_MAXBID.</li>
+ <li>0 suppliers: status S, E 017.</li>
+ <li>Fewer than P_MAXBID: W 018 (D-14).</li>
+ <li>Text item (MATNR initial): supplier 1 only.</li>
+ </ul></li>
+<li><b>group_items:</b> build group key = BANFN + EKORG + EKGRP + BUKRS + sorted bidder list (concatenated). Assign items to groups (sorted table gt_group).</li>
+<li><b>Test mode branch:</b> if P_TEST = X, fill the simulated RFQ name ("SIMULATION"), deadline and status 'T' (test), display the ALV and stop. No commit and no log table write; the BAL log is saved for traceability.</li>
+<li><b>create_rfq per group</b> (released RFQ BO via EML; entity, field and action names TBV on target):
+ <ul>
+ <li>Header: RFQ type, company code, purchasing org, purchasing group, currency.</li>
+ <li>RFQ name = build_rfq_name: 'RFQ' + timestamp (YYYYMMDDhhmmss of run start, system time zone) + '-' + run counter (2 digits, incremented per RFQ).</li>
+ <li>Quotation latest submission date = sy-datum + P_DLDAYS (date guard R-RT03).</li>
+ <li>Items: create-by-association, with PR reference (BANFN/BNFPO), material, short text, material group, plant, storage location, open quantity (MENGE − BSMNG), unit, delivery date = LFDAT, account assignment (EBKN) when KNTTP ≠ space.</li>
+ <li>Bidders: create-by-association, 1–3 suppliers.</li>
+ <li>Delivery date check: if LFDAT &lt; deadline, W 019.</li>
+ <li>MODIFY ENTITIES … FAILED / REPORTED, then COMMIT ENTITIES (one LUW per RFQ group).</li>
+ <li>If failed / reported errors: ROLLBACK ENTITIES, status E for all group items, E 021 + BO messages to BAL. Continue with the next group.</li>
+ <li>Read back the RFQ number (late numbering mapping from COMMIT ENTITIES … MAPPED / CONVERT KEY, TBV).</li>
+ </ul></li>
+<li><b>copy_texts:</b> READ_TEXT on the PR header (object EBANH, id B01) and items (object EBAN, ids per text determination). Append the standard header text (SO10 text, name from constant / OP-10). Write to RFQ header and item text entities in the same create call where the BO supports text associations (TBV). Otherwise use SAVE_TEXT on the RFQ text objects after commit. Missing text is not an error (no message).</li>
+<li><b>publish_rfq:</b> if P_PUBL = X, EXECUTE the Publish action on the created RFQ, then COMMIT ENTITIES. Success: status P, S 022. Failure: status F, E 023 + BO messages. The RFQ is kept. The output to Ariba is raised by standard output determination on publish (IP-02); the program does not call the outbound service directly.</li>
+<li><b>write_log:</b> INSERT ZMM_PRRFQ_LOG rows for all processed/skipped items (per group, after the RFQ commit, in the same LUW as the next commit or via a separate COMMIT WORK). BAL_LOG_MSG_ADD for every message with context (BANFN/BNFPO).</li>
+<li><b>END-OF-SELECTION:</b> BAL_DB_SAVE. Display ALV (online or spool). Summary message S 024 "&amp;1 RFQs created, &amp;2 published, &amp;3 items skipped, &amp;4 errors". DEQUEUE_EZMM_PRRFQ.</li>
+</ol>
+<p><b>Performance:</b> no SELECT inside loops. All reads are bulk with FOR ALL ENTRIES (driver not initial) into hashed tables. Packages of 100 RFQs per commit are not needed because there is one commit per RFQ. Expected volume is low (one purchasing group).</p>
+<p><b>Coding rules:</b> local classes only (no FORM). Typed DDIC structures. Every SELECT uses the same Open SQL syntax style. Every arithmetic and date operation has a guard. No direct UPDATE on EBAN or EKKO; PR status is updated by the RFQ BO through the PR reference.</p>
+
+<h3>3.8 Reusable Code</h3>
+<ul>
+<li><b>lcl_log</b> (BAL wrapper: create, add message, add BO REPORTED messages, save). Candidate for a global class ZCL_MM_APPL_LOG if the customer has none.</li>
+<li><b>build_rfq_name</b> and <b>is_ariba_enabled</b>: candidates for global utility class ZCL_MM_SOURCING_UTIL if other sourcing developments need them.</li>
+<li>Standard reuse: READ_TEXT, BAL_* function modules, released RFQ BO.</li>
+</ul>
+
+<h3>3.9 Messages</h3>
+<table class="data">
+<tr><th>Message Class</th><th>Message ID</th><th>Message Text</th></tr>
+<tr><td>ZMM_PRRFQ</td><td>001</td><td>Report selection fetched no data</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>002</td><td>Enter at least one purchasing group</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>003</td><td>Purchasing group &amp;1 does not exist</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>004</td><td>Purchasing organisation / plant &amp;1 does not exist</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>005</td><td>Quotation deadline days must be between 1 and 365</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>006</td><td>Maximum number of suppliers must be between 1 and 9</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>007</td><td>No purchasing org mapping maintained for purchasing group &amp;1</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>008</td><td>Job running in test mode – no RFQs will be created</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>009</td><td>Program is already running (locked by &amp;1)</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>010</td><td>No eligible purchase requisition items found</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>011</td><td>&amp;1 PR items excluded – already converted to RFQ</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>012</td><td>PR &amp;1/&amp;2: no purchasing org and no mapping for group &amp;3</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>013</td><td>PR &amp;1/&amp;2: PR purchasing org &amp;3 differs from mapping &amp;4 – PR value kept</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>014</td><td>PR &amp;1/&amp;2: purchasing org &amp;3 not assigned to plant &amp;4</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>015</td><td>Supplier &amp;1 excluded – blocked (&amp;2)</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>016</td><td>Supplier &amp;1 excluded – not enabled for SAP Ariba</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>017</td><td>PR &amp;1/&amp;2: no eligible supplier found – item skipped</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>018</td><td>PR &amp;1/&amp;2: only &amp;3 supplier(s) found – RFQ created with fewer suppliers</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>019</td><td>PR &amp;1/&amp;2: delivery date &amp;3 is before quotation deadline &amp;4</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>020</td><td>No authorisation to create RFQ for org &amp;1 / group &amp;2 / plant &amp;3</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>021</td><td>RFQ creation failed for PR &amp;1 – see detailed messages</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>022</td><td>RFQ &amp;1 (&amp;2) created and published</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>023</td><td>RFQ &amp;1 created but publishing failed – publish manually</td></tr>
+<tr><td>ZMM_PRRFQ</td><td>024</td><td>&amp;1 RFQs created, &amp;2 published, &amp;3 items skipped, &amp;4 errors</td></tr>
+</table>
+
+<h3>3.10 Subroutines</h3>
+<p>Local class methods are used instead of FORM routines.</p>
+<table class="data">
+<tr><th>Name</th><th>Description</th></tr>
+<tr><td>lcl_selection=&gt;validate</td><td>Selection-screen checks (3.2)</td></tr>
+<tr><td>lcl_processor-&gt;select_pr_items RETURNING tt_pr</td><td>Bulk read of eligible PR items</td></tr>
+<tr><td>lcl_processor-&gt;exclude_processed CHANGING ct_pr</td><td>Removes items already converted (log table / existing RFQ)</td></tr>
+<tr><td>lcl_processor-&gt;derive_purch_org CHANGING ct_pr</td><td>Org derivation and warnings (D-12, D-15)</td></tr>
+<tr><td>lcl_processor-&gt;derive_company_code</td><td>Plant → company code</td></tr>
+<tr><td>lcl_processor-&gt;check_authority IMPORTING is_pr RETURNING rv_ok</td><td>M_ANFR_* checks per item</td></tr>
+<tr><td>lcl_processor-&gt;determine_bidders CHANGING ct_pr</td><td>PR supplier + source list, block and Ariba checks, max P_MAXBID</td></tr>
+<tr><td>lcl_processor-&gt;is_ariba_enabled IMPORTING iv_lifnr RETURNING rv_enabled</td><td>Ariba enablement check (source TBV, OP-13)</td></tr>
+<tr><td>lcl_processor-&gt;group_items RETURNING tt_group</td><td>Builds RFQ groups</td></tr>
+<tr><td>lcl_processor-&gt;build_rfq_name RETURNING rv_name</td><td>RFQ + timestamp + counter</td></tr>
+<tr><td>lcl_processor-&gt;create_rfq IMPORTING is_group EXPORTING ev_ebeln</td><td>EML create + commit / rollback</td></tr>
+<tr><td>lcl_processor-&gt;copy_texts</td><td>PR texts + standard header text to RFQ</td></tr>
+<tr><td>lcl_processor-&gt;publish_rfq IMPORTING iv_ebeln RETURNING rv_ok</td><td>Publish action + commit</td></tr>
+<tr><td>lcl_log-&gt;add / add_bo_messages / save</td><td>Application log handling</td></tr>
+<tr><td>lcl_processor-&gt;write_log</td><td>Writes ZMM_PRRFQ_LOG</td></tr>
+<tr><td>lcl_output-&gt;display</td><td>SALV result list (bulkhead TRY pattern)</td></tr>
+</table>
+
+<h2><span class="sec-num">4</span> Report Output</h2>
+<h3>4.1 Output Method</h3>
+<p>Online: SALV grid (CL_SALV_TABLE: Level B classic ALV, compatible on on-prem / RISE Private). Background: ALV list to spool. Application log in SLG1 (object ZMM / PRRFQ). Excel download through the standard ALV function.</p>
+<h3>4.2 Main Heading</h3>
+<p>"Automatic PR to RFQ Conversion – Run Result" (text symbol).</p>
+<h3>4.3 Sub Heading</h3>
+<p>Run ID, run date/time, user, mode (Test / Productive), publish flag, and summary counts (created / published / skipped / errors), shown in the ALV header (top-of-list).</p>
+<h3>4.4 Layout / UI Design</h3>
+<table class="data">
+<tr><th>Col</th><th>Field</th><th>Label source</th></tr>
+<tr><td>1</td><td>STATUS_ICON</td><td>Text symbol "Status"</td></tr>
+<tr><td>2</td><td>BANFN</td><td>DDIC (BANFN)</td></tr>
+<tr><td>3</td><td>BNFPO</td><td>DDIC (BNFPO)</td></tr>
+<tr><td>4</td><td>MATNR</td><td>DDIC</td></tr>
+<tr><td>5</td><td>TXZ01</td><td>DDIC</td></tr>
+<tr><td>6</td><td>WERKS</td><td>DDIC</td></tr>
+<tr><td>7</td><td>EKGRP</td><td>DDIC</td></tr>
+<tr><td>8</td><td>EKORG</td><td>DDIC</td></tr>
+<tr><td>9</td><td>ORG_SOURCE</td><td>DDIC (ZMM_DE_ORG_SOURCE)</td></tr>
+<tr><td>10–12</td><td>BIDDER1, BIDDER2, BIDDER3</td><td>DDIC (LIFNR) + column suffix 1/2/3 (text symbols)</td></tr>
+<tr><td>13</td><td>RFQ_EBELN</td><td>DDIC (EBELN)</td></tr>
+<tr><td>14</td><td>RFQ_NAME</td><td>DDIC (ZMM_DE_RFQ_NAME)</td></tr>
+<tr><td>15</td><td>DEADLINE</td><td>DDIC (quotation deadline data element, TBV)</td></tr>
+<tr><td>16</td><td>LFDAT</td><td>DDIC</td></tr>
+<tr><td>17</td><td>STATUS</td><td>DDIC (ZMM_DE_PRRFQ_STATUS)</td></tr>
+<tr><td>18</td><td>MSGTY</td><td>DDIC (SYMSGTY)</td></tr>
+<tr><td>19</td><td>MSGTXT</td><td>DDIC (BAPI_MSG)</td></tr>
+</table>
+<h3>4.5 Totaling</h3>
+<p>No amount totals. Counts per STATUS appear in the header (4.3), and the ALV aggregation function is available.</p>
+<h3>4.6 Sorting</h3>
+<p>Default sort: STATUS (errors first), BANFN, BNFPO. All columns can be sorted by the user.</p>
+<h3>4.7 Page Break</h3>
+<p>Not applicable (ALV). Spool uses the standard ALV list format.</p>
+<h3>4.8 Error Handling</h3>
+<table class="data">
+<tr><th>Error</th><th>Handling</th><th>User sees</th></tr>
+<tr><td>Run already active</td><td>ENQUEUE fails, run stops</td><td>E 009. Job ends with error status.</td></tr>
+<tr><td>Item-level data issues (org, supplier, authorisation)</td><td>Item skipped. Status S/E in log.</td><td>ALV row red/yellow, BAL message</td></tr>
+<tr><td>RFQ BO create failure</td><td>ROLLBACK ENTITIES for that group only. Processing continues.</td><td>E 021 + BO REPORTED messages</td></tr>
+<tr><td>Publish failure / integration error</td><td>RFQ kept, status F</td><td>E 023. Republish in standard RFQ app after the fix (IP-07).</td></tr>
+<tr><td>Outbound message failure after publish</td><td>Outside program. Standard message monitoring.</td><td>Support monitors daily (IP-07)</td></tr>
+<tr><td>Unexpected exception</td><td>TRY … CATCH cx_root around each group. Logged. Next group continues.</td><td>E 021 with exception text</td></tr>
+<tr><td>ALV factory error</td><td>CATCH cx_salv_msg → E message. Log is still saved.</td><td>Message, log in SLG1</td></tr>
+</table>
+<h3>4.9 Report Header &amp; Footer</h3>
+<p>Project standard header. No deviation. Footer shows run ID and summary counts.</p>
+
+<h2><span class="sec-num">5</span> Assumptions in Technical Design</h2>
+<ol>
+<li>The target is S/4HANA on-premise or RISE Private Cloud 2022+ with classic extensibility (OP-00).</li>
+<li>A released RFQ business object or API supports create (header, items with PR reference, bidders, texts) and the Publish action on the target release (TBV). Fallback: RFQ OData API called locally.</li>
+<li>The Ariba Sourcing integration is live (D-11). Publishing triggers the outbound message through standard output determination, so no custom outbound call is needed.</li>
+<li>"001" is purchasing group 001 (D-13). "Keep them and warn" means the existing PR purchasing org is kept with a warning when it differs from the mapping (D-15).</li>
+<li>"Released only" is implemented as release indicator complete (FRGRL = space). PRs without a release strategy are included unless OP-02 decides otherwise.</li>
+<li>RFQ name uses the system time zone and a run counter suffix for uniqueness. The name fits the RFQ name field length (≤ 40 characters, TBV).</li>
+<li>Deadline = creation date + 30 calendar days.</li>
+<li>Standard RFQ defaulting provides payment terms and Incoterms. "Standard terms" are attached as a standard header text.</li>
+<li>Field names of EBAN / EORD / LFA1 / LFM1 / LFB1 listed in 3.3 are verified via DD03L on the target before coding.</li>
+<li>Daily volume for purchasing group 001 is low (hundreds of items). No parallel processing is required.</li>
+</ol>
+
+<h2><span class="sec-num">6</span> Open Issues in Technical Design</h2>
+<table class="data">
+<tr><th>ID</th><th>Issue</th><th>Impact</th><th>Owner</th></tr>
+<tr><td>OP-00</td><td>Target S/4HANA release and deployment type. If Public Cloud / ABAP Cloud: redesign as Application Job + released APIs only. No SELECT on EBAN/EORD/LFA1, no selection screen or SALV.</td><td>High (architecture)</td><td>Customer IT</td></tr>
+<tr><td>TI-01</td><td>Exact released RFQ BO entity, field and action names (create, bidders, texts, PR reference, Publish) on the target</td><td>High</td><td>Developer (verify on target)</td></tr>
+<tr><td>TI-02</td><td>Source of "Ariba-enabled" supplier flag (Business Network ID mapping)</td><td>Medium</td><td>Integration</td></tr>
+<tr><td>TI-03</td><td>PR text object/IDs and RFQ text IDs on target. Standard header text name.</td><td>Low</td><td>MM functional</td></tr>
+<tr><td>TI-04</td><td>Grouping rule confirmation (OP-05)</td><td>Medium</td><td>Business</td></tr>
+<tr><td>TI-05</td><td>Item categories / account assignment scope (OP-04). Service items would need a different item structure.</td><td>Medium</td><td>Business</td></tr>
+<tr><td>TI-06</td><td>Fit-to-standard: standard PR-to-Ariba sourcing request flow could replace parts of this program</td><td>Medium</td><td>Solution architect</td></tr>
+<tr><td>TI-07</td><td>Retention / housekeeping for ZMM_PRRFQ_LOG and BAL logs</td><td>Low</td><td>Basis</td></tr>
+</table>
+
+<h2><span class="sec-num">7</span> Unit Test Results</h2>
+<p>Planned scenarios. The <b>Actual</b> column stays "Not run" until executed on the target system with target data. No results are claimed.</p>
+<table class="data">
+<tr><th>Scenario #</th><th>Input Selection Criteria</th><th>Expected Result</th><th>Actual Test Pass/Fail</th></tr>
+<tr><td>1</td><td>S_EKGRP = 001, released PR with org, fixed supplier + 2 valid source list suppliers, P_TEST = space</td><td>1 RFQ, 3 bidders, name RFQ&lt;ts&gt;-01, deadline +30, delivery date = PR, published (status P)</td><td>Not run</td></tr>
+<tr><td>2</td><td>Same as 1 with P_TEST = X</td><td>ALV simulation. No RFQ. No log rows.</td><td>Not run</td></tr>
+<tr><td>3</td><td>PR without org, mapping 001 → org exists</td><td>Org from mapping, ORG_SOURCE = M, RFQ created</td><td>Not run</td></tr>
+<tr><td>4</td><td>PR without org, no mapping</td><td>Item skipped, E 012</td><td>Not run</td></tr>
+<tr><td>5</td><td>PR org ≠ mapping org</td><td>PR org kept, W 013</td><td>Not run</td></tr>
+<tr><td>6</td><td>PR not released (FRGRL = X)</td><td>Not selected</td><td>Not run</td></tr>
+<tr><td>7</td><td>Only PR supplier, no source list</td><td>RFQ with 1 bidder, W 018</td><td>Not run</td></tr>
+<tr><td>8</td><td>Source list supplier purchasing-blocked</td><td>Excluded, W 015</td><td>Not run</td></tr>
+<tr><td>9</td><td>Expired source list entries only, no PR supplier</td><td>Item skipped, E 017</td><td>Not run</td></tr>
+<tr><td>10</td><td>Supplier not Ariba-enabled</td><td>Excluded, W 016</td><td>Not run</td></tr>
+<tr><td>11</td><td>Publish fails (integration inactive in test)</td><td>RFQ exists unpublished, status F, E 023</td><td>Not run</td></tr>
+<tr><td>12</td><td>Re-run immediately</td><td>Items excluded, I 011. No duplicate RFQ.</td><td>Not run</td></tr>
+<tr><td>13</td><td>Two RFQ groups in one run</td><td>Names -01 and -02, unique</td><td>Not run</td></tr>
+<tr><td>14</td><td>Delivery date &lt; deadline</td><td>RFQ created, W 019</td><td>Not run</td></tr>
+<tr><td>15</td><td>User without M_ANFR_EKO for org</td><td>Items skipped, E 020</td><td>Not run</td></tr>
+<tr><td>16</td><td>Second job started while first running</td><td>E 009, second job stops</td><td>Not run</td></tr>
+<tr><td>17</td><td>BO create error (e.g. invalid material for plant)</td><td>Rollback of that RFQ only, E 021. Other groups processed.</td><td>Not run</td></tr>
+</table>
+
+<h2><span class="sec-num">8</span> Related Documentation</h2>
+<ol>
+<li>Functional Specification FS_ZMM_PR_RFQ_ARIBA v0.1 (Documents panel)</li>
+<li>Customer S/4HANA ↔ SAP Ariba Sourcing integration configuration documentation (to be attached)</li>
+<li>Released Objects list of the target S/4HANA system (RFQ BO / API verification, TI-01)</li>
+<li>Transport requests: to be added at build</li>
+</ol>
+
+  </div>
+  <!-- END BODY -->
+
+  <!-- DOC FOOTER -->
+  <div class="doc-footer">
+    <table>
+      <tr>
+        <td><strong>C16 &mdash; AI for SAP operational efficiency</strong> &nbsp;|&nbsp; Document version 1.0 &nbsp;|&nbsp; 23 October 2026</td>
+        <td class="footer-right">C16.ai</td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+<!-- END doc-wrapper -->
+
+<!-- UNIFIED DISCLAIMER — DO NOT EDIT (replace whole block from disclaimer-unified-v1.html if updating) -->
+<!-- C16 Brand — Unified Disclaimer (Option A, v1.0)
+     Marker: data-c16-disclaimer="unified-v1"
+     Use this verbatim at the end of every C16 document, OUTSIDE the doc-wrapper.
+     Width: max-width 1100px (matches the standard doc-wrapper).
+-->
+<div style="max-width:1100px;margin:24px auto 32px auto;padding:22px 30px;background:#f7f8fa;border:1px solid #d0d4d8;border-top:3px solid #003366;font-family:'Segoe UI',Calibri,Arial,sans-serif;font-size:8.8pt;line-height:1.55;color:#444;" data-c16-disclaimer="unified-v1">
+  <p style="margin:0 0 10px 0;"><strong style="color:#003366;font-size:11pt;letter-spacing:0.2px;">Disclaimer &amp; Important Notices</strong></p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">1.&nbsp;&nbsp;AI-Generated Content.</strong> This document was generated by <strong>C16</strong>, an automated AI-powered SAP analysis platform operated by <strong>PEOL Technologies Private Limited</strong>, based on data sourced from the connected SAP system at the time of generation. The contents have not been individually reviewed by a human consultant prior to publication.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">2.&nbsp;&nbsp;Validation Required; Customer Responsibility.</strong> All findings, scores, classifications, recommendations, timelines, and roadmap items are <strong>advisory in nature</strong> and must be reviewed and validated by qualified SAP functional and technical subject-matter experts before any action is taken. Migration, remediation, configuration, and implementation decisions remain the <strong>sole responsibility of the customer</strong>.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">3.&nbsp;&nbsp;Demonstration System Notice.</strong> Where this document was produced from an <strong>IDES, sandbox, training, or demonstration</strong> SAP system, the configurations, data volumes, transactions, and custom objects analysed do not represent any real production customer environment. Such content is provided for <strong>illustration and template purposes only</strong>; actual findings, scores, and recommendations in a customer engagement will vary materially.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">4.&nbsp;&nbsp;No Warranty; No Liability.</strong> This document is provided <strong>&ldquo;as is.&rdquo;</strong> PEOL Technologies Private Limited makes no representation or warranty of any kind, express or implied, including (without limitation) any warranty as to accuracy, completeness, merchantability, non-infringement, or fitness for a particular purpose. In no event shall PEOL Technologies Private Limited be liable for any direct, indirect, incidental, consequential, or special damages arising from the use of, or reliance upon, this document.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">5.&nbsp;&nbsp;SAP Trademarks &amp; Partnership.</strong> <em>SAP</em>, <em>SAP S/4HANA</em>, <em>SAP ECC</em>, <em>SAP ERP</em>, <em>ABAP</em>, <em>SAP HANA</em>, <em>SAP Fiori</em>, <em>BAPI</em>, <em>BAdI</em>, <em>Business Partner</em>, and other SAP product names referenced in this document are trademarks or registered trademarks of <strong>SAP SE</strong> in Germany and other countries. <strong>PEOL Technologies Private Limited is an SAP Partner; C16 is PEOL&rsquo;s own product, not an SAP product.</strong> References to SAP products, transactions, tables, notes, and methodologies are made solely for analytical and educational purposes.</p>
+
+  <p style="margin:0 0 7px 0;"><strong style="color:#003366;">6.&nbsp;&nbsp;Confidentiality.</strong> Where this document contains customer-specific information, it is <strong>confidential</strong> and intended solely for the named recipient. It may not be reproduced, distributed, or disclosed to any third party without the prior written consent of PEOL Technologies Private Limited.</p>
+
+  <p style="margin:0 0 0 0;"><strong style="color:#003366;">7.&nbsp;&nbsp;Copyright.</strong> &copy; 2026 PEOL Technologies Private Limited. All rights reserved. &ldquo;C16&rdquo;, &ldquo;C16.ai&rdquo;, and the C16 logo are trademarks of PEOL Technologies Private Limited.</p>
+</div>
+
+
+</body>
+</html>
